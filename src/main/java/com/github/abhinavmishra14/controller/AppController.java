@@ -46,6 +46,6 @@ public class AppController {
     @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody Response hello(@RequestBody final String aStr){
     	LOGGER.info("Input data: {}", aStr);
-        return new Response(""+aStr, "Welcome!");
+        return new Response(aStr, "Welcome!");
     }
 }
