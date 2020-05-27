@@ -71,7 +71,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.17</version>
+				<version>3.1.0</version>
 				<executions>
 					<execution>
 						<id>checkstyle</id>
@@ -83,17 +83,18 @@
 							<failOnViolation>true</failOnViolation>
 							<configLocation>${basedir}/checkstyle.xml</configLocation>
 							<includes>com/**/*.java</includes>
-							<excludes>com/github/abhinavmishra14/**/*Test.java</excludes>
+							<excludes>com/github/abhinavmishra14/**/pojo/*.java</excludes>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 
-			<!-- PMD Integration, you can also run it directly using mvn pmd:pmd -->
+			<!-- PMD Integration, you can also run it directly using mvn pmd:pmd or 
+				pmd:check -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.5</version>
+				<version>3.0.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -107,16 +108,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.6</version>
+				<version>3.12.0</version>
 				<configuration>
 					<!-- Run PMD on the tests. Default: false -->
 					<includeTests>false</includeTests>
 
-					<!-- Skip the PMD checks. Most useful on the command line via "-Dpmd.skip=true" -->
-					<skip>false</skip>
-
-					<!-- Print details of check failures to build output. -->
-					<verbose>true</verbose>
 					<!-- Link the violation line numbers to the source xref. Links will 
 						be created automatically if the jxr plugin is being used. Default: true -->
 					<linkXRef>true</linkXRef>
@@ -128,9 +124,11 @@
 						Default: xml -->
 					<format>xml</format>
 
-					<!-- Fail build if there are high priority warnings during pmd:check. 
-						Default value is 5 -->
-					<failurePriority>1</failurePriority>
+					<!-- Skip the PMD checks. Most useful on the command line via "-Dpmd.skip=true" -->
+					<skip>false</skip>
+
+					<!-- Print details of check failures to build output. -->
+					<verbose>true</verbose>
 
 					<!-- A list of files to include from checking. Can contain Ant-style 
 						wildcards and double wildcards. Defaults to **\/*.java. -->
@@ -138,9 +136,15 @@
 						<include>com/**/*.java</include>
 					</includes>
 
+					<!-- Fail build if there are high priority warnings during pmd:check. 
+						Default value is 5 -->
+					<failurePriority>1</failurePriority>
+
 					<!-- A list of files to exclude from checking. Can contain Ant-style 
 						wildcards and double wildcards. We are not excluding anything here. -->
-					<!-- <excludes> <exclude></exclude> </excludes> -->
+					<excludes>
+						<exclude>com/github/abhinavmishra14/**/pojo/*.java</exclude>
+					</excludes>
 
 					<!-- The output directory for the final HTML report. -->
 					<outputDirectory>${project.reporting.outputDirectory}</outputDirectory>
@@ -157,31 +161,37 @@
 					<execution>
 						<phase>package</phase>
 						<goals>
-							<!-- Creates a PMD report. -->
-							<goal>pmd</goal>
-
-							<!-- Fail the build if there were any PMD violations in the source 
-								code. Uncomment if needed -->
 							<goal>check</goal>
-
 							<!-- Creates a report for PMD's copy paste detector tool -->
 							<goal>cpd</goal>
-
-							<!-- Fail the build if there were any CPD violations in the source 
-								code. Uncomment if needed -->
-							<!-- <goal>cpd-check</goal> -->
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
 
-			<!-- FindBugs Integration, you can also run it directly using mvn findbugs:findbugs -->
+			<!-- SpotBugs looks for bugs in Java programs. It is based on the concept 
+				of bug patterns. A bug pattern is a code idiom that is often an error. Bug 
+				patterns arise for a variety of reasons: - Difficult language features - 
+				Misunderstood API methods - Misunderstood invariants when code is modified 
+				during maintenance - Garden variety mistakes: typos, use of the wrong boolean 
+				operator -->
+			<!-- Post java9, findbugs is no longer maintained and we need to use spotbugs. 
+				It is successor of findbugs -->
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>3.0.3</version>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<version>3.1.12.2</version>
+				<dependencies>
+					<!-- overwrite dependency on spotbugs if you want to specify the version 
+						of spotbugs -->
+					<dependency>
+						<groupId>com.github.spotbugs</groupId>
+						<artifactId>spotbugs</artifactId>
+						<version>4.0.0-beta4</version>
+					</dependency>
+				</dependencies>
 				<configuration>
-					<!-- FindBugs will show what is doing during analysis. -->
+					<!-- SpotBugs will show what is doing during analysis. -->
 					<debug>false</debug>
 					<!-- Enables analysis which takes more memory but finds more bugs. If 
 						you run out of memory, changes the value of the effort element to 'min'. 
@@ -190,24 +200,22 @@
 					<!-- Reports all bugs (other values are High|Normal|Low|Exp|Ignore) -->
 					<threshold>High</threshold>
 					<xmlOutput>true</xmlOutput>
-					<!-- Optional directory to save findbugs xdoc xml report -->
+					<!-- Optional directory to save SpotBugs xdoc xml report -->
 					<xmlOutputDirectory>${project.reporting.outputDirectory}</xmlOutputDirectory>
-
+					<!-- Stops the build if violation found -->
+					<failOnError>true</failOnError>
 					<!-- Indicates to analyze only given java packages, We are allowing 
 						everything here. -->
 					<!-- <onlyAnalyze>com.*</onlyAnalyze> -->
-
-					<failOnError>true</failOnError>
 				</configuration>
 				<executions>
 					<execution>
 						<phase>package</phase>
 						<goals>
-							<!-- This goal will check code and generate report -->
-							<!-- <goal>findbugs</goal> -->
-
-							<!-- Fail the build if there were any findBugs violations in the source 
-								code. Uncomment if needed -->
+							<!-- spotbugs goal analyses target project by SpotBugs -->
+							<!-- <goal>spotbugs</goal> -->
+							<!-- check goal runs analysis like spotbugs goal, and make the build 
+								failed if it found any bugs. -->
 							<goal>check</goal>
 						</goals>
 					</execution>
