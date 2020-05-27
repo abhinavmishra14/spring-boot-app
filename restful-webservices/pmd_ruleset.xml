@@ -1,0 +1,1362 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ruleset xmlns="http://pmd.sf.net/ruleset/1.0.0" name=""
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
+	xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
+	<description>
+		<![CDATA[
+		    This ruleset is as per version 6.13.0
+		    PMD Plugin preferences rule set
+			Priority means: 1 – error, high priority, 2 – error,
+			normal priority, 3 – warning, high priority, 4 – warning, normal priority and 5 – information.
+		]]>
+	</description>
+	<rule ref="category/java/codestyle.xml/PrematureDeclaration">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/ShortVariable">
+		<priority>1</priority>
+		<properties>
+       	   <property name="minimum" value="3" />
+		</properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/LongVariable">
+		<priority>4</priority>
+		<properties>
+		    <property name="minimum" value="45" />
+		</properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/ShortMethodName">
+		<priority>1</priority>
+		<properties>
+		   <property name="minimum" value="3" />
+		</properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/FieldNamingConventions">
+		<priority>1</priority>
+		<properties>
+	        <property name="publicConstantPattern" value="[A-Z][A-Z_0-9]*" />
+	        <property name="constantPattern" value="[A-Z][A-Z_0-9]*" />
+	        <property name="enumConstantPattern" value="[A-Z][A-Z_0-9]*" />
+	        <property name="finalFieldPattern" value="[a-z][a-zA-Z0-9]*" />
+	        <property name="staticFieldPattern" value="[a-z][a-zA-Z0-9]*" />
+	        <property name="defaultFieldPattern" value="[a-z][a-zA-Z0-9]*" />
+	        <property name="exclusions" value="serialVersionUID|serialPersistentFields" />
+   		</properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/LocalVariableNamingConventions">
+		<priority>1</priority>
+		<properties>
+          <property name="localVarPattern" value="[a-z][a-zA-Z0-9]*" />
+          <property name="finalVarPattern" value="[a-z][a-zA-Z0-9]*" />
+          <property name="catchParameterPattern" value="[a-z][a-zA-Z0-9]*" />
+    	</properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/FormalParameterNamingConventions">
+		<priority>1</priority>
+		<properties>
+	        <property name="methodParameterPattern" value="[a-z][a-zA-Z0-9]*" />
+	        <property name="finalMethodParameterPattern" value="[a-z][a-zA-Z0-9]*" />
+	        <property name="lambdaParameterPattern" value="[a-z][a-zA-Z0-9]*" />
+	        <property name="explicitLambdaParameterPattern" value="[a-z][a-zA-Z0-9]*" />
+    	</properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/MethodNamingConventions">
+		<priority>1</priority>
+		<properties>
+	        <property name="methodPattern" value="[a-z][a-zA-Z0-9]*" />
+	        <property name="staticPattern" value="[a-z][a-zA-Z0-9]*" />
+	        <property name="nativePattern" value="[a-z][a-zA-Z0-9]*" />
+	        <property name="junit3TestPattern" value="test[A-Z0-9][a-zA-Z0-9]*" />
+	        <property name="junit4TestPattern" value="[a-z][a-zA-Z0-9]*" />
+    	</properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/ClassNamingConventions">
+		<priority>1</priority>
+		<properties>
+	        <property name="classPattern" value="[A-Z][a-zA-Z0-9]*" />
+	        <property name="abstractClassPattern" value="[A-Z][a-zA-Z0-9]*" />
+	        <property name="interfacePattern" value="[A-Z][a-zA-Z0-9]*" />
+	        <property name="enumPattern" value="[A-Z][a-zA-Z0-9]*" />
+	        <property name="annotationPattern" value="[A-Z][a-zA-Z0-9]*" />
+	        <property name="utilityClassPattern" value="[A-Z][a-zA-Z0-9]+(Utils?|Helper?|Constants)" />
+    	</properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/ShortClassName">
+		<priority>1</priority>
+	    <properties>
+	        <property name="minimum" value="4" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/LinguisticNaming">
+		<priority>1</priority>
+	    <properties>
+	        <property name="ignoredAnnotations" value="java.lang.Override" />
+	        <property name="checkBooleanMethod" value="true" />
+	        <property name="checkGetters" value="true" />
+	        <property name="checkSetters" value="true" />
+	        <property name="checkPrefixedTransformMethods" value="true" />
+	        <property name="checkTransformMethods" value="false" />
+	        <property name="booleanMethodPrefixes" value="is|has|can|have|will|should" />
+	        <property name="transformMethodNames" value="to|as" />
+	        <property name="checkFields" value="true" />
+	        <property name="checkVariables" value="true" />
+	        <property name="booleanFieldPrefixes" value="is|has|can|have|will|should" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/GenericsNaming">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/IdenticalCatchBranches">
+		<priority>1</priority>
+	</rule>	
+	<rule ref="category/java/codestyle.xml/CommentDefaultAccessModifier">
+		<priority>1</priority>
+		<![CDATA[
+		   final String stringValueBad = "some string value"; 
+			/* default */ final String stringValueGood = "some string"; <-- should be this way
+		]]>
+	</rule>
+	<rule ref="category/java/codestyle.xml/AvoidDollarSigns">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/NoPackage">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/PackageCase">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/BooleanGetMethodName">
+		<priority>1</priority>
+		<properties>
+           <property name="checkParameterizedMethods" value="false" />
+    	</properties>
+	</rule>
+	<rule ref="category/java/design.xml/UseUtilityClass">
+		<priority>1</priority>
+		<!-- Ignore check for spring boot application -->
+		<properties>
+           <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration/preceding-sibling::Annotation/MarkerAnnotation/Name[@Image='SpringBootApplication']" />
+   		</properties>
+	</rule>
+	<rule ref="category/java/design.xml/SimplifyBooleanReturns">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/SimplifyBooleanExpressions">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/SimplifiedTernary">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/SwitchStmtsShouldHaveDefault">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/design.xml/AvoidDeeplyNestedIfStmts">
+		<priority>3</priority>
+		<properties>
+	        <property name="problemDepth" value="6" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/AvoidReassigningParameters">
+		<priority>2</priority>
+	</rule>
+	<rule ref="category/java/design.xml/SwitchDensity">
+		<priority>3</priority>
+		<properties>
+           <property name="minimum" value="10.0"/>
+   	     </properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/AccessorClassGeneration">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/AccessorMethodGeneration" >
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/design.xml/FinalFieldCouldBeStatic">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/DefaultLabelNotLastInSwitchStmt">
+		<priority>4</priority>
+	</rule>
+	<!-- Configure this rule when using PMD 6.16.0 -->
+	<!-- <rule ref="category/java/bestpractices.xml/DoubleBraceInitialization">
+		<priority>3</priority>
+	</rule> -->
+	<rule ref="category/java/bestpractices.xml/ForLoopCanBeForeach">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/ForLoopVariableCount">
+		<priority>3</priority>
+		<properties>
+           <property name="maximumVariables" value="1" />
+    	</properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/GuardLogStatement">
+		<priority>3</priority>
+	    <properties>
+	    	<!-- Allow info and isInfoEnabled to be ignored and rest of them will be checked -->
+	        <property name="logLevels" value="trace,debug,warn,error,log,finest,finer,fine,warning,severe" />
+        	<property name="guardsMethods" value="isTraceEnabled,isDebugEnabled,isWarnEnabled,isErrorEnabled,isLoggable" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/ImmutableField">
+		<priority>1</priority>
+		<properties>
+	        <property name="ignoredAnnotations" value="lombok.Setter|lombok.Getter|lombok.Builder|lombok.Data|lombok.RequiredArgsConstructor|lombok.AllArgsConstructor|lombok.Value|lombok.NoArgsConstructor" />
+	    </properties>
+	</rule>	
+	<rule ref="category/java/design.xml">
+		<exclude name="LawOfDemeter" />
+	</rule>
+	<rule ref="category/java/codestyle.xml/AvoidProtectedFieldInFinalClass">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/AvoidProtectedMethodInFinalClassNotExtending">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/SimplifyConditional">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/PositionLiteralsFirstInComparisons">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/PositionLiteralsFirstInCaseInsensitiveComparisons">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/UnnecessaryLocalBeforeReturn">
+		<priority>1</priority>
+		<properties>
+	        <property name="statementOrderMatters" value="true" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/ConstantsInInterface">
+		<priority>1</priority>
+		<properties>
+          <property name="ignoreIfHasMethods" value="true" />
+   		</properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml">
+		<exclude name="ConfusingTernary" />
+	</rule>
+	<rule ref="category/java/codestyle.xml/ControlStatementBraces">
+		<priority>1</priority>
+	    <properties>
+	        <property name="checkIfElseStmt" value="true" />
+	        <property name="checkSingleIfStmt" value="true" />
+	        <property name="checkWhileStmt" value="true" />
+	        <property name="checkForStmt" value="true" />
+	        <property name="checkDoWhileStmt" value="true" />
+	        <property name="checkCaseStmt" value="false" />
+	        <property name="allowEmptyLoop" value="false" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UseCollectionIsEmpty">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UseTryWithResources">
+		<priority>1</priority>
+	    <properties>
+	        <property name="closeMethods" value="close,closeQuietly" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UseVarargs">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/WhileLoopWithLiteralBoolean">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/PreserveStackTrace">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/ClassWithOnlyPrivateConstructorsShouldBeFinal">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/EmptyMethodInAbstractClassShouldBeAbstract">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/SingularField">
+		<priority>1</priority>
+		<properties>
+	        <property name="ignoredAnnotations" value="lombok.Setter|lombok.Getter|lombok.Builder|lombok.Data|lombok.RequiredArgsConstructor|lombok.AllArgsConstructor|lombok.Value|lombok.NoArgsConstructor|lombok.experimental.Delegate" />
+	        <property name="checkInnerClasses" value="false" />
+	        <property name="disallowNotAssignment" value="false" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/AbstractClassWithoutAnyMethod">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/FieldDeclarationsShouldBeAtStartOfClass">
+		<priority>1</priority>
+		<properties>
+	        <property name="ignoreEnumDeclarations" value="true" />
+	        <property name="ignoreAnonymousClassDeclarations" value="true" />
+	        <property name="ignoreInterfaceDeclarations" value="false" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/SignatureDeclareThrowsException">
+		<priority>3</priority>
+		<properties>
+	        <property name="IgnoreJUnitCompletely" value="false" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/ExceptionAsFlowControl">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/design.xml/AvoidThrowingRawExceptionTypes">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/AvoidUncheckedExceptionsInSignatures">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/AvoidThrowingNullPointerException">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/AvoidRethrowingException">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/DoNotExtendJavaLangError">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/AvoidThrowingNewInstanceOfSameException">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/AvoidCatchingGenericException">
+		<priority>2</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UnusedPrivateField">
+		<priority>1</priority>
+	    <properties>
+	        <property name="ignoredAnnotations" value="lombok.Setter|lombok.Getter|lombok.Builder|lombok.Data|lombok.RequiredArgsConstructor|lombok.AllArgsConstructor|lombok.Value|lombok.NoArgsConstructor|java.lang.Deprecated|javafx.fxml.FXML|lombok.experimental.Delegate" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UnusedLocalVariable">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UnusedPrivateMethod">
+		<priority>1</priority>
+	    <properties>
+	        <property name="ignoredAnnotations" value="java.lang.Deprecated" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UnusedFormalParameter">
+		<priority>1</priority>
+		<properties>
+          <property name="checkAll" value="true" />
+    	</properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/SystemPrintln">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/AvoidPrintStackTrace">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/AvoidReassigningLoopVariables">
+		<priority>1</priority>
+	    <properties>
+	        <property name="foreachReassign" value="deny" />
+	        <property name="forReassign" value="deny" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/AvoidStringBufferField">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/ReplaceVectorWithList">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/ReplaceHashtableWithMap">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/ReplaceEnumerationWithIterator">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/JUnit4TestShouldUseBeforeAnnotation">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/JUnit4TestShouldUseAfterAnnotation">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/JUnit4TestShouldUseTestAnnotation">
+		<priority>3</priority>
+		<properties>
+          <property name="testClassPattern" value="Test" />
+    	</properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/JUnit4SuitesShouldUseSuiteAnnotation">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/JUnitUseExpected">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/MDBAndSessionBeanNamingConvention">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/RemoteSessionInterfaceNamingConvention">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/LocalInterfaceSessionNamingConvention">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/LocalHomeNamingConvention">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/RemoteInterfaceNamingConvention">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal">
+		<priority>1</priority>
+		<properties>
+	        <property name="ignoreForEachDecl" value="false" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/UnnecessaryReturn">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/UnnecessaryModifier">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/UseDiamondOperator">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/design.xml/UselessOverridingMethod">
+		<priority>1</priority>
+		<properties>
+	        <property name="ignoreAnnotations" value="false" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/UseObjectForClearerAPI">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/CollapsibleIfStatements">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP">
+		<priority>3</priority>
+		<properties>
+           <property name="checkAddressTypes" value="IPv4 mapped IPv6|IPv6|IPv4" />
+  	    </properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/CheckResultSet">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/ExtendsObject">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/MethodReturnsInternalArray">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/MissingOverride">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/ArrayIsStoredDirectly">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/OneDeclarationPerLine">
+		<priority>1</priority>
+	    <properties>
+	        <property name="strictMode" value="false" />
+	    </properties>
+	</rule>
+	<!-- Configure this rule when using PMD 6.18.0 -->
+	<!-- <rule ref="category/java/bestpractices.xml/AvoidMessageDigestField">
+		<priority>3</priority>
+	</rule> -->
+	<rule ref="category/java/design.xml/CouplingBetweenObjects">
+		<priority>3</priority>
+		<properties>
+	        <property name="threshold" value="20" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/ExcessiveImports">
+		<priority>3</priority>
+		<properties>
+	        <property name="minimum" value="30.0" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/LooseCoupling">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/DuplicateImports">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/DontImportJavaLang">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UnusedImports">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/TooManyStaticImports">
+		<priority>3</priority>
+		<properties>
+	        <property name="maximumStaticImports" value="10" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/codestyle.xml/UnnecessaryAnnotationValueElement">
+		<![CDATA[
+		    @TestClassAnnotation(value = "TEST")
+			public class Foo {
+			    @TestMemberAnnotation(value = "TEST")
+			    private String y;
+			
+			    @TestMethodAnnotation(value = "TEST")
+			    public void bar() {
+			        int x = 42;
+			        return;
+			    }
+			}
+			
+			// should be
+			@TestClassAnnotation("TEST")
+			public class Foo {
+			    @TestMemberAnnotation("TEST")
+			    private String y;
+			
+			    @TestMethodAnnotation("TEST")
+			    public void bar() {
+			        int x = 42;
+			        return;
+			    }
+			}
+		]]>		
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/JUnitAssertionsShouldIncludeMessage">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/JUnitTestContainsTooManyAsserts">
+		<priority>3</priority>
+	    <properties>
+	        <property name="maximumAsserts" value="3" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/JUnitTestsShouldIncludeAssert">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UseAssertEqualsInsteadOfAssertTrue">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UseAssertSameInsteadOfAssertTrue">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UseAssertTrueInsteadOfAssertEquals">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/bestpractices.xml/UseAssertNullInsteadOfAssertTrue">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/design.xml/SimplifyBooleanAssertion">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/OnlyOneReturn">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/CallSuperInConstructor">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/UselessParentheses">
+		<priority>2</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/DefaultPackage">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/UseUnderscoresInNumericLiterals">
+		<priority>4</priority>
+	    <properties>
+	        <property name="acceptableDecimalLength" value="4" />
+	    </properties>
+	</rule>
+	<!-- Configure this rule when using PMD 6.15.0 -->
+	<!-- <rule ref="category/java/codestyle.xml/UseShortArrayInitializer">
+		<priority>3</priority>
+	</rule> -->
+	<rule ref="category/java/codestyle.xml/UselessQualifiedThis">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml/AvoidUsingNativeCode">
+		<priority>2</priority>
+	</rule>
+	<rule ref="category/java/codestyle.xml">
+		<exclude name="UnnecessaryConstructor" />
+		<exclude name="AtLeastOneConstructor"/>
+	</rule>
+	<rule ref="category/java/design.xml/NPathComplexity">
+		<priority>3</priority>
+		<properties>
+	        <property name="reportLevel" value="200" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/ExcessiveClassLength">
+		<priority>3</priority>
+		<properties>
+	        <property name="minimum" value="2000.0" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/ExcessiveMethodLength">
+		<priority>3</priority>
+		<properties>
+	        <property name="minimum" value="150.0" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/ExcessiveParameterList">
+		<priority>3</priority>
+	    <properties>
+	        <property name="minimum" value="10.0" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/CyclomaticComplexity">
+		<priority>4</priority>
+		<properties>
+	        <property name="classReportLevel" value="80" />
+	        <property name="methodReportLevel" value="10" />
+	        <property name="cycloOptions" value="" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/DataClass">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/design.xml/ExcessivePublicCount">
+		<priority>3</priority>
+		<properties>
+	        <property name="minimum" value="45.0" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/GodClass">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/design.xml/LogicInversion">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/design.xml/LoosePackageCoupling">
+		<priority>4</priority>
+		<!-- Configure allowed classes and packages here -->
+	    <!-- <properties>
+	        <property name="packages" value="" />
+	        <property name="classes" value="" />
+	    </properties> -->
+	</rule>
+	<rule ref="category/java/design.xml/TooManyFields">
+		<priority>3</priority>
+		<properties>
+          <property name="maxfields" value="15" />
+   		</properties>
+	</rule>
+	<rule ref="category/java/design.xml/NcssCount">
+		<priority>3</priority>
+	    <properties>
+	        <property name="methodReportLevel" value="60" />
+	        <property name="classReportLevel" value="1500" />
+	        <property name="ncssOptions" value="" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/design.xml/TooManyMethods">
+		<priority>3</priority>
+		<properties>
+          <property name="maxmethods" value="10" />
+  		</properties>
+	</rule>
+	<rule ref="category/java/documentation.xml/CommentContent">
+		<priority>1</priority>
+	    <properties>
+	        <property name="caseSensitive" value="false" />
+	        <property name="disallowedTerms" value="idiot|jerk" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/documentation.xml/CommentRequired">
+		<priority>1</priority>
+	    <properties>
+	        <property name="methodWithOverrideCommentRequirement" value="Ignored" />
+	        <property name="accessorCommentRequirement" value="Ignored" />
+	        <property name="headerCommentRequirement" value="Required" />
+	        <property name="fieldCommentRequirement" value="Ignored" />
+	        <property name="publicMethodCommentRequirement" value="Required" />
+	        <property name="protectedMethodCommentRequirement" value="Required" />
+	        <property name="enumCommentRequirement" value="Required" />
+	        <property name="serialVersionUIDCommentRequired" value="Ignored" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/documentation.xml/CommentSize">
+		<priority>4</priority>
+	    <properties>
+	        <property name="maxLines" value="25" />
+	        <property name="maxLineLength" value="150" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/documentation.xml/UncommentedEmptyConstructor">
+		<priority>1</priority>
+		<properties>
+	        <property name="ignoreExplicitConstructorInvocation" value="false" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/documentation.xml/UncommentedEmptyMethodBody">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/security.xml/HardCodedCryptoKey">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/security.xml/InsecureCryptoIv">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/multithreading.xml/AvoidSynchronizedAtMethodLevel">
+		<priority>2</priority>
+	</rule>
+	<rule ref="category/java/multithreading.xml/AvoidThreadGroup">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/multithreading.xml/AvoidUsingVolatile">
+		<priority>2</priority>
+	</rule>
+	<rule ref="category/java/multithreading.xml/DoNotUseThreads">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/multithreading.xml/DontCallThreadRun">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/multithreading.xml/DoubleCheckedLocking">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/multithreading.xml/NonThreadSafeSingleton">
+		<priority>1</priority>
+		<properties>
+	        <property name="checkNonStaticMethods" value="true" />
+	        <property name="checkNonStaticFields" value="false" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/multithreading.xml/UnsynchronizedStaticFormatter">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/multithreading.xml/UseConcurrentHashMap">
+		<priority>3</priority>
+	</rule>
+	 <rule ref="category/java/multithreading.xml/UseNotifyAllInsteadOfNotify">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AssignmentInOperand">
+		<priority>4</priority>
+		<properties>
+	        <property name="allowIf" value="false" />
+	        <property name="allowFor" value="false" />
+	        <property name="allowWhile" value="false" />
+	        <property name="allowIncrementDecrement" value="false" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AssignmentToNonFinalStatic">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidAccessibilityAlteration">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidAssertAsIdentifier">
+		<priority>1</priority>
+	</rule>
+    <rule ref="category/java/errorprone.xml/AvoidBranchingStatementAsLastInLoop">
+		<priority>1</priority>
+		<properties>
+          <property name="checkBreakLoopTypes" value="for|do|while" />
+          <property name="checkContinueLoopTypes" value="for|do|while" />
+          <property name="checkReturnLoopTypes" value="for|do|while" />
+  	    </properties>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidCallingFinalize">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidCatchingNPE">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidCatchingThrowable">
+		<priority>2</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidDecimalLiteralsInBigDecimalConstructor">
+	    <![CDATA[
+		    One might assume that the result of "new BigDecimal(0.1)" is exactly equal to 0.1, 
+		    but it is actually equal to .1000000000000000055511151231257827021181583404541015625. 
+		    This is because 0.1 cannot be represented exactly as a double (or as a binary fraction of any finite length). 
+		    Thus, the long value that is being passed in to the constructor is not exactly equal to 0.1, appearances notwithstanding.
+		    The (String) constructor, on the other hand, is perfectly predictable: ‘new BigDecimal("0.1")’ is exactly equal to 0.1,
+		    as one would expect. Therefore, it is generally recommended that the (String) constructor be used in preference to this one.
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidDuplicateLiterals">
+		<priority>1</priority>
+		<properties>
+			<property name="separator" value="," />
+	        <property name="maxDuplicateLiterals" value="4" />
+	        <property name="minimumLength" value="3" />
+	        <property name="skipAnnotations" value="true" />
+	        <property name="exceptionList" value="" />
+		</properties>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidEnumAsIdentifier">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/MethodWithSameNameAsEnclosingClass">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/SuspiciousHashcodeMethodName">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidFieldNameMatchingTypeName">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidFieldNameMatchingMethodName">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidInstanceofChecksInCatchClause">
+		<priority>2</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidLiteralsInIfCondition">
+		<priority>2</priority>
+	    <properties>
+	        <property name="ignoreMagicNumbers" value="-1,0" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/errorprone.xml">
+	   <exclude name="DataflowAnomalyAnalysis" />
+	</rule>
+	<rule ref="category/java/errorprone.xml/MisplacedNullCheck">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidLosingExceptionInformation">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidMultipleUnaryOperators">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/AvoidUsingOctalValues">
+		<priority>3</priority>
+		<properties>
+	        <property name="strict" value="false" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/errorprone.xml/ClassCastExceptionWithToArray">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/BrokenNullCheck">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/BadComparison">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/BeanMembersShouldSerialize">
+		<priority>3</priority>
+		<properties>
+	        <property name="ignoredAnnotations" value="lombok.Data|lombok.Getter|lombok.Value" />
+	        <property name="prefix" value="" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/errorprone.xml/CallSuperFirst">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/CallSuperLast">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/CloneMethodMustBePublic">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/CloneMethodMustImplementCloneable">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/CloneMethodReturnTypeMustMatchClassName">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/ProperCloneImplementation">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/CloneThrowsCloneNotSupportedException">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/CloseResource">
+		<priority>1</priority>
+		<properties>
+	        <property name="closeTargets" value="" />
+	        <property name="types" value="java.lang.AutoCloseable,java.sql.Connection,java.sql.Statement,java.sql.ResultSet" />
+	        <property name="closeAsDefaultTarget" value="true" />
+	        <!-- Configure allowed types when using PMD 6.16.0 -->
+	        <!-- <property name="allowedResourceTypes" value="java.io.ByteArrayOutputStream|java.io.ByteArrayInputStream|java.io.StringWriter|java.io.CharArrayWriter|java.util.stream.Stream" /> -->
+	    </properties>
+	</rule>
+	<rule ref="category/java/errorprone.xml/CompareObjectsWithEquals">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/ConstructorCallsOverridableMethod">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/DetachedTestCase">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/DoNotCallGarbageCollectionExplicitly">
+		<priority>2</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/DoNotCallSystemExit">
+		<priority>2</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/DoNotExtendJavaLangThrowable">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/DoNotHardCodeSDCard">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/DontImportSun">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/DontUseFloatTypeForLoopIndices">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptyCatchBlock">
+		<priority>1</priority>
+		<properties>
+	        <property name="allowCommentedBlocks" value="false" />
+	        <property name="allowExceptionNameRegex" value="^(ignored|expected)$" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptyFinalizer">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptyFinallyBlock">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptyIfStmt">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptyWhileStmt">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptyTryBlock">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptySwitchStatements">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptySynchronizedBlock">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptyInitializer">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptyStatementNotInLoop">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptyInitializer">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EmptyStatementBlock">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/EqualsNull">
+		<priority>1</priority>
+	</rule>
+    <rule ref="category/java/errorprone.xml/FinalizeDoesNotCallSuperFinalize">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/FinalizeOnlyCallsSuperFinalize">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/FinalizeOverloaded">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/FinalizeShouldBeProtected">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/IdempotentOperations">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/ImportFromSamePackage">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/InstantiationToGetClass">
+		<priority>1</priority>
+	</rule>
+	<!-- Configure this rule when using PMD 6.19.0 -->
+	<!-- <rule ref="category/java/errorprone.xml/InvalidLogMessageFormat">
+		<priority>1</priority>
+	</rule> -->
+	<rule ref="category/java/errorprone.xml/JumbledIncrementer">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/JUnitSpelling">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/JUnitStaticSuite">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/ProperLogger">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/MissingBreakInSwitch">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/MissingSerialVersionUID">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/MissingStaticMethodInNonInstantiatableClass">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/MoreThanOneLogger">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/NonCaseLabelInSwitchStatement">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/NonStaticInitializer">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/NullAssignment">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/ReturnEmptyArrayRatherThanNull">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/ReturnFromFinallyBlock">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/SimpleDateFormatNeedsLocale">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/SingleMethodSingleton">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/SingletonClassReturningNewInstance">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/StaticEJBFieldShouldBeFinal">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/StringBufferInstantiationWithChar">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/SuspiciousEqualsMethodName">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/SuspiciousOctalEscape">
+		<priority>4</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/TestClassWithoutTestCases">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/UnconditionalIfStatement">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/UnnecessaryBooleanAssertion">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/UnnecessaryCaseChange">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/UnnecessaryConversionTemporary">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/UnusedNullCheckInEquals">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/UseCorrectExceptionLogging">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/UseEqualsToCompareStrings">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/UselessOperationOnImmutable">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/UseLocaleWithCaseConversions">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/UseProperClassLoader">
+		<![CDATA[
+		  In J2EE, the getClassLoader() method might not work as expected. 
+		  Use Thread.currentThread().getContextClassLoader() instead.
+		]]>
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/errorprone.xml/CheckSkipResult">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/AddEmptyString">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/AppendCharacterWithChar">
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/AvoidArrayLoops">
+		<priority>2</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/AvoidFileStream">
+		<![CDATA[
+		  The FileInputStream and FileOutputStream classes contains a finalizer method which will cause garbage collection pauses. 
+		  See JDK-8080225 for details. The FileReader and FileWriter constructors instantiate FileInputStream and FileOutputStream, 
+		  again causing garbage collection issues while finalizer methods are called.
+			-Use Files.newInputStream(Paths.get(fileName)) instead of new FileInputStream(fileName).
+			-Use Files.newOutputStream(Paths.get(fileName)) instead of new FileOutputStream(fileName).
+			-Use Files.newBufferedReader(Paths.get(fileName)) instead of new FileReader(fileName).
+			-Use Files.newBufferedWriter(Paths.get(fileName)) instead of new FileWriter(fileName).
+		   Please note, that the java.nio API does not throw a FileNotFoundException anymore, 
+		   instead it throws a NoSuchFileException. If your code dealt explicitly with a FileNotFoundException, 
+		   then this needs to be adjusted. Both exceptions are subclasses of IOException, so catching that one covers both.
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/AvoidInstantiatingObjectsInLoops">
+        <![CDATA[
+		    for (int i = 0; i < 10; i++) {
+             Foo f = new Foo(); // Avoid this whenever you can it's really expensive
+        	}
+		]]>
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/AvoidUsingShortType">
+		<![CDATA[
+			Java uses the ‘short’ type to reduce memory usage, not to optimize calculation. 
+			In fact, the JVM does not have any arithmetic capabilities for the short type: the JVM must convert the short into an int,
+			do the proper calculation and convert the int back to a short. 
+			Thus any storage gains found through use of the ‘short’ type may be offset by adverse impacts on performance.
+		 ]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/BigIntegerInstantiation">
+		<![CDATA[
+			Don’t create instances of already existing BigInteger (BigInteger.ZERO, BigInteger.ONE) and for Java 1.5 onwards,
+			BigInteger.TEN and BigDecimal (BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.TEN)
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/BooleanInstantiation">
+		<![CDATA[
+			Avoid instantiating Boolean objects; you can reference Boolean.TRUE, Boolean.FALSE, or call Boolean.valueOf() instead.
+			Note that new Boolean() is deprecated since JDK 9 for that reason.
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/IntegerInstantiation">
+		<![CDATA[
+			Calling new Integer() causes memory allocation that can be avoided by the static Integer.valueOf(). 
+			It makes use of an internal cache that recycles earlier instances making it more memory efficient. 
+			Note that new Integer() is deprecated since JDK 9 for that reason.
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/ByteInstantiation">
+		<![CDATA[
+			Calling new Byte() causes memory allocation that can be avoided by the static Byte.valueOf(). 
+			It makes use of an internal cache that recycles earlier instances making it more memory efficient. 
+			Note that new Byte() is deprecated since JDK 9 for that reason.
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/ShortInstantiation">
+		<![CDATA[
+		    Calling new Short() causes memory allocation that can be avoided by the static Short.valueOf(). 
+		    It makes use of an internal cache that recycles earlier instances making it more memory efficient. 
+		    Note that new Short() is deprecated since JDK 9 for that reason.
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/LongInstantiation">
+		<![CDATA[
+		    Calling new Long() causes memory allocation that can be avoided by the static Long.valueOf(). 
+		    It makes use of an internal cache that recycles earlier instances making it more memory efficient. 
+		    Note that new Long() is deprecated since JDK 9 for that reason.
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/SimplifyStartsWith">
+		<![CDATA[
+		    boolean checkIt(String x) {
+		        return x.startsWith("a");   // suboptimal
+		    }
+		
+		    boolean fasterCheckIt(String x) {
+		        return x.charAt(0) == 'a';  // faster approach
+		    }
+		]]>
+		<priority>3</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/UseStringBufferForStringAppends">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/UseArraysAsList">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/UnnecessaryWrapperObjectCreation">
+		<![CDATA[
+			public int convert(String s) {
+			    int i, i2;
+			
+			    i = Integer.valueOf(s).intValue();  // this wastes an object
+			    i = Integer.parseInt(s);            // this is better
+			
+			    i2 = Integer.valueOf(i).intValue(); // this wastes an object
+			    i2 = i;                             // this is better
+			
+			    String s3 = Integer.valueOf(i2).toString(); // this wastes an object
+			    s3 = Integer.toString(i2);                  // this is better
+			
+			    return i2;
+			}
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/RedundantFieldInitializer">
+		<![CDATA[
+		  public class C {
+			// examples of redundant initializers
+		    boolean b   = false;    
+		    byte by     = 0;
+		    short s     = 0;
+		    char c      = 0;
+		    int i       = 0;
+		    long l      = 0;
+		    
+		    // examples of correct initializers
+		    boolean b1;    
+		    byte by1;
+		    short s1;
+		    char c1;
+		    int i1;
+		    long l1;
+		   }
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/OptimizableToArrayCall">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/TooFewBranchesForASwitchStatement">
+		<priority>1</priority>
+		<properties>
+	        <property name="minimumNumberCaseForASwitch" value="3" />
+	    </properties>
+	</rule>
+	<rule ref="category/java/performance.xml/StringInstantiation">
+		<![CDATA[
+			Avoid instantiating String objects; this is usually unnecessary since they are immutable and can be safely shared.
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/StringToString">
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/InefficientStringBuffering">
+		<![CDATA[
+			Avoid concatenating non-literals in a StringBuffer constructor or append() since intermediate buffers 
+			will need to be be created and destroyed by the JVM.
+			
+			// Avoid this, two buffers are actually being created here
+			StringBuffer sb = new StringBuffer("tmp = "+System.getProperty("java.io.tmpdir"));
+			
+			// do this instead
+			StringBuffer sb = new StringBuffer("tmp = ");
+			sb.append(System.getProperty("java.io.tmpdir"));
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/UseStringBufferLength">
+		<![CDATA[
+			Use StringBuffer.length() to determine StringBuffer length rather than using 
+			StringBuffer.toString().equals("") or StringBuffer.toString().length() ==
+			
+			StringBuffer sb = new StringBuffer();
+			if (sb.toString().equals("")) {}        // inefficient
+			if (sb.length() == 0) {}                // preferred
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/ConsecutiveAppendsShouldReuse">
+		<![CDATA[
+			Consecutive calls to StringBuffer/StringBuilder .append should be chained, reusing the target object.
+			This can improve the performance by producing a smaller bytecode, reducing overhead and improving inlining
+			
+			String foo = " ";
+			StringBuffer buf = new StringBuffer();
+			buf.append("Hello"); // poor
+			buf.append(foo);
+			buf.append("World");
+			
+			StringBuffer buf = new StringBuffer();
+			buf.append("Hello").append(foo).append("World"); // good
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/ConsecutiveLiteralAppends">
+		<![CDATA[
+			Consecutively calling StringBuffer/StringBuilder.append(…) with literals should be avoided. 
+			Since the literals are constants, they can already be combined into a single String literal and 
+			this String can be appended in a single method call.
+			
+			StringBuffer buf = new StringBuffer();
+			buf.append('h').append('e').append('l').append('l').append('o'); // poor
+			buf.append("hello");                                             // good
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/UseIndexOfChar">
+		<![CDATA[
+			Use String.indexOf(char) when checking for the index of a single character; it executes faster.
+			String s = "hello world";
+			// avoid this
+			if (s.indexOf("d") {}
+			// instead do this
+			if (s.indexOf('d') {}
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/InefficientEmptyStringCheck">
+		<![CDATA[
+			String.trim().length() == 0 (or String.trim().isEmpty() for the same reason) is an inefficient way to check 
+			if a String is really blank, as it creates a new String object just to check its size.
+			onsider creating a static function that loops through a string, checking Character.isWhitespace() 
+			on each character and returning false if a non-whitespace character is found. 
+			You can refer to Apache’s StringUtils#isBlank (in commons-lang), 
+			Spring’s StringUtils#hasText (in the Spring framework) or 
+			Google’s CharMatcher#whitespace (in Guava) for existing implementations 
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/InsufficientStringBufferDeclaration">
+		<![CDATA[
+			Failing to pre-size a StringBuffer or StringBuilder properly could cause it to re-size many times during runtime.
+			This rule attempts to determine the total number the characters that are actually passed into StringBuffer.append(), 
+			but represents a best guess "worst case" scenario. An empty StringBuffer/StringBuilder constructor initializes the object
+			to 16 characters. This default is assumed if the length of the constructor can not be determined.
+			
+			StringBuffer bad = new StringBuffer();
+			bad.append("This is a long string that will exceed the default 16 characters");
+			
+			StringBuffer good = new StringBuffer(41);
+			good.append("This is a long string, which is pre-sized");
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/UselessStringValueOf">
+		<![CDATA[
+			public String convert(int i) {
+			    String s;
+			    s = "a" + String.valueOf(i);    // not required
+			    s = "a" + i;                    // preferred approach
+			    return s;
+			}
+		]]>
+		<priority>1</priority>
+	</rule>
+	<rule ref="category/java/performance.xml/UseArrayListInsteadOfVector">
+		<![CDATA[
+			ArrayList is a much better Collection implementation than Vector if thread-safe operation is not required.
+		]]>
+		<priority>2</priority>
+	</rule>
+</ruleset>
