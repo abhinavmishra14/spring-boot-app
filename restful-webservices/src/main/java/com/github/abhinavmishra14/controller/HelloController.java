@@ -28,23 +28,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.abhinavmishra14.model.Response;
 
 /**
- * The Class AppController.
+ * The Class HelloController.
  */
 @Controller
 @RequestMapping("/hello")
-public class AppController {
+public class HelloController {
 
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(AppController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
 
     /**
-     * Hello.
+     * Hello post.
      *
      * @param aStr the a str
      * @return the response
      */
     @RequestMapping(method = RequestMethod.POST)
-    public @ResponseBody Response hello(@RequestBody final String aStr){
+    public @ResponseBody Response helloPost(@RequestBody final String aStr){
     	LOGGER.info("Input data: {}", aStr);
         return new Response(aStr, "Welcome!");
     }

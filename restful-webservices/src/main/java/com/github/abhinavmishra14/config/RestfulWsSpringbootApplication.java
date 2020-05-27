@@ -21,10 +21,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * The Class AppConfiguration.
+ * The Class RestfulWsSpringbootApplication.
  */
 @SpringBootApplication
-public class AppConfiguration {
+public class RestfulWsSpringbootApplication {
 	
 	/**
 	 * The main method.
@@ -32,6 +32,6 @@ public class AppConfiguration {
 	 * @param args the arguments
 	 */
 	public static void main(final String[] args) {
-		SpringApplication.run(AppConfiguration.class, args);
+		SpringApplication.run(RestfulWsSpringbootApplication.class, args);
 	}
 }
