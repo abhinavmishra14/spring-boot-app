@@ -1,0 +1,1 @@
+#Static files goes in 'static' directory here.

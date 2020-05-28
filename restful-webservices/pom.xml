@@ -18,27 +18,70 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter</artifactId>
+		    <exclusions>
+		        <exclusion>
+		            <groupId>org.springframework.boot</groupId>
+		            <artifactId>spring-boot-starter-logging</artifactId>
+		        </exclusion>
+		    </exclusions>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.logging.log4j</groupId>
+		    <artifactId>log4j-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+		</dependency>
+
+	    <!-- Log4j2 Supports Async loggers. These loggers provide a drastic improvement 
+			in performance compared to their synchronous counterparts. 
+			Async Loggers internally use a library called Disruptor for asynchronous logging. 
+			Set the system property to use Async logger: log4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector 
+			java -Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -jar target/logging-log4j2-1.0.jar 
+		-->
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>3.4.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -62,7 +105,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.3</version><!--$NO-MVN-MAN-VER$-->
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -104,7 +147,7 @@
 							<failOnViolation>true</failOnViolation>
 							<configLocation>${basedir}/checkstyle.xml</configLocation>
 							<includes>com/**/*.java</includes>
-							<excludes>com/github/abhinavmishra14/**/model/*.java</excludes>
+							<excludes>com/github/abhinavmishra14/**/model/*.java,com/github/abhinavmishra14/**/*Tests.java</excludes>
 						</configuration>
 					</execution>
 				</executions>
@@ -163,8 +206,7 @@
 					<!-- A list of files to exclude from checking. Can contain Ant-style 
 						wildcards and double wildcards. We are not excluding anything here. -->
 					<excludes>
-						<exclude>com/github/abhinavmishra14/**/model/*.java</exclude>
-						<exclude>com/github/abhinavmishra14/**/*Test.java</exclude>
+						<exclude>com/github/abhinavmishra14/**/model/*.java,com/github/abhinavmishra14/**/*Test.java,com/github/abhinavmishra14/**/*Tests.java</exclude>
 					</excludes>
 
 					<!-- The output directory for the final HTML report. -->
