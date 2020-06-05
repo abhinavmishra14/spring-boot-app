@@ -29,6 +29,8 @@ Configuration:
           - ref: LogToRollingFile
 
     Root:
-      level: error
+      level: info
       AppenderRef:
-        ref: LogToConsole
+        - ref: LogToConsole
+        - ref: LogToRollingFile
+        

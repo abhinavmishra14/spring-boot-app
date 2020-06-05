@@ -15,17 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.abhinavmishra14.config;
+package com.github.abhinavmishra14.rws.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
- * The Class RestfulWsSpringbootApplication.
+ * The Class RestfulWsSpringbootApplication.<br><br>
+ * 
+ * If Controller/Model/Service classes are not in the same package, then @ComponentScan annotation needs to be added <br>
+ * e.g. RestfulWsSpringbootApplication is in package com.github.abhinavmishra14.rws.app where other classes are in different package 
+ * such as: com.github.abhinavmishra14.rws.controller, com.github.abhinavmishra14.rws.model <br><br>
+ * 
+ * If Controller/Model/Service classes are in same package then @ComponentScan not needed. <br>
+ * e.g. RestfulWsSpringbootApplication is in package com.github.abhinavmishra14.rws.app and other classes are also in same package 
+ * such as: com.github.abhinavmishra14.rws.ap.controller, com.github.abhinavmishra14.rws.ap.model <br><br>
  */
 @SpringBootApplication
+@ComponentScan({"com.github.abhinavmishra14.rws.controller", "com.github.abhinavmishra14.rws.model"})
 public class RestfulWsSpringbootApplication {
-	
+
 	/**
 	 * The main method.
 	 *
