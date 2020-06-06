@@ -33,10 +33,6 @@ class com.in28minutes.rest.webservices.restfulwebservices.HelloWorldBean
 
 - Mapping servlet: 'dispatcherServlet' to [/]
 
-- Mapped "{[/hello-world],methods=[GET]}" onto 
-public java.lang.String com.in28minutes.rest.webservices.restfulwebservices.HelloWorldController.helloWorld()
-- Mapped "{[/hello-world-bean],methods=[GET]}" onto 
-public com.in28minutes.rest.webservices.restfulwebservices.HelloWorldBean com.in28minutes.rest.webservices.restfulwebservices.HelloWorldController.helloWorldBean()
 - Mapped "{[/error]}" onto 
 public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
 - Mapped "{[/error],produces=[text/html]}" onto 
@@ -49,18 +45,18 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 [
     {
         "id": 1,
-        "name": "Adam",
-        "birthDate": "2017-07-19T04:40:20.796+0000"
+        "name": "Abhinav",
+        "birthDate": "1986-07-19T04:40:20.796+0000"
     },
     {
         "id": 2,
-        "name": "Eve",
-        "birthDate": "2017-07-19T04:40:20.796+0000"
+        "name": "Abhishek",
+        "birthDate": "1987-07-19T04:40:20.796+0000"
     },
     {
         "id": 3,
-        "name": "Jack",
-        "birthDate": "2017-07-19T04:40:20.796+0000"
+        "name": "Ashu",
+        "birthDate": "1988-07-19T04:40:20.796+0000"
     }
 ]
 ```
@@ -68,40 +64,48 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 ```json
 {
     "id": 1,
-    "name": "Adam",
+    "name": "Abhinav",
     "birthDate": "2017-07-19T04:40:20.796+0000"
 }
 ```
 #### POST http://localhost:8080/users
-```json
-{
-    "name": "Ranga",
-    "birthDate": "2000-07-19T04:29:24.054+0000"
-}
+```json array
+  [
+   	{
+     "id": 4,
+ 	  "name": "sunny",
+ 	  "birthdate": "1992-02-22"
+    },
+    {
+ 	  "name": "sunny2",
+ 	  "birthdate": "1992-02-25"
+    }
+   ]
 ```
 
-#### GET http://localhost:8080/users/1000
+#### GET http://localhost:8080/users/5
 - Get request to a non existing resource. 
 - The response shows default error message structure auto configured by Spring Boot.
 
 ```json
 {
-    "timestamp": "2017-07-19T05:28:37.534+0000",
+    "timestamp": "2020-06-06T05:28:37.534+0000",
     "status": 404,
     "error": "Not Found",
-    "message": "id-500",
-    "path": "/users/500"
+    "trace": ""com.github.abhinavmishra14.rws.exceptions.UserNotFoundException: User with id '1' not found! com.github.abhinavmishra14.rws.controller.UserRestController.deleteUser(UserRestController.java:129)...."
+    "message": "User with id '5' not found!",
+    "path": "/users/5"
 }
 ```
 
-#### GET http://localhost:8080/users/1000
-- Get request to a non existing resource. 
-- The response shows a Customized Message Structure
+#### GET http://localhost:8080/users/0
+- Get request to a invalid resource. 
+- The response shows a Customized Message Structure, generated using com.github.abhinavmishra14.rws.exceptions.CustomResponseEntityExceptionHandler
 ```json
 {
-    "timestamp": "2017-07-19T05:31:01.961+0000",
-    "message": "id-500",
-    "details": "Any details you would want to add"
+    "message": "User id '0' is invalid!",
+    "details": "uri=/rwsspringboot/users/0",
+    "timestamp": "2020-06-06T04:09:25.112+00:00"
 }
 ```
 

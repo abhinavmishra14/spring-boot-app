@@ -33,7 +33,8 @@ import org.springframework.context.annotation.ComponentScan;
  * such as: com.github.abhinavmishra14.rws.ap.controller, com.github.abhinavmishra14.rws.ap.model <br><br>
  */
 @SpringBootApplication
-@ComponentScan({"com.github.abhinavmishra14.rws.controller", "com.github.abhinavmishra14.rws.model"})
+@ComponentScan({"com.github.abhinavmishra14.rws.controller", "com.github.abhinavmishra14.rws.model",
+	"com.github.abhinavmishra14.rws.dao", "com.github.abhinavmishra14.rws.exceptions"})
 public class RestfulWsSpringbootApplication {
 
 	/**
