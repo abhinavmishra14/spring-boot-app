@@ -20,6 +20,7 @@ package com.github.abhinavmishra14.rws.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -77,7 +78,7 @@ public class HelloController {
 	
 	/**
 	 * Hello bean via get mapping.<br>
-	 * Example of get implementation which returns a bean/object as response in json format. 
+	 * Example of get implementation which returns a bean/object as response in json format based on input param
 	 * Json format as response is default format.
 	 *
 	 * @param name the name
@@ -87,7 +88,25 @@ public class HelloController {
 	public Response helloBeanViaGetMapping(@RequestParam final String name) {
 		LOGGER.info("helloBeanViaGetMapping invoked with param: {}", name);
 		final Response response = new Response();
-		response.setStatusCode("SUCCESS"); response.setStatusMessage("Hello "+name);
+		response.setStatusCode("SUCCESS"); 
+		response.setStatusMessage("Hello "+name);
+		return response;
+	}
+	
+	/**
+	 * Hello bean via get mapping path variable.<br>
+	 * Example of get implementation which returns a bean/object as response in json format based on path variable
+	 * Json format as response is default format.
+	 *
+	 * @param name the name
+	 * @return the response
+	 */
+	@GetMapping(path = "/sayHelloBean/pathvariable/{name}")
+	public Response helloBeanViaGetMappingPathVariable(@PathVariable final String name) {
+		LOGGER.info("helloBeanViaGetMappingPathVariable invoked with param: {}", name);
+		final Response response = new Response();
+		response.setStatusCode("SUCCESS"); 
+		response.setStatusMessage(String.format("Hello %s , Hope you are doing well!", name));
 		return response;
 	}
 }

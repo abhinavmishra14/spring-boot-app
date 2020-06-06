@@ -19,6 +19,7 @@ package com.github.abhinavmishra14.rws.model;
 
 import java.io.Serializable;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class Response.
  */
@@ -34,6 +35,25 @@ public class Response implements Serializable {
 	private String statusCode;
 	
 	/**
+	 * Instantiates a new response.
+	 */
+	public Response() {
+		super();
+	}
+	
+	/**
+	 * Instantiates a new response.
+	 *
+	 * @param statusMessage the status message
+	 * @param statusCode the status code
+	 */
+	public Response(final String statusMessage, final String statusCode) {
+		super();
+		this.statusMessage = statusMessage;
+		this.statusCode = statusCode;
+	}
+
+	/**
 	 * Gets the status message.
 	 *
 	 * @return the status message
@@ -47,7 +67,7 @@ public class Response implements Serializable {
 	 *
 	 * @param statusMessage the new status message
 	 */
-	public final void setStatusMessage(String statusMessage) {
+	public final void setStatusMessage(final String statusMessage) {
 		this.statusMessage = statusMessage;
 	}
 	
@@ -65,7 +85,7 @@ public class Response implements Serializable {
 	 *
 	 * @param statusCode the new status code
 	 */
-	public final void setStatusCode(String statusCode) {
+	public final void setStatusCode(final String statusCode) {
 		this.statusCode = statusCode;
 	}
 
