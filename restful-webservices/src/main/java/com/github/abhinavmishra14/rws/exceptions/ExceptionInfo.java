@@ -19,10 +19,14 @@ package com.github.abhinavmishra14.rws.exceptions;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
- * The Class RWSExceptionInfo.
+ * The Class ExceptionInfo.
  */
-public class RWSExceptionInfo {
+@JsonInclude(Include.NON_NULL)
+public class ExceptionInfo {
 
 	/** The message. */
 	private String message;
@@ -33,14 +37,33 @@ public class RWSExceptionInfo {
 	/** The timestamp. */
 	private Date timestamp;
 	
+	/** The cause. */
+	private String cause;
+	
 	/**
-	 * Instantiates a new RWS exception info.
+	 * Instantiates a new exception info.
+	 *
+	 * @param message the message
+	 * @param details the details
+	 * @param timestamp the timestamp
+	 * @param cause the cause
+	 */
+	public ExceptionInfo(final String message, final String details, final Date timestamp, final String cause) {
+		super();
+		this.message = message;
+		this.details = details;
+		this.timestamp = timestamp;
+		this.cause = cause;
+	}
+	
+	/**
+	 * Instantiates a new exception info.
 	 *
 	 * @param message the message
 	 * @param details the details
 	 * @param timestamp the timestamp
 	 */
-	public RWSExceptionInfo(final String message, final String details, final Date timestamp) {
+	public ExceptionInfo(final String message, final String details, final Date timestamp) {
 		super();
 		this.message = message;
 		this.details = details;
@@ -72,5 +95,14 @@ public class RWSExceptionInfo {
 	 */
 	public Date getTimestamp() {
 		return timestamp;
+	}
+
+	/**
+	 * Gets the cause.
+	 *
+	 * @return the cause
+	 */
+	public String getCause() {
+		return cause;
 	}
 }

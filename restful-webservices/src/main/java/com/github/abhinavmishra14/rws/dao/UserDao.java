@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +29,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.github.abhinavmishra14.rws.model.User;
+import com.github.abhinavmishra14.rws.utils.RWSUtils;
 
 /**
  * The Class UserDao.
@@ -83,6 +83,7 @@ public class UserDao {
 		for (final User eachUsr : USERS) {
 			if(eachUsr.getId() == id) {
 				user = eachUsr;
+				break;
 			}
 		}
 		return user;
@@ -98,7 +99,7 @@ public class UserDao {
 		LOGGER.info("save invoked for input user: {}", user);
 		if (user != null) {
 			if(user.getId() == 0) {
-				user.setId(generateId(4, 100));
+				user.setId(RWSUtils.generateId(4, 100));
 				USERS.add(user);
 			} else {
 				USERS.add(user);
@@ -123,17 +124,5 @@ public class UserDao {
 			}
 		}
 		return false;
-	}
-	
-	/**
-	 * Generate id.
-	 *
-	 * @param min the min
-	 * @param max the max
-	 * @return the int
-	 */
-	private int generateId(final int min, final int max) {
-	    final Random random = new Random();
-	    return random.nextInt((max - min) + 1) + min;
 	}
 }

@@ -19,10 +19,13 @@ package com.github.abhinavmishra14.rws.model;
 
 import java.io.Serializable;
 
-// TODO: Auto-generated Javadoc
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /**
  * The Class Response.
  */
+@JsonInclude(Include.NON_NULL)
 public class Response implements Serializable {
 
 	/** The Constant serialVersionUID. */
@@ -33,6 +36,9 @@ public class Response implements Serializable {
 	
 	/** The status code. */
 	private String statusCode;
+	
+	/** The additonal info. */
+	private Object additonalInfo;
 	
 	/**
 	 * Instantiates a new response.
@@ -87,6 +93,24 @@ public class Response implements Serializable {
 	 */
 	public final void setStatusCode(final String statusCode) {
 		this.statusCode = statusCode;
+	}
+	
+	/**
+	 * Gets the additonal info.
+	 *
+	 * @return the additonal info
+	 */
+	public Object getAdditonalInfo() {
+		return additonalInfo;
+	}
+
+	/**
+	 * Sets the additonal info.
+	 *
+	 * @param additonalInfo the new additonal info
+	 */
+	public void setAdditonalInfo(final Object additonalInfo) {
+		this.additonalInfo = additonalInfo;
 	}
 
 	/* (non-Javadoc)

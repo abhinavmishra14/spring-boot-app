@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * The Class UserNotFoundException.
  */
 @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Error occurred while processing the request!")
-public class RestfulWSException extends RuntimeException {
+public class RWSException extends RuntimeException {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 8024769484081511870L;
@@ -41,7 +41,7 @@ public class RestfulWSException extends RuntimeException {
 	 * @param message the message
 	 * @param cause the cause
 	 */
-	public RestfulWSException(final String message, final Throwable cause) {
+	public RWSException(final String message, final Throwable cause) {
 		super(message, cause);
 		this.message = message;
 		this.cause = cause;
@@ -52,7 +52,7 @@ public class RestfulWSException extends RuntimeException {
 	 *
 	 * @param message the message
 	 */
-	public RestfulWSException(final String message) {
+	public RWSException(final String message) {
 		super(message);
 		this.message = message;
 	}
