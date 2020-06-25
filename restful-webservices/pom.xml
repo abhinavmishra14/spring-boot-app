@@ -69,6 +69,14 @@
 			<version>3.4.2</version>
 		</dependency>
 		
+		<!-- Added this dependency for XML content negotiation, By default all responses are returned as JSON -->
+		<!-- For xml content negotiation in spring web mvc/rest architecture, you don't have to make any code changes.
+		     All you need to do is to add this dependency -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+		</dependency>
+		
 		<!-- For Hot Reloading -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
