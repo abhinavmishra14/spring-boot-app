@@ -19,6 +19,8 @@ package com.github.abhinavmishra14.rws.model;
 
 import java.util.Date;
 
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -32,6 +34,7 @@ public class Post {
 	private int identifier;
 	
 	/** The content. */
+	@Size(min=2)
 	private String content;
 	
 	/** The timestamp. */

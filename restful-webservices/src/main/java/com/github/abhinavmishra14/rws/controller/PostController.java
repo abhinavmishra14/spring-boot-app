@@ -23,6 +23,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -90,7 +92,7 @@ public class PostController {
 	 * @return the post
 	 */
 	@GetMapping(path = "/users/{id}/posts/{postId}")
-	public ResponseEntity<Post> getPostDetails(@PathVariable final int id, @PathVariable final int postId) {
+	public EntityModel<Post> getPostDetails(@PathVariable final int id, @PathVariable final int postId) {
 		LOGGER.info("getPost invoked for user id: {} and postId: {}", id, postId);
 		if (id > 0) {
 			final User userById = userDao.findOne(id);
@@ -99,7 +101,15 @@ public class PostController {
 			}
 			final Post post = postDao.findOne(id, postId);
 			if (post != null) {
-				return ResponseEntity.ok(post);
+				// "all-posts-by-user", SERVER_PATH + "/users/{id}/posts"
+				// getAllPostsForAUser
+				final EntityModel<Post> resource = EntityModel.of(post);
+				final WebMvcLinkBuilder linkTo = WebMvcLinkBuilder
+						.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllPostsForAUser(id));
+				resource.add(linkTo.withRel("all-posts-by-user"));
+
+				// HATEOAS
+				return resource;
 			} else {
 				throw new PostNotFoundException(String.format("Post not available for user id: %s and postId: %s", id, postId));
 			}
@@ -126,7 +136,7 @@ public class PostController {
 			}
 			final Post createdPost = postDao.save(id, post.getContent());
 			final Response resp = new Response("CREATED", "Post created successfully.");
-			resp.setAdditonalInfo(createdPost);
+			resp.setAdditionalProperty("post", createdPost);
 			final URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(id).toUri();
 			return ResponseEntity.created(location).body(resp);
 		} else {

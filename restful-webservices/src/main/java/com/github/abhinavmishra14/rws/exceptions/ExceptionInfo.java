@@ -29,13 +29,13 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class ExceptionInfo {
 
 	/** The message. */
-	private String message;
+	private final String message;
 	
 	/** The details. */
-	private String details;
+	private final String details;
 	
 	/** The timestamp. */
-	private Date timestamp;
+	private final Date timestamp;
 	
 	/** The cause. */
 	private String cause;

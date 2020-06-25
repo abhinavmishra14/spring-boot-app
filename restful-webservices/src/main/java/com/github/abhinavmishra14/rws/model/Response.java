@@ -18,7 +18,11 @@
 package com.github.abhinavmishra14.rws.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -37,8 +41,8 @@ public class Response implements Serializable {
 	/** The status code. */
 	private String statusCode;
 	
-	/** The additonal info. */
-	private Object additonalInfo;
+	/** The additional properties */
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 	
 	/**
 	 * Instantiates a new response.
@@ -96,28 +100,32 @@ public class Response implements Serializable {
 	}
 	
 	/**
-	 * Gets the additonal info.
-	 *
-	 * @return the additonal info
-	 */
-	public Object getAdditonalInfo() {
-		return additonalInfo;
-	}
+     * Gets the additional properties.
+     *
+     * @return the additional properties
+     */
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
 
-	/**
-	 * Sets the additonal info.
-	 *
-	 * @param additonalInfo the new additonal info
-	 */
-	public void setAdditonalInfo(final Object additonalInfo) {
-		this.additonalInfo = additonalInfo;
-	}
+    /**
+     * Sets the additional property.
+     *
+     * @param name the name
+     * @param value the value
+     */
+    @JsonAnySetter
+    public void setAdditionalProperty(final String name, final Object value) {
+        this.additionalProperties.put(name, value);
+    }
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Response [statusMessage=" + statusMessage + ", statusCode=" + statusCode + "]";
+		return "Response [statusMessage=" + statusMessage + ", statusCode=" + statusCode + ", additionalProperties="
+				+ additionalProperties + "]";
 	}
 }

@@ -20,9 +20,13 @@ package com.github.abhinavmishra14.rws.controller;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -74,13 +78,22 @@ public class UserRestController {
 	 * @return the user
 	 */
 	@GetMapping(path = "/users/{id}")
-	public User getUser(@PathVariable final int id) {
+	public EntityModel<User> getUser(@PathVariable final int id) {
 		LOGGER.info("getUser invoked for id: {}", id);
 		final User userById = userDao.findOne(id);
 		if (userById == null) {
 			throw new UserNotFoundException(String.format("User with id '%s' not found!", id));
 		}
-		return userById;
+
+		// "all-users", SERVER_PATH + "/users"
+		// retrieveAllUsers
+		final EntityModel<User> resource = EntityModel.of(userById);
+		final WebMvcLinkBuilder linkTo = WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllUsers());
+		resource.add(linkTo.withRel("all-users"));
+
+		// HATEOAS
+		return resource;
 	}
 
 	/**
@@ -89,23 +102,21 @@ public class UserRestController {
 	 * POST /users <br>
 	 * Payload : [ { "id": 4, "name": "sunny", "birthdate": "1992-02-17" }, {"name": "sunny2", "birthdate": "1992-02-18" } ] <br>
 	 * Id is auto generated if not provided in request
-	 * 
-	 * @param users the users
+	 *
+	 * @param user the user
 	 * @return the ResponseEntity<Response>
 	 */
 	@PostMapping(path = "/users")
-	public ResponseEntity<Response> createUsers(@RequestBody final List<User> users) {
-		LOGGER.info("createUser invoked with payload: {}", users);
-		if (users != null && !users.isEmpty()) {
-			for (final User eachUser : users) {
-				// save each user from list
-				userDao.save(eachUser);
-			}
-			final Response resp = new Response("CREATED", "User(s) created successfully.");
-			final URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(users).toUri();
+	public ResponseEntity<Response> createUsers(@Valid @RequestBody final User user) {
+		LOGGER.info("createUser invoked with payload: {}", user);
+		if (user != null) {
+			final User createdUsr = userDao.save(user);
+			final Response resp = new Response("CREATED", "User created successfully.");
+			resp.setAdditionalProperty("user", createdUsr);
+			final URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(user).toUri();
 			return ResponseEntity.created(location).body(resp);
 		} else {
-			throw new RWSException(String.format("Failed to create user(s) for the given input: %s", users));
+			throw new RWSException(String.format("Failed to create user(s) for the given input: %s", user));
 		}
 	}
 

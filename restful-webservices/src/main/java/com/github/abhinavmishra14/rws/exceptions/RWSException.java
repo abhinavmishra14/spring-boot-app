@@ -21,7 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * The Class UserNotFoundException.
+ * The Class RWSException.
  */
 @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Error occurred while processing the request!")
 public class RWSException extends RuntimeException {
@@ -30,7 +30,7 @@ public class RWSException extends RuntimeException {
 	private static final long serialVersionUID = 8024769484081511870L;
 
 	/** The message. */
-	private String message;
+	private final String message;
 	
 	/** The cause. */
 	private Throwable cause;
@@ -60,6 +60,7 @@ public class RWSException extends RuntimeException {
 	/* (non-Javadoc)
 	 * @see java.lang.Throwable#getMessage()
 	 */
+	@Override
 	public String getMessage() {
 		return message;
 	}
@@ -67,6 +68,7 @@ public class RWSException extends RuntimeException {
 	/* (non-Javadoc)
 	 * @see java.lang.Throwable#getCause()
 	 */
+	@Override
 	public Throwable getCause() {
 		return cause;
 	}	

@@ -30,7 +30,7 @@ public class UserNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 8184083802332039593L;
 
 	/** The message. */
-	private String message;
+	private final String message;
 	
 	/** The cause. */
 	private Throwable cause;
@@ -60,6 +60,7 @@ public class UserNotFoundException extends RuntimeException {
 	/* (non-Javadoc)
 	 * @see java.lang.Throwable#getMessage()
 	 */
+	@Override
 	public String getMessage() {
 		return message;
 	}
@@ -67,6 +68,7 @@ public class UserNotFoundException extends RuntimeException {
 	/* (non-Javadoc)
 	 * @see java.lang.Throwable#getCause()
 	 */
+	@Override
 	public Throwable getCause() {
 		return cause;
 	}	

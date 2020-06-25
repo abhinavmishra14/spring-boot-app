@@ -37,7 +37,7 @@ import com.github.abhinavmishra14.rws.utils.RWSUtils;
  * The Class PostDao.
  */
 @Component
-@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class PostDao {
 	
 	/** The Constant LOGGER. */
@@ -73,7 +73,7 @@ public class PostDao {
 	/**
 	 * Find all.
 	 *
-	 * @param id the id
+	 * @param userId the user id
 	 * @return the collection
 	 */
 	public List<Post> findAll(final int userId) {
@@ -106,6 +106,7 @@ public class PostDao {
 	/**
 	 * Save.
 	 *
+	 * @param userId the user id
 	 * @param post the post
 	 * @return the post
 	 */

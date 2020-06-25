@@ -35,7 +35,7 @@ import com.github.abhinavmishra14.rws.utils.RWSUtils;
  * The Class UserDao.
  */
 @Component
-@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class UserDao {
 	
 	/** The Constant LOGGER. */
