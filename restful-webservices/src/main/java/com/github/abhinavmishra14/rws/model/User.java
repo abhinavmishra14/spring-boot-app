@@ -19,6 +19,9 @@ package com.github.abhinavmishra14.rws.model;
 
 import java.util.Date;
 
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
 /**
  * The Class User.
  */
@@ -28,9 +31,11 @@ public class User {
 	private int id;
 	
 	/** The name. */
+	@Size(min=2)
 	private String name;
 	
 	/** The birthdate. */
+	@Past
 	private Date birthdate;
 	
 	/**

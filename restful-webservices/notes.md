@@ -1,6 +1,20 @@
 
 # RESTful Web Services
 
+##### Included mvnw/mvnw.cmd
+- This allows you to run the Maven project without having Maven installed and present on the path. It downloads the correct Maven version if it's not found (as far as I know by default in your user home directory). The  mvnw file is for Linux (bash) and the mvnw.cmd is for the Windows environment.
+
+- To create or update all necessary Maven Wrapper files execute the following command:
+
+       `mvn -N io.takari:maven:wrapper`
+
+- To use a different version of maven you can specify the version as follows:
+
+       `mvn -N io.takari:maven:wrapper -Dmaven=3.3.3`
+
+
+- Both commands require maven on PATH (add the path to maven bin to Path on System Variables) if you already have mvnw in your project you can use ./mvnw instead of mvn in the commands.
+
 ## Social Media Application Resource Mappings
 
 ### User -> Posts
@@ -12,14 +26,14 @@
 
 - Retrieve all posts for a User - GET /users/{id}/posts 
 - Create a posts for a User - POST /users/{id}/posts
-- Retrieve details of a post - GET /users/{id}/posts/{post_id}
+- Retrieve details of a post - GET /users/{id}/posts/{postId}
 
 ## Error in the Log
 ```
 Resolved exception caused by Handler execution: 
 org.springframework.http.converter.HttpMessageNotWritableException: 
 No converter found for return value of type: 
-class com.in28minutes.rest.webservices.restfulwebservices.HelloWorldBean
+class com.github.abhinavmishra14.rws.model.Response, com.github.abhinavmishra14.rws.model.User, com.github.abhinavmishra14.rws.model.Post
 ```
 - This happened because there were no getters in HelloWorldBean class
 
@@ -40,50 +54,43 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 
 ### Example Requests
 
-#### GET http://localhost:8080/users
+#### GET http://localhost:8080/rwsspringboot/users
 ```json
 [
     {
         "id": 1,
         "name": "Abhinav",
-        "birthDate": "1986-07-19T04:40:20.796+0000"
+        "birthdate": "1986-07-19T04:40:20.796+0000"
     },
     {
         "id": 2,
         "name": "Abhishek",
-        "birthDate": "1987-07-19T04:40:20.796+0000"
+        "birthdate": "1987-07-19T04:40:20.796+0000"
     },
     {
         "id": 3,
         "name": "Ashu",
-        "birthDate": "1988-07-19T04:40:20.796+0000"
+        "birthdate": "1988-07-19T04:40:20.796+0000"
     }
 ]
 ```
-#### GET http://localhost:8080/users/1
+#### GET http://localhost:8080/rwsspringboot/users/1
 ```json
 {
     "id": 1,
     "name": "Abhinav",
-    "birthDate": "2017-07-19T04:40:20.796+0000"
+    "birthdate": "2017-07-19T04:40:20.796+0000"
 }
 ```
-#### POST http://localhost:8080/users
+#### POST http://localhost:8080/rwsspringboot/users
 ```json array
-  [
-   	{
-     "id": 4,
- 	  "name": "sunny",
- 	  "birthdate": "1992-02-22"
-    },
-    {
- 	  "name": "sunny2",
- 	  "birthdate": "1992-02-25"
-    }
-   ]
+	{
+	  "name": "sunny2",
+	  "birthdate": "1992-02-25"
+	}
 ```
 
-#### GET http://localhost:8080/users/5
+#### GET http://localhost:8080/rwsspringboot/users/5
 - Get request to a non existing resource. 
 - The response shows default error message structure auto configured by Spring Boot.
 
@@ -92,15 +99,16 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
     "timestamp": "2020-06-06T05:28:37.534+0000",
     "status": 404,
     "error": "Not Found",
-    "trace": ""com.github.abhinavmishra14.rws.exceptions.UserNotFoundException: User with id '1' not found! com.github.abhinavmishra14.rws.controller.UserRestController.deleteUser(UserRestController.java:129)...."
+    "trace": ""com.github.abhinavmishra14.rws.exceptions.UserNotFoundException: User with id '5' not found! com.github.abhinavmishra14.rws.controller.UserRestController.deleteUser(UserRestController.java:129)...."
     "message": "User with id '5' not found!",
     "path": "/users/5"
 }
 ```
 
-#### GET http://localhost:8080/users/0
+#### GET http://localhost:8080/rwsspringboot/users/0
 - Get request to a invalid resource. 
 - The response shows a Customized Message Structure, generated using com.github.abhinavmishra14.rws.exceptions.CustomResponseEntityExceptionHandler
+
 ```json
 {
     "message": "User id '0' is invalid!",
@@ -109,13 +117,13 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 }
 ```
 
-#### POST http://localhost:8080/users with Validation Errors
+#### POST http://localhost:8080/rwsspringboot/users with Validation Errors
 
 ##### Request
 ```json
 {
-    "name": "R",
-    "birthDate": "2000-07-19T04:29:24.054+0000"
+    "name": "a",
+    "birthdate": "2000-07-19T04:29:24.054+0000"
 }
 ```
 ##### Response - 400 Bad Request
@@ -126,35 +134,81 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
     "details": "org.springframework.validation.BeanPropertyBindingResult: 1 errors\nField error in object 'user' on field 'name': rejected value [R]; codes [Size.user.name,Size.name,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [user.name,name]; arguments []; default message [name],2147483647,2]; default message [Name should have atleast 2 characters]"
 }
 ```
-#### GET http://localhost:8080/users/1 with HATEOAS
+### HATEOAS -- Hypermedia as the engine of application state 
+#### GET http://localhost:8080/rwsspringboot/users/1 with HATEOAS
 ```json
 {
-    "id": 1,
-    "name": "Adam",
-    "birthDate": "2017-07-19T09:26:18.337+0000",
-    "_links": {
-        "all-users": {
-            "href": "http://localhost:8080/users"
-        }
-    }
+	"id": 1,
+	"name": "abhinav",
+	"birthdate": "1987-03-15T04:30:27.889+00:00",
+	"_links": {
+		"all-users": {
+			"href": "http://127.0.0.1:8181/rwsspringboot/users"
+		}
+	}
 }
 ```
-#### Internationalization
+### Internationalization
 
 ##### Configuration 
 - LocaleResolver
    - Default Locale - Locale.US
 - ResourceBundleMessageSource
 
-##### Usage
-- Autowire MessageSource
-- @RequestHeader(value = "Accept-Language", required = false) Locale locale
-- messageSource.getMessage("helloWorld.message", null, locale)
+##### Usage via old approach where we use SessionLocaleResolver
+- Update the spring boot app class to add following methods.
+
+ ```java
+  @Bean
+  public LocaleResolver localeResolver() {
+  	SessionLocaleResolver localeResolver = new SessionLocaleResolver();
+  	localeResolver.setDefaultLocale(Locale.US);
+  	return localeResolver;
+  }
+  
+  @Bean //Be careful about the method name, it should be messageSource()
+  public ResourceBundleMessageSource messageSource() {
+  	ResourceBundleMessageSource msgSrc = new ResourceBundleMessageSource();
+  	msgSrc.setBaseName("messages");
+  	return msgSrc;
+  }
+ ```
+- Autowire MessageSource in Controller class 
+
+   ```java
+   @Autowired
+   private MessageSource messageSource;
+  ```
+- User param as `"@RequestHeader(value = "Accept-Language", required = false) Locale locale"` in the controller method
+- Use `messageSource.getMessage("helloWorld.message", null, locale)` to set the response message.
+
+##### Usage via new approach where we use AcceptHeaderLocaleResolver
+- Update the spring boot app class to add following methods.
+
+ ```java
+  @Bean
+  public LocaleResolver localeResolver() {
+  	AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
+  	localeResolver.setDefaultLocale(Locale.US);
+  	return localeResolver;
+  }
+ ```
+- ``ResourceBundleMessageSource messageSource()`` is no longer needed, we can set the messages base file name in ``application.properties``
+  e.g.: `spring.messages.basename=messages`
+  
+- Autowire MessageSource in Controller class
+
+ ```java
+  @Autowired
+  private MessageSource messageSource;
+ ```
+- Use `messageSource.getMessage("helloWorld.message", null, LocaleContextHolder.getLocale())` to set the response message.
 
 ### XML Representation of Resources
 
-#### GET http://localhost:8080/users
+#### GET http://localhost:8080/rwsspringboot/users
 - Accept application/xml
+
 ```xml
 <List>
     <item>
@@ -175,11 +229,12 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 </List>
 ```
 
-#### POST http://localhost:8080/users
+#### POST http://localhost:8080/rwsspringboot/users
 - Accept : application/xml
 - Content-Type : application/xml
 
 Request
+
 ```xml
 <item>
         <name>Ranga</name>

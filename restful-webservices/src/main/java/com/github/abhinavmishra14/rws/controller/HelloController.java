@@ -19,6 +19,9 @@ package com.github.abhinavmishra14.rws.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +39,10 @@ public class HelloController {
 
 	/** The Constant LOGGER. */
 	private static final Logger LOGGER = LoggerFactory.getLogger(HelloController.class);
+	
+	/** The message source. */
+	@Autowired
+	private MessageSource messageSource;
 
 	/**
 	 * Hello.<br>
@@ -46,7 +53,7 @@ public class HelloController {
 	@RequestMapping(method = RequestMethod.GET, path = "/hello")
 	public String hello() {
 		LOGGER.info("hello invoked..");
-		return "Hello";
+		return messageSource.getMessage("just.hello.message", null, LocaleContextHolder.getLocale());
 	}
 	
 	/**
@@ -59,7 +66,7 @@ public class HelloController {
 	@RequestMapping(method = RequestMethod.GET, path = "/sayHello")//path must be different for overloaded methods
 	public String hello(@RequestParam final String name) {
 		LOGGER.info("hello invoked with param: {}", name);
-		return "Hello "+name;
+		return messageSource.getMessage("hello.message", new Object[] {name}, LocaleContextHolder.getLocale());
 	}
 	
 	/**
@@ -73,7 +80,7 @@ public class HelloController {
 	@GetMapping(path = "/sayHelloAgain")
 	public String helloViaGetMapping(@RequestParam final String name) {
 		LOGGER.info("helloViaGetMapping invoked with param: {}", name);
-		return "Hello "+name;
+		return messageSource.getMessage("hello.message", new Object[] {name}, LocaleContextHolder.getLocale());
 	}
 	
 	/**
@@ -89,7 +96,7 @@ public class HelloController {
 		LOGGER.info("helloBeanViaGetMapping invoked with param: {}", name);
 		final Response response = new Response();
 		response.setStatusCode("SUCCESS"); 
-		response.setStatusMessage("Hello "+name);
+		response.setStatusMessage(messageSource.getMessage("hello.message", new Object[] {name}, LocaleContextHolder.getLocale()));
 		return response;
 	}
 	
@@ -106,7 +113,7 @@ public class HelloController {
 		LOGGER.info("helloBeanViaGetMappingPathVariable invoked with param: {}", name);
 		final Response response = new Response();
 		response.setStatusCode("SUCCESS"); 
-		response.setStatusMessage(String.format("Hello %s , Hope you are doing well!", name));
+		response.setStatusMessage(messageSource.getMessage("hello.greeting.message", new Object[] {name}, LocaleContextHolder.getLocale()));
 		return response;
 	}
 }

@@ -17,9 +17,14 @@
  */
 package com.github.abhinavmishra14.rws.app;
 
+import java.util.Locale;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 /**
  * The Class RestfulWsSpringbootApplication.<br><br>
@@ -44,5 +49,17 @@ public class RestfulWsSpringbootApplication {
 	 */
 	public static void main(final String[] args) {
 		SpringApplication.run(RestfulWsSpringbootApplication.class, args);
+	}
+
+	/**
+	 * Locale resolver.
+	 *
+	 * @return the locale resolver
+	 */
+	@Bean
+	public LocaleResolver localeResolver() {
+		final AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
+		localeResolver.setDefaultLocale(Locale.US);
+		return localeResolver;
 	}
 }

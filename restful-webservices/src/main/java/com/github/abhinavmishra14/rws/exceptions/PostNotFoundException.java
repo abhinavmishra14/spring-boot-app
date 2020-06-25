@@ -21,10 +21,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * The Class UserNotFoundException.
+ * The Class PostNotFoundException.
  */
-@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "User not found!")
-public class UserNotFoundException extends RuntimeException {
+@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Post not found!")
+public class PostNotFoundException extends RuntimeException {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 8184083802332039593L;
@@ -36,23 +36,23 @@ public class UserNotFoundException extends RuntimeException {
 	private Throwable cause;
 
 	/**
-	 * Instantiates a new user not found exception.
+	 * Instantiates a new post not found exception.
 	 *
 	 * @param message the message
 	 * @param cause the cause
 	 */
-	public UserNotFoundException(final String message, final Throwable cause) {
+	public PostNotFoundException(final String message, final Throwable cause) {
 		super(message, cause);
 		this.message = message;
 		this.cause = cause;
 	}
 
 	/**
-	 * Instantiates a new user not found exception.
+	 * Instantiates a new post not found exception.
 	 *
 	 * @param message the message
 	 */
-	public UserNotFoundException(final String message) {
+	public PostNotFoundException(final String message) {
 		super(message);
 		this.message = message;
 	}
