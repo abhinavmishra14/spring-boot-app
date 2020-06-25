@@ -49,15 +49,15 @@ public class UserDao {
 		//TODO:: We will fetch the list of users from db later by integrating JPA
 		final Calendar calUsr1 = Calendar.getInstance();
 		//Moth starts from 0-11 (12 months), Hence set 2 for march
-		calUsr1.set(1987, 2, 14); 
+		calUsr1.set(1986, 1, 22); 
 		USERS.add(new User(1, "abhinav", calUsr1.getTime()));
 		final Calendar calUsr2 = Calendar.getInstance();
 		//Moth starts from 0-11 (12 months), Hence set 4 for may
-		calUsr2.set(1986, 4, 14); 
+		calUsr2.set(1987, 6, 11); 
 		USERS.add(new User(2, "veena", calUsr2.getTime()));
 		final Calendar calUsr3 = Calendar.getInstance();
 		//Moth starts from 0-11 (12 months), Hence set 9 for oct
-		calUsr3.set(2019, 9, 15); 
+		calUsr3.set(2019, 8, 25); 
 		USERS.add(new User(3, "reyansh", calUsr3.getTime()));
 	}
 	

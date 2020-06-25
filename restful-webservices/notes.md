@@ -59,18 +59,18 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 [
     {
         "id": 1,
-        "name": "Abhinav",
-        "birthdate": "1986-07-19T04:40:20.796+0000"
+        "name": "abhinav",
+        "birthdate": "1986-02-22T22:01:10.771+00:00"
     },
     {
         "id": 2,
-        "name": "Abhishek",
-        "birthdate": "1987-07-19T04:40:20.796+0000"
+        "name": "veena",
+        "birthdate": "1987-07-11T21:01:10.771+00:00"
     },
     {
         "id": 3,
-        "name": "Ashu",
-        "birthdate": "1988-07-19T04:40:20.796+0000"
+        "name": "reyansh",
+        "birthdate": "2019-09-25T21:01:10.772+00:00"
     }
 ]
 ```
@@ -83,11 +83,28 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 }
 ```
 #### POST http://localhost:8080/rwsspringboot/users
-```json array
+- Create user request: 
+
+```json
 	{
 	  "name": "sunny2",
 	  "birthdate": "1992-02-25"
 	}
+```
+
+- Create user response:
+     - Status - 201 Created
+
+```json
+{
+    "statusMessage": "CREATED",
+    "statusCode": "User created successfully.",
+    "user": {
+        "id": 49,
+        "name": "abhi",
+        "birthdate": "2017-07-19T10:25:20.450+00:00"
+    }
+}
 ```
 
 #### GET http://localhost:8080/rwsspringboot/users/5
@@ -140,7 +157,7 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 {
 	"id": 1,
 	"name": "abhinav",
-	"birthdate": "1987-03-15T04:30:27.889+00:00",
+	"birthdate": "1987-04-21T04:30:27.889+00:00",
 	"_links": {
 		"all-users": {
 			"href": "http://127.0.0.1:8181/rwsspringboot/users"
@@ -205,6 +222,7 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 - Use `messageSource.getMessage("helloWorld.message", null, LocaleContextHolder.getLocale())` to set the response message.
 
 ### XML Representation of Resources
+##### For XML content negotiation in spring web mvc/rest architecture, you don't have to make any code changes, All you need to do is to add 'jackson-dataformat-xml' dependency
 
 #### GET http://localhost:8080/rwsspringboot/users
 - Accept application/xml
@@ -212,19 +230,19 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 ```xml
 <List>
     <item>
+        <id>1</id>
+        <name>abhinav</name>
+        <birthdate>1986-02-22T22:01:58.886+00:00</birthdate>
+    </item>
+    <item>
         <id>2</id>
-        <name>Eve</name>
-        <birthDate>2017-07-19T10:25:20.450+0000</birthDate>
+        <name>veena</name>
+        <birthdate>1987-07-11T21:01:58.886+00:00</birthdate>
     </item>
     <item>
         <id>3</id>
-        <name>Jack</name>
-        <birthDate>2017-07-19T10:25:20.450+0000</birthDate>
-    </item>
-    <item>
-        <id>4</id>
-        <name>Ranga</name>
-        <birthDate>2017-07-19T10:25:20.450+0000</birthDate>
+        <name>reyansh</name>
+        <birthdate>2019-09-25T21:01:58.886+00:00</birthdate>
     </item>
 </List>
 ```
@@ -237,13 +255,40 @@ Request
 
 ```xml
 <item>
-        <name>Ranga</name>
-        <birthDate>2017-07-19T10:25:20.450+0000</birthDate>
+        <name>abhi</name>
+        <birthdate>2017-07-19T10:25:20.450+0000</birthdate>
 </item>
 ```
 
 Response
 - Status - 201 Created
+
+```xml
+<Response>
+    <statusMessage>CREATED</statusMessage>
+    <statusCode>User created successfully.</statusCode>
+    <user>
+        <id>94</id>
+        <name>abhi</name>
+        <birthdate>2017-07-19T10:25:20.450+00:00</birthdate>
+    </user>
+</Response>
+```
+
+#### GET http://localhost:8080/rwsspringboot/users/1
+- Accept application/xml
+
+```xml
+<EntityModel>
+    <id>1</id>
+    <name>abhinav</name>
+    <birthdate>1986-02-22T22:01:58.886+00:00</birthdate>
+    <links>
+        <rel>all-users</rel>
+        <href>http://127.0.0.1:8181/rwsspringboot/users</href>
+    </links>
+</EntityModel>
+```
 
 ## Generating Swagger Documentation
 
