@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class Response.
  */
@@ -44,6 +45,25 @@ public class Response implements Serializable {
 	/** The additional properties */
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 	
+	/**
+	 * Instantiates a new response.
+	 */
+	public Response() {
+		super();
+	}
+	
+	/**
+	 * Instantiates a new response.
+	 *
+	 * @param statusMessage the status message
+	 * @param statusCode the status code
+	 */
+	public Response(final String statusMessage, final String statusCode) {
+		super();
+		this.statusMessage = statusMessage;
+		this.statusCode = statusCode;
+	}
+
 	/**
 	 * Instantiates a new response.
 	 */
