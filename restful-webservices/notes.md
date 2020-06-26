@@ -54,7 +54,7 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 
 ### Example Requests
 
-#### GET http://localhost:8080/rwsspringboot/users
+#### GET http://127.0.0.1:8181/users
 ```json
 [
     {
@@ -74,7 +74,7 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
     }
 ]
 ```
-#### GET http://localhost:8080/rwsspringboot/users/1
+#### GET http://127.0.0.1:8181/users/1
 ```json
 {
     "id": 1,
@@ -82,7 +82,7 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
     "birthdate": "2017-07-19T04:40:20.796+0000"
 }
 ```
-#### POST http://localhost:8080/rwsspringboot/users
+#### POST http://127.0.0.1:8181/users
 - Create user request: 
 
 ```json
@@ -107,7 +107,7 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 }
 ```
 
-#### GET http://localhost:8080/rwsspringboot/users/5
+#### GET http://127.0.0.1:8181/users/5
 - Get request to a non existing resource. 
 - The response shows default error message structure auto configured by Spring Boot.
 
@@ -122,7 +122,7 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 }
 ```
 
-#### GET http://localhost:8080/rwsspringboot/users/0
+#### GET http://127.0.0.1:8181/users/0
 - Get request to a invalid resource. 
 - The response shows a Customized Message Structure, generated using com.github.abhinavmishra14.rws.exceptions.CustomResponseEntityExceptionHandler
 
@@ -134,7 +134,7 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 }
 ```
 
-#### POST http://localhost:8080/rwsspringboot/users with Validation Errors
+#### POST http://127.0.0.1:8181/users with Validation Errors
 
 ##### Request
 ```json
@@ -152,7 +152,7 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 }
 ```
 ### HATEOAS -- Hypermedia as the engine of application state 
-#### GET http://localhost:8080/rwsspringboot/users/1 with HATEOAS
+#### GET http://127.0.0.1:8181/users/1 with HATEOAS
 ```json
 {
 	"id": 1,
@@ -160,7 +160,7 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 	"birthdate": "1987-04-21T04:30:27.889+00:00",
 	"_links": {
 		"all-users": {
-			"href": "http://127.0.0.1:8181/rwsspringboot/users"
+			"href": "http://127.0.0.1:8181/users"
 		}
 	}
 }
@@ -223,8 +223,14 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 
 ### XML Representation of Resources
 ##### For XML content negotiation in spring web mvc/rest architecture, you don't have to make any code changes, All you need to do is to add 'jackson-dataformat-xml' dependency
+```xml
+   <dependency>
+		<groupId>com.fasterxml.jackson.dataformat</groupId>
+		<artifactId>jackson-dataformat-xml</artifactId>
+	</dependency>
+```
 
-#### GET http://localhost:8080/rwsspringboot/users
+#### GET http://127.0.0.1:8181/users
 - Accept application/xml
 
 ```xml
@@ -247,7 +253,7 @@ public org.springframework.web.servlet.ModelAndView org.springframework.boot.aut
 </List>
 ```
 
-#### POST http://localhost:8080/rwsspringboot/users
+#### POST http://127.0.0.1:8181/users
 - Accept : application/xml
 - Content-Type : application/xml
 
@@ -275,7 +281,7 @@ Response
 </Response>
 ```
 
-#### GET http://localhost:8080/rwsspringboot/users/1
+#### GET http://127.0.0.1:8181/users/1
 - Accept application/xml
 
 ```xml
@@ -285,36 +291,84 @@ Response
     <birthdate>1986-02-22T22:01:58.886+00:00</birthdate>
     <links>
         <rel>all-users</rel>
-        <href>http://127.0.0.1:8181/rwsspringboot/users</href>
+        <href>http://127.0.0.1:8181/users</href>
     </links>
 </EntityModel>
 ```
 
 ## Generating Swagger Documentation
 
+###### Swagger 2 is enabled through the @EnableSwagger2WebMvc annotation for springbox-swagger2-3.0.0-SNAPSHOT version.
+
+##### Use this URL to access the docs: 
+- http://127.0.0.1:8181/v2/api-docs
+- http://127.0.0.1:8181/swagger-ui.html
+
+##### Dependencies:
+
+ ```xml
+     <dependency>
+		<groupId>io.springfox</groupId>
+		<artifactId>springfox-swagger2</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
+	</dependency>
+
+	<dependency>
+		<groupId>io.springfox</groupId>
+		<artifactId>springfox-swagger-ui</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>io.springfox</groupId>
+		<artifactId>springfox-spring-webmvc</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
+	</dependency>
+```
+
+- Repository required for swagger dependency:
+
+```xml
+  <repository>
+		<id>jfrog-snapshots</id>
+		<name>JFROG Snapshots</name>
+		<url>http://oss.jfrog.org/artifactory/oss-snapshot-local</url>
+		<snapshots>
+			<enabled>true</enabled>
+		</snapshots>
+   </repository>
+```
+
+- Swagger configuration class:
 
 ```java
-	public static final Contact DEFAULT_CONTACT = new Contact(
-			"Ranga Karanam", "http://www.in28minutes.com", "in28minutes@gmail.com");
-	
-	public static final ApiInfo DEFAULT_API_INFO = new ApiInfo(
-			"Awesome API Title", "Awesome API Description", "1.0",
-			"urn:tos", DEFAULT_CONTACT, 
-			"Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0");
-
-	private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES = 
-			new HashSet<String>(Arrays.asList("application/json",
-					"application/xml"));
-
+@Configuration
+@EnableSwagger2WebMvc
+public class SwaggerConfig {
 	@Bean
-	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.apiInfo(DEFAULT_API_INFO)
-				.produces(DEFAULT_PRODUCES_AND_CONSUMES)
-				.consumes(DEFAULT_PRODUCES_AND_CONSUMES);
+	public Docket apiDocket() {
+		return new Docket(DocumentationType.SWAGGER_2)  
+				.select()                                  
+				//.apis(RequestHandlerSelectors.any())
+	          .apis(RequestHandlerSelectors.basePackage("com.github.abhinavmishra14"))
+				.paths(PathSelectors.any())                          
+				.build().apiInfo(apiInfo());
 	}
 
+	private ApiInfo apiInfo() {
+		return new ApiInfoBuilder()
+				.title("Restful webservices using spring boot")
+				.description("A demo restful webservice project using spring boot")
+				.version("1.0")
+				.license("Apache License Version 2.0")
+				.licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
+				.build();
+	}
+}
+
 ```
+
+`After the Docket bean is defined, its select() method returns an instance of ApiSelectorBuilder, which provides a way to control the endpoints exposed by Swagger.Predicates for selection of RequestHandlers can be configured with the help of RequestHandlerSelectors and PathSelectors. Using any() for both will make documentation for your entire API available through Swagger. This configuration is enough to integrate Swagger 2 into an existing Spring Boot project.`
 
 ### Resource Method description
 ```java
