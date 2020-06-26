@@ -345,14 +345,18 @@ Response
 @Configuration
 @EnableSwagger2WebMvc
 public class SwaggerConfig {
+    private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES = new HashSet<String>(
+			Arrays.asList("application/json", "application/xml"));
+			
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)  
 				.select()                                  
 				//.apis(RequestHandlerSelectors.any())
-	          .apis(RequestHandlerSelectors.basePackage("com.github.abhinavmishra14"))
-				.paths(PathSelectors.any())                          
-				.build().apiInfo(apiInfo());
+	            .apis(RequestHandlerSelectors.basePackage("com.github.abhinavmishra14"))
+				.paths(PathSelectors.any())
+				.build().consumes(DEFAULT_PRODUCES_AND_CONSUMES).produces(DEFAULT_PRODUCES_AND_CONSUMES)
+				.apiInfo(apiInfo());
 	}
 
 	private ApiInfo apiInfo() {
