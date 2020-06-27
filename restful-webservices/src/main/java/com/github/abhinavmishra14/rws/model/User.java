@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * The Class User.
  */
-@ApiModel(description = "User description")
+@ApiModel(value="User Details", description="Contains all details of a user")
 public class User {
 	
 	/** The id. */
