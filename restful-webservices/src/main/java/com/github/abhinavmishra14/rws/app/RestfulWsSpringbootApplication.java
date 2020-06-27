@@ -38,7 +38,7 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
  * such as: com.github.abhinavmishra14.rws.ap.controller, com.github.abhinavmishra14.rws.ap.model <br><br>
  */
 @SpringBootApplication
-@ComponentScan({"com.github.abhinavmishra14.rws.app.swagger.config", "com.github.abhinavmishra14.rws.controller", "com.github.abhinavmishra14.rws.model",
+@ComponentScan({"com.github.abhinavmishra14.rws.app.config", "com.github.abhinavmishra14.rws.controller", "com.github.abhinavmishra14.rws.model",
 	"com.github.abhinavmishra14.rws.dao", "com.github.abhinavmishra14.rws.exceptions"})
 public class RestfulWsSpringbootApplication {
 
