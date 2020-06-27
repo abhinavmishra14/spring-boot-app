@@ -1,5 +1,5 @@
 # spring-boot-app
-A spring boot app 
+A demo spring boot app 
 
 # Getting Started
 
