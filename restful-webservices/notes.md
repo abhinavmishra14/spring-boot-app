@@ -409,9 +409,9 @@ public class SomeBean {
 }
 ```
 
-## Monitoring using actuator
+## Monitoring using actuator (Monitoring can be done using actuator)
 
-##### To enable actuator you need to add following depdencies:
+##### To enable actuator you need to add following dependencies:
 
 ```xml
  <dependency>
