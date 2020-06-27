@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiModelProperty;
  * The Class Post.
  */
 @JsonInclude(Include.NON_NULL)
-@ApiModel(description = "Post Details")
+@ApiModel(value="Post Details", description="Contains all details of a user's posts")
 public class Post {
 	
 	/** The identifier. */

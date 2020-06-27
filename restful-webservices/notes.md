@@ -298,7 +298,7 @@ Response
 
 ## Generating Swagger Documentation
 
-###### Swagger 2 is enabled through the @EnableSwagger2WebMvc annotation for springbox-swagger2-3.0.0-SNAPSHOT version.
+###### Swagger 2 is enabled through the springfox-boot-starter-3.0.0-SNAPSHOT version.
 
 ##### Use this URL to access the docs: 
 - http://127.0.0.1:8181/v2/api-docs
