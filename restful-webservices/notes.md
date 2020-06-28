@@ -387,26 +387,127 @@ public class User {
 	private Date birthdate;
 ```
 
-#### Filtering
+#### Filtering (Filtering the response data using static and dynamic filtering)
 
-##### Code
+##### Example of static filtering
+
+- Model Object properties with annotations to perform filtering on selected properties/fields/variables 
+
 ```java
-@JsonIgnoreProperties(value={"field1"})
-public class SomeBean {
+//You have to make changes to this annotation value, whenever you change the field name.
+@JsonIgnoreProperties(value={"propThree"})	//THIS ANNOTATION DENOTES THAT, DON'T INCLUDE THESE PROPERTIES IN RESPONSE
+public class StaticFilteringModel {
 	
-	private String field1;
+	//This is preferred approach, as you don't have to make any other changes when you change the field name.
+	@JsonIgnore //THIS ANNOTATION DENOTES THAT, DON'T INCLUDE THIS PROPERTY IN RESPONSE
+	private String propOne;
 	
-	@JsonIgnore
-	private String field2;
+	private String propTwo;
 	
-	private String field3;
+	private String propThree;
+   ...
+}
+
+@RestController
+public class FilteringController {
+	
+	@GetMapping(path = "/getStaticFilteredData")
+	public StaticFilteringModel getStaticFilteredData() {
+		return new StaticFilteringModel("I am one", "I am two", "I am three");
+	}
+
+	@GetMapping(path = "/getStaticFilteredDataList")
+	public List<StaticFilteringModel> getStaticFilteredDataList() {
+		return Arrays.asList(new StaticFilteringModel("I am one.1", "I am two.2", "I am three.3"),
+				new StaticFilteringModel("I am one", "I am two", "I am three"));
+	}
+ }
 
 ```
-##### Response
+
+##### Response for static property filtering
 ```json
 {
-    "field3": "value3"
+    "propTwo": "I am two"
 }
+```
+
+```json array
+[
+{
+    "propTwo": "I am two"
+},
+{
+    "propTwo": "I am two.2"
+}
+]
+```
+
+##### Example of dynamic filtering
+
+- Use @JsonFilter to model an object to allow its properties be filtered dynamically.
+
+```java
+@JsonFilter(value="DynamicFilteringModel")
+public class DynamicFilteringModel {
+	
+	private String propOne;
+	
+	private String propTwo;
+	
+	private String propThree;
+	
+	....
+}
+
+@RestController
+public class FilteringPropertyController {
+	
+	@GetMapping(path = "/getDynamicFilteredData")
+	public MappingJacksonValue getDynamicFilteredData() {
+		return getDynamicallyFilteredData(new DynamicFilteringModel("I am one", "I am two", "I am three"),
+				"DynamicFilteringModel", "propOne", "propThree");
+	}
+	
+	@GetMapping(path = "/getDynamicFilteredDataList")
+	public MappingJacksonValue getDynamicFilteredDataList() {
+		return getDynamicallyFilteredData(
+				Arrays.asList(new DynamicFilteringModel("I am one", "I am two", "I am three"),
+						new DynamicFilteringModel("I am one.1", "I am two.2", "I am three.3")),
+				"DynamicFilteringModel", "propOne", "propThree");
+	}
+
+	private MappingJacksonValue getDynamicallyFilteredData(final Object dynamicModel,
+			final String filteringModelName, final String... propertyArray) {
+		final SimpleBeanPropertyFilter propFilter = SimpleBeanPropertyFilter.filterOutAllExcept(propertyArray);
+		final FilterProvider filterProvider = new SimpleFilterProvider().addFilter(filteringModelName, propFilter);
+		final MappingJacksonValue mappedVal = new MappingJacksonValue(dynamicModel);
+		mappedVal.setFilters(filterProvider);
+		return mappedVal;
+	}
+ }
+
+```
+
+##### Response for Dynamic property filtering
+```json
+{
+    "propTwo": "I am two",
+    "propThree": "I am three"
+}
+```
+
+```json array
+[
+{
+    "propTwo": "I am two",
+    "propThree": "I am three"
+},
+{
+    "propTwo": "I am two.2",
+    "propThree": "I am two.2"
+}
+]
 ```
 
 ## Monitoring using actuator (Monitoring can be done using actuator)
