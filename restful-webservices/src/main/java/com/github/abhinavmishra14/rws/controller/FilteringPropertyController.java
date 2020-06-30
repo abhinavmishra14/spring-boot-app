@@ -35,7 +35,7 @@ import com.github.abhinavmishra14.rws.model.StaticFilteringModel;
  */
 @RestController
 public class FilteringPropertyController {
-	
+
 	/**
 	 * Gets the static filtered property.
 	 *
@@ -43,9 +43,9 @@ public class FilteringPropertyController {
 	 */
 	@GetMapping(path = "/getStaticFilteredProperty")
 	public StaticFilteringModel getStaticFilteredProperty() {
-		return new StaticFilteringModel("I am one", "I am two", "I am three");
+		return new StaticFilteringModel("I am 1", "I am 2", "I am 3");
 	}
-	
+
 	/**
 	 * Gets the static filtered property list.
 	 *
@@ -53,10 +53,10 @@ public class FilteringPropertyController {
 	 */
 	@GetMapping(path = "/getStaticFilteredPropertyList")
 	public List<StaticFilteringModel> getStaticFilteredPropertyList() {
-		return Arrays.asList(new StaticFilteringModel("I am one.1", "I am two.2", "I am three.3"),
-				new StaticFilteringModel("I am one", "I am two", "I am three"));
+		return Arrays.asList(new StaticFilteringModel("I am 1.1", "I am 2.2", "I am 3.3"),
+				new StaticFilteringModel("I am 1", "I am 2", "I am 3"));
 	}
-	
+
 	/**
 	 * Gets the dynamic filtered property.
 	 *
@@ -67,7 +67,7 @@ public class FilteringPropertyController {
 		return getDynamicallyFilteredProperty(new DynamicFilteringModel("I am one", "I am two", "I am three"),
 				"DynamicFilteringModel", "propOne", "propThree");
 	}
-	
+
 	/**
 	 * Gets the dynamic filtered property list.
 	 *
