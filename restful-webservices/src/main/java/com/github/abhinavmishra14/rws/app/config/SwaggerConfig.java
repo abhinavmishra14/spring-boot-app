@@ -17,7 +17,6 @@
  */
 package com.github.abhinavmishra14.rws.app.config;
 
-import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,20 +29,6 @@ import io.swagger.v3.oas.models.info.License;
  */
 @Configuration
 public class SwaggerConfig {
-
-	/**
-	 * Public api.
-	 *
-	 * @return the grouped open api
-	 */
-	@Bean
-	public GroupedOpenApi publicApi() {
-		return GroupedOpenApi.builder()
-				.group("public-api")
-				.pathsToMatch("/**").packagesToScan("com.github.abhinavmishra14.rws.controller.hello",
-						"com.github.abhinavmishra14.rws.controller")
-				.build();
-	}
 
 	/**
 	 * Spring shop open API.

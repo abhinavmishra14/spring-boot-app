@@ -60,10 +60,7 @@ public class HelloController {
 	@Operation(summary = "Prints hello")
 	@ApiResponses(@ApiResponse(content = {
 			@Content(schema = @Schema(implementation = String.class)) }))
-	@RequestMapping(method = RequestMethod.GET, path = "/hello", headers = {
-			        "content-type=application/json",
-			        "content-type=application/xml"
-			    })
+	@RequestMapping(method = RequestMethod.GET, path = "/hello")
 	public String hello() {
 		LOGGER.info("hello invoked..");
 		return messageSource.getMessage("just.hello.message", null, LocaleContextHolder.getLocale());
@@ -79,8 +76,7 @@ public class HelloController {
 	@Operation(summary = "Says hello with input value")
 	@ApiResponses(@ApiResponse(content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = String.class)) }))
-	@RequestMapping(method = RequestMethod.GET, path = "/sayHello", produces = { MediaType.APPLICATION_JSON_VALUE,
-			MediaType.APPLICATION_XML_VALUE }) //path must be different for overloaded methods
+	@RequestMapping(method = RequestMethod.GET, path = "/sayHello") //path must be different for overloaded methods
 	public String sayHello(@RequestParam final String name) {
 		LOGGER.info("hello invoked with param: {}", name);
 		return messageSource.getMessage("hello.message", new Object[] {name}, LocaleContextHolder.getLocale());
@@ -97,8 +93,7 @@ public class HelloController {
 	@Operation(summary = "Says hello with input 'name'")
 	@ApiResponses(@ApiResponse(content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = String.class)) }))
-	@GetMapping(path = "/sayHelloAgain", produces = { MediaType.APPLICATION_JSON_VALUE,
-			MediaType.APPLICATION_XML_VALUE })
+	@GetMapping(path = "/sayHelloAgain")
 	public String helloViaGetMapping(@RequestParam final String name) {
 		LOGGER.info("helloViaGetMapping invoked with param: {}", name);
 		return messageSource.getMessage("hello.message", new Object[] {name}, LocaleContextHolder.getLocale());

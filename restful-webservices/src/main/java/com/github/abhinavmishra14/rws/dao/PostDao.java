@@ -64,10 +64,9 @@ public class PostDao {
 		final Post userPost32 = new Post(107, "Hello, there", new Date());
 		
 		final List<Post> postsFor3 = new ArrayList<Post>();
-		postsFor2.add(userPost31); postsFor2.add(userPost32);
+		postsFor3.add(userPost31); postsFor3.add(userPost32);
 		
 		POSTS.put(1, postsFor1); POSTS.put(2, postsFor2); POSTS.put(3, postsFor3); 
-
 	}
 	
 	/**
