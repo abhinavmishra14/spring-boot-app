@@ -27,9 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserVersionController {
 	
 	/**
-	 * Gets the user V 1.
+	 * Gets the user V1.
 	 *
-	 * @return the user V 1
+	 * @return the user V1
 	 */
 	@GetMapping("/v1/user")
 	public UserV1 getUserV1() {
@@ -37,9 +37,9 @@ public class UserVersionController {
 	}
 
 	/**
-	 * Gets the user V 2.
+	 * Gets the user V2.
 	 *
-	 * @return the user V 2
+	 * @return the user V2
 	 */
 	@GetMapping("/v2/user")
 	public UserV2 getUserV2() {
@@ -47,9 +47,9 @@ public class UserVersionController {
 	}
 
 	/**
-	 * Gets the user V 1 using param.
+	 * Gets the user V1 using param.
 	 *
-	 * @return the user V 1 using param
+	 * @return the user V1 using param
 	 */
 	@GetMapping(value = "/user/param", params = "version=1")
 	public UserV1 getUserV1UsingParam() {
@@ -57,9 +57,9 @@ public class UserVersionController {
 	}
 
 	/**
-	 * Gets the user V 2 using param.
+	 * Gets the user V2 using param.
 	 *
-	 * @return the user V 2 using param
+	 * @return the user V2 using param
 	 */
 	@GetMapping(value = "/user/param", params = "version=2")
 	public UserV2 getUserV2UsingParam() {
@@ -67,9 +67,9 @@ public class UserVersionController {
 	}
 
 	/**
-	 * Gets the user V 1 using header.
+	 * Gets the user V1 using header.
 	 *
-	 * @return the user V 1 using header
+	 * @return the user V1 using header
 	 */
 	@GetMapping(value = "/user/header", headers = "X-API-VERSION=1")
 	public UserV1 getUserV1UsingHeader() {
