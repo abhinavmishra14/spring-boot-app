@@ -15,13 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.abhinavmishra14.rws.controller;
+package com.github.abhinavmishra14.rws.controller.hello;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.abhinavmishra14.rws.model.Response;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * The Class HelloController.
@@ -50,21 +57,31 @@ public class HelloController {
 	 *
 	 * @return the string
 	 */
-	@RequestMapping(method = RequestMethod.GET, path = "/hello")
+	@Operation(summary = "Prints hello")
+	@ApiResponses(@ApiResponse(content = {
+			@Content(schema = @Schema(implementation = String.class)) }))
+	@RequestMapping(method = RequestMethod.GET, path = "/hello", headers = {
+			        "content-type=application/json",
+			        "content-type=application/xml"
+			    })
 	public String hello() {
 		LOGGER.info("hello invoked..");
 		return messageSource.getMessage("just.hello.message", null, LocaleContextHolder.getLocale());
 	}
 	
 	/**
-	 * Hello.<br>
+	 * Say Hello.<br>
 	 * Example of get method with string param
 	 *
 	 * @param name the name
 	 * @return the string
 	 */
-	@RequestMapping(method = RequestMethod.GET, path = "/sayHello")//path must be different for overloaded methods
-	public String hello(@RequestParam final String name) {
+	@Operation(summary = "Says hello with input value")
+	@ApiResponses(@ApiResponse(content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = String.class)) }))
+	@RequestMapping(method = RequestMethod.GET, path = "/sayHello", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE }) //path must be different for overloaded methods
+	public String sayHello(@RequestParam final String name) {
 		LOGGER.info("hello invoked with param: {}", name);
 		return messageSource.getMessage("hello.message", new Object[] {name}, LocaleContextHolder.getLocale());
 	}
@@ -77,7 +94,11 @@ public class HelloController {
 	 * @param name the name
 	 * @return the string
 	 */
-	@GetMapping(path = "/sayHelloAgain")
+	@Operation(summary = "Says hello with input 'name'")
+	@ApiResponses(@ApiResponse(content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = String.class)) }))
+	@GetMapping(path = "/sayHelloAgain", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	public String helloViaGetMapping(@RequestParam final String name) {
 		LOGGER.info("helloViaGetMapping invoked with param: {}", name);
 		return messageSource.getMessage("hello.message", new Object[] {name}, LocaleContextHolder.getLocale());
@@ -91,7 +112,14 @@ public class HelloController {
 	 * @param name the name
 	 * @return the response
 	 */
-	@GetMapping(path = "/sayHelloBean")
+	@Operation(summary = "Says hello with input 'name' and returns Response")
+	@ApiResponses(@ApiResponse(content = {
+			   @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Response.class)),
+			   @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = Response.class))
+	      }
+	))
+	@GetMapping(path = "/sayHelloBean", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	public Response helloBeanViaGetMapping(@RequestParam final String name) {
 		LOGGER.info("helloBeanViaGetMapping invoked with param: {}", name);
 		final Response response = new Response();
@@ -108,7 +136,16 @@ public class HelloController {
 	 * @param name the name
 	 * @return the response
 	 */
-	@GetMapping(path = "/sayHelloBean/pathvariable/{name}")
+	@Operation(summary = "Says hello with path variable 'name' and returns Response")
+	@ApiResponses(
+		  @ApiResponse(responseCode = "200", description = "Ok, Hello returned",
+	      content = {
+			   @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Response.class)),
+			   @Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = Response.class))
+	      }
+	))
+	@GetMapping(path = "/sayHelloBean/pathvariable/{name}", produces = { MediaType.APPLICATION_JSON_VALUE,
+					MediaType.APPLICATION_XML_VALUE })
 	public Response helloBeanViaGetMappingPathVariable(@PathVariable final String name) {
 		LOGGER.info("helloBeanViaGetMappingPathVariable invoked with param: {}", name);
 		final Response response = new Response();

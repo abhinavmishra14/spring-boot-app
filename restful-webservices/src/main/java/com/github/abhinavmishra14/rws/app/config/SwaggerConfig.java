@@ -17,59 +17,45 @@
  */
 package com.github.abhinavmishra14.rws.app.config;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 
 /**
  * The Class SwaggerConfig.
  */
 @Configuration
 public class SwaggerConfig {
-	
-	/** The Constant DEFAULT_PRODUCES_AND_CONSUMES. */
-	private static final Set<String> DEFAULT_PRODUCES_AND_CONSUMES = new HashSet<String>(
-			Arrays.asList("application/json", "application/xml"));
 
 	/**
-	 * Api.
+	 * Public api.
 	 *
-	 * @return the docket
+	 * @return the grouped open api
 	 */
 	@Bean
-	public Docket apiDocket() {
-		return new Docket(DocumentationType.SWAGGER_2)  
-				.select()                                  
-				//.apis(RequestHandlerSelectors.any())
-	            .apis(RequestHandlerSelectors.basePackage("com.github.abhinavmishra14"))
-				.paths(PathSelectors.any())
-				//Let's be specific to what we consumer and what we produce, instead of "*/*"
-				.build().consumes(DEFAULT_PRODUCES_AND_CONSUMES).produces(DEFAULT_PRODUCES_AND_CONSUMES)
-				.apiInfo(apiInfo());
+	public GroupedOpenApi publicApi() {
+		return GroupedOpenApi.builder()
+				.group("public-api")
+				.pathsToMatch("/**").packagesToScan("com.github.abhinavmishra14.rws.controller.hello",
+						"com.github.abhinavmishra14.rws.controller")
+				.build();
 	}
 
 	/**
-	 * Api info.
+	 * Spring shop open API.
 	 *
-	 * @return the api info
+	 * @return the open API
 	 */
-	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder()
-				.title("Restful webservices using spring boot")
-				.description("A demo restful webservice project using spring boot")
-				.version("1.0")
-				.license("Apache License Version 2.0")
-				.licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
-				.build();
+	@Bean
+	public OpenAPI springShopOpenAPI() {
+		return new OpenAPI()
+				.info(new Info().title("Restful webservices using spring boot")
+						.description("A demo restful webservice project using spring boot")
+						.version("v1.0")
+						.license(new License().name("Apache 2.0").url("https://www.apache.org/licenses/LICENSE-2.0")));
 	}
 }

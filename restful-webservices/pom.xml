@@ -92,13 +92,22 @@
 			<artifactId>jackson-dataformat-xml</artifactId>
 		</dependency>
 		
-		<!-- Dependency for swagger [Start]-->
+		<!-- Dependency for swagger open api v3 [Start]-->
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-boot-starter</artifactId>
-			<version>3.0.0-SNAPSHOT</version>
-		</dependency>
-		<!-- Dependency for swagger [End]-->
+	      <groupId>org.springdoc</groupId>
+	      <artifactId>springdoc-openapi-ui</artifactId>
+	      <version>1.4.2</version>
+	    </dependency>
+		<!-- The support for Spring Hateoas is available using the dependency springdoc-openapi-hateoas. 
+			The projects that use Spring Hateoas should combine this dependency with 
+			the springdoc-openapi-ui dependency. This dependency enables the support 
+			of Spring Hateoas format. -->
+	    <dependency>
+	      <groupId>org.springdoc</groupId>
+	      <artifactId>springdoc-openapi-hateoas</artifactId>
+	      <version>1.4.2</version>
+	    </dependency>
+		<!-- Dependency for swagger open api v3 [End]-->
 		
 		<!-- For Hot Reloading -->
 		<dependency>
