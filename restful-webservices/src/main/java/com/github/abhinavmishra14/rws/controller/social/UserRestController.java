@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.abhinavmishra14.rws.controller;
+package com.github.abhinavmishra14.rws.controller.social;
 
 import java.net.URI;
 import java.util.List;
@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,12 @@ import com.github.abhinavmishra14.rws.exceptions.RWSException;
 import com.github.abhinavmishra14.rws.exceptions.UserNotFoundException;
 import com.github.abhinavmishra14.rws.model.Response;
 import com.github.abhinavmishra14.rws.model.User;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * The Class UserRestController.
@@ -63,7 +70,13 @@ public class UserRestController {
 	 *
 	 * @return the all users
 	 */
-	@GetMapping(path = "/users")
+	@Operation(summary = "Gets all users")
+	@ApiResponses(@ApiResponse(content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = List.class)),
+			@Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = List.class)),
+	}))
+	@GetMapping(path = "/users", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	public List<User> getAllUsers() {
 		LOGGER.info("getAllUsers invoked..");
 		return userDao.findAll();
@@ -77,7 +90,13 @@ public class UserRestController {
 	 * @param id the id
 	 * @return the user
 	 */
-	@GetMapping(path = "/users/{id}")
+	@Operation(summary = "Get the user using userId")
+	@ApiResponses(@ApiResponse(content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = EntityModel.class)),
+			@Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = EntityModel.class)),
+	}))
+	@GetMapping(path = "/users/{id}", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	public EntityModel<User> getUser(@PathVariable final int id) {
 		LOGGER.info("getUser invoked for id: {}", id);
 		final User userById = userDao.findOne(id);
@@ -106,7 +125,14 @@ public class UserRestController {
 	 * @param user the user
 	 * @return the ResponseEntity<Response>
 	 */
-	@PostMapping(path = "/users")
+	@Operation(summary = "Creates the user")
+	@ApiResponses(@ApiResponse(content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
+			@Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
+	}))
+	@PostMapping(path = "/users", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
+					MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<Response> createUsers(@Valid @RequestBody final User user) {
 		LOGGER.info("createUser invoked with payload: {}", user);
 		if (user != null) {
@@ -128,7 +154,13 @@ public class UserRestController {
 	 * @param id the id
 	 * @return the ResponseEntity<Response>
 	 */
-	@DeleteMapping(path = "/users/{id}")
+	@Operation(summary = "Deletes the user using userId")
+	@ApiResponses(@ApiResponse(content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
+			@Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
+	}))
+	@DeleteMapping(path = "/users/{id}", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<Response> deleteUser(@PathVariable final int id) {
 		LOGGER.info("deleteUser invoked for id: {}", id);
 		if (id > 0) {

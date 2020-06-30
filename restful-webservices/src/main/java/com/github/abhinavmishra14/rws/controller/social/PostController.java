@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.abhinavmishra14.rws.controller;
+package com.github.abhinavmishra14.rws.controller.social;
 
 import java.net.URI;
 import java.util.List;
@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,12 @@ import com.github.abhinavmishra14.rws.exceptions.UserNotFoundException;
 import com.github.abhinavmishra14.rws.model.Post;
 import com.github.abhinavmishra14.rws.model.Response;
 import com.github.abhinavmishra14.rws.model.User;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
  * The Class PostController.
@@ -65,7 +72,13 @@ public class PostController {
 	 * @param id the id
 	 * @return the all posts for A user
 	 */
-	@GetMapping(path = "/users/{id}/posts")
+	@Operation(summary = "Get the user's posts using userId")
+	@ApiResponses(@ApiResponse(content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
+			@Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
+	}))
+	@GetMapping(path = "/users/{id}/posts", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<List<Post>> getAllPostsForAUser(@PathVariable final int id) {
 		LOGGER.info("getAllPostsForAUser invoked for user id: {}", id);
 		if (id > 0) {
@@ -91,7 +104,13 @@ public class PostController {
 	 * @param postId the post id
 	 * @return the post
 	 */
-	@GetMapping(path = "/users/{id}/posts/{postId}")
+	@Operation(summary = "Gets the user's post details using userId and postId")
+	@ApiResponses(@ApiResponse(content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = EntityModel.class)),
+			@Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = EntityModel.class)),
+	}))
+	@GetMapping(path = "/users/{id}/posts/{postId}", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE })
 	public EntityModel<Post> getPostDetails(@PathVariable final int id, @PathVariable final int postId) {
 		LOGGER.info("getPost invoked for user id: {} and postId: {}", id, postId);
 		if (id > 0) {
@@ -126,7 +145,14 @@ public class PostController {
 	 * @param post the post
 	 * @return the response entity
 	 */
-	@PostMapping(path = "/users/{id}/posts")
+	@Operation(summary = "Create post for a user using userId")
+	@ApiResponses(@ApiResponse(content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
+			@Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
+	}))
+	@PostMapping(path = "/users/{id}/posts", produces = { MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
+					MediaType.APPLICATION_XML_VALUE })
 	public ResponseEntity<Response> createPost(@PathVariable final int id, @RequestBody final Post post) {
 		LOGGER.info("createPost invoked with payload: {} for userId: ", post, id);
 		if (id > 0) {
