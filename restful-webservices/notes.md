@@ -582,6 +582,25 @@ public class FilteringPropertyController {
 - http://www.lexicalscope.com/blog/2012/03/12/how-are-rest-apis-versioned/
 - https://www.3scale.net/2016/06/api-versioning-methods-a-brief-reference/
 
+#### Security and Auth
+
+- To enable security we need to add following dependencies:
+
+```xml
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-security</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.security</groupId>
+		<artifactId>spring-security-test</artifactId>
+		<scope>test</scope>
+	</dependency>
+```
+
+- This by default enables security and prints a password in the log. You can copy the password from log and use userName as 'user' and password you copied from log.
+- The other way to do is that, you can configure username and password in application.properties file and provide implementation of WebSecurityConfigurerAdapter. See: com.github.abhinavmishra14.rws.app.config.SecurityConfig
+- And last, you can store user details in db and use it for authentication.  
 
 #### Table Structure
 

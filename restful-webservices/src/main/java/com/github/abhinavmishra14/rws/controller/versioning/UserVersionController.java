@@ -26,6 +26,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserVersionController {
 	
+	/** The Constant FULL_NAME. */
+	private static final String FULL_NAME = "Abhinav Mishra";
+	
+	/** The Constant F_NAME. */
+	private static final String F_NAME = "Abhinav";
+	
+	/** The Constant L_NAME. */
+	private static final String L_NAME = "Mishra";
+
+	
 	/**
 	 * Gets the user V1.
 	 *
@@ -33,7 +43,7 @@ public class UserVersionController {
 	 */
 	@GetMapping("/v1/user")
 	public UserV1 getUserV1() {
-		return new UserV1("Abhinav Mishra");
+		return new UserV1(FULL_NAME);
 	}
 
 	/**
@@ -43,7 +53,7 @@ public class UserVersionController {
 	 */
 	@GetMapping("/v2/user")
 	public UserV2 getUserV2() {
-		return new UserV2(new Name("Abhinav", "Mishra"));
+		return new UserV2(new Name(F_NAME, L_NAME));
 	}
 
 	/**
@@ -53,7 +63,7 @@ public class UserVersionController {
 	 */
 	@GetMapping(value = "/user/param", params = "version=1")
 	public UserV1 getUserV1UsingParam() {
-		return new UserV1("Abhinav Mishra");
+		return new UserV1(FULL_NAME);
 	}
 
 	/**
@@ -63,7 +73,7 @@ public class UserVersionController {
 	 */
 	@GetMapping(value = "/user/param", params = "version=2")
 	public UserV2 getUserV2UsingParam() {
-		return new UserV2(new Name("Abhinav", "Mishra"));
+		return new UserV2(new Name(F_NAME, L_NAME));
 	}
 
 	/**
@@ -73,7 +83,7 @@ public class UserVersionController {
 	 */
 	@GetMapping(value = "/user/header", headers = "X-API-VERSION=1")
 	public UserV1 getUserV1UsingHeader() {
-		return new UserV1("Abhinav Mishra");
+		return new UserV1(FULL_NAME);
 	}
 
 	/**
@@ -83,7 +93,7 @@ public class UserVersionController {
 	 */
 	@GetMapping(value = "/user/header", headers = "X-API-VERSION=2")
 	public UserV2 getUserV2UsingHeader() {
-		return new UserV2(new Name("Abhinav", "Mishra"));
+		return new UserV2(new Name(F_NAME, L_NAME));
 	}
 
 	/**
@@ -93,7 +103,7 @@ public class UserVersionController {
 	 */
 	@GetMapping(value = "/user/produces", produces = "application/vnd.company.app-v1+json")
 	public UserV1 getUserV1UsingMediaType() {
-		return new UserV1("Abhinav Mishra");
+		return new UserV1(FULL_NAME);
 	}
 
 	/**
@@ -103,6 +113,6 @@ public class UserVersionController {
 	 */
 	@GetMapping(value = "/user/produces", produces = "application/vnd.company.app-v2+json")
 	public UserV2 getUserV2UsingMediaType() {
-		return new UserV2(new Name("Abhinav", "Mishra"));
+		return new UserV2(new Name(F_NAME, L_NAME));
 	}
 }
