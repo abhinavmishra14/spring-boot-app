@@ -602,24 +602,15 @@ public class FilteringPropertyController {
 - The other way to do is that, you can configure username and password in application.properties file and provide implementation of WebSecurityConfigurerAdapter. See: com.github.abhinavmishra14.rws.app.config.SecurityConfig
 - And last, you can store user details in db and use it for authentication.  
 
-#### Table Structure
+#### JPA
 
-```sql
-create table user (
-id integer not null, 
-birth_date timestamp, 
-name varchar(255), 
-primary key (id)
-);
+- Difference between CrudRepository and JpaRepository interfaces in Spring Data JPA.
 
-create table post (
-id integer not null, 
-description varchar(255), 
-user_id integer, 
-primary key (id)
-);
-
-alter table post 
-add constraint post_to_user_foreign_key
-foreign key (user_id) references user;
+```text
+JpaRepository extends PagingAndSortingRepository, PagingAndSortingRepository extends CrudRepository.
+CrudRepository mainly provides CRUD operations. 
+PagingAndSortingRepository provide methods to perform pagination and sorting of records. 
+JpaRepository provides JPA related methods such as flushing the persistence context and deleting of records in batch.
+Due to their inheritance nature, JpaRepository will have all the behaviors of CrudRepository and PagingAndSortingRepository. 
+So if you don't need the repository to have the functions provided by JpaRepository and PagingAndSortingRepository , use CrudRepository.
 ```

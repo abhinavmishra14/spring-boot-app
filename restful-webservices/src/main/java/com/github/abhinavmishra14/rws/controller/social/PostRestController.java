@@ -34,14 +34,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.github.abhinavmishra14.rws.dao.PostDao;
-import com.github.abhinavmishra14.rws.dao.UserDao;
 import com.github.abhinavmishra14.rws.exceptions.PostNotFoundException;
 import com.github.abhinavmishra14.rws.exceptions.RWSException;
 import com.github.abhinavmishra14.rws.exceptions.UserNotFoundException;
-import com.github.abhinavmishra14.rws.model.Post;
+import com.github.abhinavmishra14.rws.model.PostModel;
 import com.github.abhinavmishra14.rws.model.Response;
-import com.github.abhinavmishra14.rws.model.User;
+import com.github.abhinavmishra14.rws.model.UserModel;
+import com.github.abhinavmishra14.rws.service.PostService;
+import com.github.abhinavmishra14.rws.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -53,18 +53,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
  * The Class PostController.
  */
 @RestController
-public class PostController {
+public class PostRestController {
 	
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(PostController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PostRestController.class);
 	
 	/** The post dao. */
 	@Autowired
-	private PostDao postDao;
+	private PostService postDao;
 	
 	/** The user dao. */
 	@Autowired
-	private UserDao userDao;
+	private UserService userDao;
 	
 	/**
 	 * Gets the all posts for A user.
@@ -79,14 +79,14 @@ public class PostController {
 	}))
 	@GetMapping(path = "/users/{id}/posts", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<List<Post>> getAllPostsForAUser(@PathVariable final int id) {
+	public ResponseEntity<List<PostModel>> getAllPostsForAUser(@PathVariable final int id) {
 		LOGGER.info("getAllPostsForAUser invoked for user id: {}", id);
 		if (id > 0) {
-			final User userById = userDao.findOne(id);
+			final UserModel userById = userDao.findOne(id);
 			if (userById == null) {
 				throw new UserNotFoundException(String.format("User with id '%s' not found!", id));
 			}
-			final List<Post> allPosts = postDao.findAll(id);
+			final List<PostModel> allPosts = postDao.findAll(id);
 			if (allPosts != null && !allPosts.isEmpty()) {
 				return ResponseEntity.ok(allPosts);
 			} else {
@@ -111,18 +111,18 @@ public class PostController {
 	}))
 	@GetMapping(path = "/users/{id}/posts/{postId}", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
-	public EntityModel<Post> getPostDetails(@PathVariable final int id, @PathVariable final int postId) {
+	public EntityModel<PostModel> getPostDetails(@PathVariable final int id, @PathVariable final int postId) {
 		LOGGER.info("getPost invoked for user id: {} and postId: {}", id, postId);
 		if (id > 0) {
-			final User userById = userDao.findOne(id);
+			final UserModel userById = userDao.findOne(id);
 			if (userById == null) {
 				throw new UserNotFoundException(String.format("User with id '%s' not found!", id));
 			}
-			final Post post = postDao.findOne(id, postId);
+			final PostModel post = postDao.findOne(id, postId);
 			if (post != null) {
 				// "all-posts-by-user", SERVER_PATH + "/users/{id}/posts"
 				// getAllPostsForAUser
-				final EntityModel<Post> resource = EntityModel.of(post);
+				final EntityModel<PostModel> resource = EntityModel.of(post);
 				final WebMvcLinkBuilder linkTo = WebMvcLinkBuilder
 						.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllPostsForAUser(id));
 				resource.add(linkTo.withRel("all-posts-by-user"));
@@ -153,14 +153,14 @@ public class PostController {
 	@PostMapping(path = "/users/{id}/posts", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
 					MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<Response> createPost(@PathVariable final int id, @RequestBody final Post post) {
+	public ResponseEntity<Response> createPost(@PathVariable final int id, @RequestBody final PostModel post) {
 		LOGGER.info("createPost invoked with payload: {} for userId: ", post, id);
 		if (id > 0) {
-			final User userById = userDao.findOne(id);
+			final UserModel userById = userDao.findOne(id);
 			if (userById == null) {
 				throw new UserNotFoundException(String.format("User with id '%s' not found!", id));
 			}
-			final Post createdPost = postDao.save(id, post.getContent());
+			final PostModel createdPost = postDao.save(id, post.getContent());
 			final Response resp = new Response("CREATED", "Post created successfully.");
 			resp.setAdditionalProperty("post", createdPost);
 			final URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(id).toUri();

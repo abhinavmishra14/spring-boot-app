@@ -224,7 +224,7 @@
 							<failOnViolation>true</failOnViolation>
 							<configLocation>${basedir}/checkstyle.xml</configLocation>
 							<includes>com/**/*.java</includes>
-							<excludes>com/github/abhinavmishra14/**/model/*.java,com/github/abhinavmishra14/**/*Tests.java</excludes>
+							<excludes>com/github/abhinavmishra14/**/model/*.java,com/github/abhinavmishra14/**/entity/*.java,com/github/abhinavmishra14/**/*Tests.java</excludes>
 						</configuration>
 					</execution>
 				</executions>
@@ -283,7 +283,7 @@
 					<!-- A list of files to exclude from checking. Can contain Ant-style 
 						wildcards and double wildcards. We are not excluding anything here. -->
 					<excludes>
-						<exclude>com/github/abhinavmishra14/**/model/*.java,com/github/abhinavmishra14/**/*Test.java,com/github/abhinavmishra14/**/*Tests.java</exclude>
+						<exclude>com/github/abhinavmishra14/**/model/*.java,com/github/abhinavmishra14/**/entity/*.java,com/github/abhinavmishra14/**/*Test.java,com/github/abhinavmishra14/**/*Tests.java</exclude>
 					</excludes>
 
 					<!-- The output directory for the final HTML report. -->
