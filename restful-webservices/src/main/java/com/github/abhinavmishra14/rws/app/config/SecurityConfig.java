@@ -20,13 +20,15 @@ package com.github.abhinavmishra14.rws.app.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+//import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.github.abhinavmishra14.rws.service.UserProfile;
 
 /**
  * The Class SecurityConfig.
@@ -35,15 +37,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	/** The env. */
+	//@Autowired
+	//private Environment env;
+	
+	/** The user service. */
 	@Autowired
-	private Environment env;
+    private UserProfile userService;
+
+    /* (non-Javadoc)
+     * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder)
+     */
+    @Override
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+    }
 	
 	/* (non-Javadoc)
 	 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
 	 */
 	@Override
 	protected void configure(final HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.headers().frameOptions().sameOrigin(); //Allow h2-console
 		httpSecurity.csrf().disable().authorizeRequests().anyRequest().authenticated().and().httpBasic();
 	}
 
@@ -53,11 +67,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 * @param authentication the authentication
 	 * @throws Exception the exception
 	 */
-	@Autowired
-	public void configureGlobal(final AuthenticationManagerBuilder authentication) throws Exception {
-		authentication.inMemoryAuthentication().withUser(env.getProperty("spring.security.user.name"))
-				.password(passwordEncoder().encode(env.getProperty("spring.security.user.password"))).authorities("ROLE_USER");
-	}
+	/*
+	 * @Autowired public void configureGlobal(final AuthenticationManagerBuilder
+	 * authentication) throws Exception {
+	 * authentication.inMemoryAuthentication().withUser(env.getProperty(
+	 * "spring.security.user.name"))
+	 * .password(passwordEncoder().encode(env.getProperty(
+	 * "spring.security.user.password"))).authorities("ROLE_USER"); }
+	 */
 
 	/**
 	 * Password encoder.

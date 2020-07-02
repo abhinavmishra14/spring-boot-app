@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -164,5 +165,16 @@ public final class RWSUtils {
 	public static int generateId(final int min, final int max) {
 	    final Random random = new Random();
 	    return random.nextInt((max - min) + 1) + min;
+	}
+
+	/**
+	 * Generate random password.
+	 * This method will generate password for demo purposes.
+	 *
+	 * @param len the len
+	 * @return the string
+	 */
+	public static String generateRandomPassword(final int len) {
+		return RandomStringUtils.randomAlphanumeric(len);
 	}
 }

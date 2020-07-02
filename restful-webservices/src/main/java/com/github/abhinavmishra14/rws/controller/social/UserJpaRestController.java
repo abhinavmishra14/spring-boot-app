@@ -19,9 +19,11 @@ package com.github.abhinavmishra14.rws.controller.social;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +43,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.abhinavmishra14.rws.exceptions.RWSException;
 import com.github.abhinavmishra14.rws.exceptions.UserNotFoundException;
 import com.github.abhinavmishra14.rws.model.Response;
-import com.github.abhinavmishra14.rws.model.UserModel;
-import com.github.abhinavmishra14.rws.service.UserService;
+import com.github.abhinavmishra14.rws.repository.UserRepository;
+import com.github.abhinavmishra14.rws.repository.entity.UserEntity;
+import com.github.abhinavmishra14.rws.utils.RWSUtils;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -51,17 +54,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 /**
- * The Class UserRestController.
+ * The Class UserJpaRestController.
  */
 @RestController
-public class UserRestController {
+public class UserJpaRestController {
 
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserRestController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserJpaRestController.class);
 
-	/** The user dao. */
+	/** The user repository. */
 	@Autowired
-	private UserService userDao;
+	private UserRepository userRepository;
 
 	/**
 	 * Gets the all users. <br>
@@ -75,11 +78,11 @@ public class UserRestController {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = List.class)),
 			@Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = List.class)),
 	}))
-	@GetMapping(path = "/users", produces = { MediaType.APPLICATION_JSON_VALUE,
+	@GetMapping(path = "/jpa/users", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
-	public List<UserModel> getAllUsers() {
+	public List<UserEntity> getAllUsers() {
 		LOGGER.info("getAllUsers invoked..");
-		return userDao.findAll();
+		return userRepository.findAll();
 	}
 
 	/**
@@ -95,18 +98,17 @@ public class UserRestController {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = EntityModel.class)),
 			@Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = EntityModel.class)),
 	}))
-	@GetMapping(path = "/users/{id}", produces = { MediaType.APPLICATION_JSON_VALUE,
+	@GetMapping(path = "/jpa/users/{id}", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
-	public EntityModel<UserModel> getUser(@PathVariable final int id) {
+	public EntityModel<UserEntity> getUser(@PathVariable final long id) {
 		LOGGER.info("getUser invoked for id: {}", id);
-		final UserModel userById = userDao.findOne(id);
-		if (userById == null) {
+		final Optional<UserEntity> userById = userRepository.findById(id);
+		if (!userById.isPresent()) {
 			throw new UserNotFoundException(String.format("User with id '%s' not found!", id));
 		}
-
 		// "all-users", SERVER_PATH + "/users"
 		// retrieveAllUsers
-		final EntityModel<UserModel> resource = EntityModel.of(userById);
+		final EntityModel<UserEntity> resource = EntityModel.of(userById.get());
 		final WebMvcLinkBuilder linkTo = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllUsers());
 		resource.add(linkTo.withRel("all-users"));
@@ -130,13 +132,16 @@ public class UserRestController {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
 			@Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
 	}))
-	@PostMapping(path = "/users", produces = { MediaType.APPLICATION_JSON_VALUE,
+	@PostMapping(path = "/jpa/users", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
 					MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<Response> createUsers(@Valid @RequestBody final UserModel user) {
+	public ResponseEntity<Response> createUsers(@Valid @RequestBody final UserEntity user) {
 		LOGGER.info("createUser invoked with payload: {}", user);
 		if (user != null) {
-			final UserModel createdUsr = userDao.save(user);
+			if (StringUtils.isEmpty(user.getPassword())) {
+				user.setPassword(RWSUtils.generateRandomPassword(6));
+			}
+			final UserEntity createdUsr = userRepository.save(user);
 			final Response resp = new Response("CREATED", "User created successfully.");
 			resp.setAdditionalProperty("user", createdUsr);
 			final URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(user).toUri();
@@ -159,18 +164,19 @@ public class UserRestController {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
 			@Content(mediaType = MediaType.APPLICATION_XML_VALUE, schema = @Schema(implementation = ResponseEntity.class)),
 	}))
-	@DeleteMapping(path = "/users/{id}", produces = { MediaType.APPLICATION_JSON_VALUE,
+	@DeleteMapping(path = "/jpa/users/{id}", produces = { MediaType.APPLICATION_JSON_VALUE,
 			MediaType.APPLICATION_XML_VALUE })
-	public ResponseEntity<Response> deleteUser(@PathVariable final int id) {
+	public ResponseEntity<Response> deleteUser(@PathVariable final long id) {
 		LOGGER.info("deleteUser invoked for id: {}", id);
 		if (id > 0) {
-			if (userDao.delete(id)) {
-				final Response resp = new Response("SUCCESS",
-						String.format("User with id '%s' has been deleted successfully.", id));
-				return new ResponseEntity<Response>(resp, HttpStatus.OK);
-			} else {
+			final Optional<UserEntity> userById = userRepository.findById(id);
+			if (!userById.isPresent()) {
 				throw new UserNotFoundException(String.format("User with id '%s' not found!", id));
 			}
+			userRepository.deleteById(id);
+			final Response resp = new Response("SUCCESS",
+					String.format("User with id '%s' has been deleted successfully.", id));
+			return new ResponseEntity<Response>(resp, HttpStatus.OK);
 		} else {
 			throw new RWSException(String.format("User id '%s' is invalid!", id));
 		}

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.abhinavmishra14.rws.dao;
+package com.github.abhinavmishra14.rws.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,25 +24,22 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.github.abhinavmishra14.rws.model.User;
+import com.github.abhinavmishra14.rws.model.UserModel;
 import com.github.abhinavmishra14.rws.utils.RWSUtils;
 
 /**
- * The Class UserDao.
+ * The Class UserService.
  */
 @Component
-@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
-public class UserDao {
+public class UserService {
 	
 	/** The Constant LOGGER. */
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
 	/** The Constant USERS. */
-	private static final List<User> USERS = new ArrayList<> (); 
+	private static final List<UserModel> USERS = new ArrayList<> (); 
 	
 	static {
 		//Initialize demo data for USERS list. 
@@ -50,15 +47,15 @@ public class UserDao {
 		final Calendar calUsr1 = Calendar.getInstance();
 		//Moth starts from 0-11 (12 months), Hence set 2 for march
 		calUsr1.set(1986, 1, 22); 
-		USERS.add(new User(1, "abhinav", calUsr1.getTime()));
+		USERS.add(new UserModel(1, "abhinav", calUsr1.getTime()));
 		final Calendar calUsr2 = Calendar.getInstance();
 		//Moth starts from 0-11 (12 months), Hence set 4 for may
 		calUsr2.set(1987, 6, 11); 
-		USERS.add(new User(2, "veena", calUsr2.getTime()));
+		USERS.add(new UserModel(2, "veena", calUsr2.getTime()));
 		final Calendar calUsr3 = Calendar.getInstance();
 		//Moth starts from 0-11 (12 months), Hence set 9 for oct
 		calUsr3.set(2019, 8, 25); 
-		USERS.add(new User(3, "reyansh", calUsr3.getTime()));
+		USERS.add(new UserModel(3, "reyansh", calUsr3.getTime()));
 	}
 	
 	/**
@@ -66,7 +63,7 @@ public class UserDao {
 	 *
 	 * @return the list
 	 */
-	public List<User> findAll() {
+	public List<UserModel> findAll() {
 		LOGGER.info("findAll invoked..");
 		return USERS;
 	}
@@ -77,10 +74,10 @@ public class UserDao {
 	 * @param id the id
 	 * @return the user
 	 */
-	public User findOne(final int id) {
+	public UserModel findOne(final int id) {
 		LOGGER.info("findOne invoked for input id: {}", id);
-		User user = null;
-		for (final User eachUsr : USERS) {
+		UserModel user = null;
+		for (final UserModel eachUsr : USERS) {
 			if(eachUsr.getId() == id) {
 				user = eachUsr;
 				break;
@@ -95,7 +92,7 @@ public class UserDao {
 	 * @param user the user
 	 * @return the user
 	 */
-	public User save(final User user) {
+	public UserModel save(final UserModel user) {
 		LOGGER.info("save invoked for input user: {}", user);
 		if (user != null) {
 			if(user.getId() == 0) {
@@ -116,8 +113,8 @@ public class UserDao {
 	 */
 	public boolean delete(final int id) {
 		LOGGER.info("delete invoked for input id: {}", id);		
-		for (final Iterator<User> iterator = USERS.iterator(); iterator.hasNext();) {
-			final User eachUsr = iterator.next();
+		for (final Iterator<UserModel> iterator = USERS.iterator(); iterator.hasNext();) {
+			final UserModel eachUsr = iterator.next();
 			if(eachUsr.getId() == id) {
 				iterator.remove();
 				return true;
