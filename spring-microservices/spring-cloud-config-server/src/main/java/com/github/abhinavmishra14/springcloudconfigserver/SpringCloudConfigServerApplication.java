@@ -19,10 +19,12 @@ package com.github.abhinavmishra14.springcloudconfigserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.config.server.EnableConfigServer;
 
 /**
  * The Class SpringCloudConfigServerApplication.
  */
+@EnableConfigServer
 @SpringBootApplication
 public class SpringCloudConfigServerApplication {
 
