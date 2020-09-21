@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.1.RELEASE</version>
+		<version>2.3.4.RELEASE</version>
 	</parent>
 	
 	<groupId>com.github.abhinavmishra14</groupId>
@@ -14,6 +14,11 @@
 	<version>1.0-SNAPSHOT</version>
     <name>restful-webservices</name>
     <description>RESTFul webservices using Spring Boot</description>
+    
+    <properties>
+        <java.version>1.8</java.version>
+    	<springdoc-openapi-version>1.4.7</springdoc-openapi-version>
+    </properties>
 
 	<dependencies>
 		<dependency>
@@ -105,10 +110,14 @@
 		</dependency>
 		
 		<!-- Dependency for swagger open api v3 [Start]-->
+		<!-- The Swagger UI page should then be available at: http://server:port/context-path/swagger-ui.html 
+		     and the OpenAPI description will be available at the following url for json format: 
+		     http://server:port/context-path/v3/api-docs
+		 -->
 		<dependency>
 	      <groupId>org.springdoc</groupId>
 	      <artifactId>springdoc-openapi-ui</artifactId>
-	      <version>1.4.2</version>
+	      <version>${springdoc-openapi-version}</version>
 	    </dependency>
 		<!-- The support for Spring Hateoas is available using the dependency springdoc-openapi-hateoas. 
 			The projects that use Spring Hateoas should combine this dependency with 
@@ -117,7 +126,7 @@
 	    <dependency>
 	      <groupId>org.springdoc</groupId>
 	      <artifactId>springdoc-openapi-hateoas</artifactId>
-	      <version>1.4.2</version>
+	      <version>${springdoc-openapi-version}</version>
 	    </dependency>
 		<!-- Dependency for swagger open api v3 [End]-->
 		
@@ -157,10 +166,6 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
 
 	<build>
 		<plugins>
