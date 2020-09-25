@@ -44,6 +44,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
@@ -273,6 +278,7 @@
 	
 	<modules>
 		<module>limits-service</module>
+		<module>currency-exchange-service</module>
 		<module>spring-cloud-config-server</module>
 	</modules>
 </project>
