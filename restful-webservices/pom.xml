@@ -63,6 +63,7 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		
+		<!-- Logging support [Start] -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter</artifactId>
@@ -100,6 +101,7 @@
 			<artifactId>disruptor</artifactId>
 			<version>3.4.2</version>
 		</dependency>
+		<!-- Logging support [End] -->
 		
 		<!-- Added this dependency for XML content negotiation, By default all responses are returned as JSON -->
 		<!-- For xml content negotiation in spring web mvc/rest architecture, you don't have to make any code changes.

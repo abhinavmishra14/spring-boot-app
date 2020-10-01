@@ -17,7 +17,10 @@
  */
 package com.github.abhinavmishra14.currexc.repository;
 
+import java.util.Set;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.github.abhinavmishra14.currexc.model.ExchangeRatesModel;
 
@@ -25,6 +28,22 @@ import com.github.abhinavmishra14.currexc.model.ExchangeRatesModel;
  * The Interface ExchangeValueRepository.
  */
 public interface ExchangeRatesRepository extends JpaRepository<ExchangeRatesModel, Long> {
+	
+	/**
+	 * Gets the from list.
+	 *
+	 * @return the from list
+	 */
+	@Query("select ex.from from exchange_rates ex")
+    Set<Object> getFromList();
+
+	/**
+	 * Gets the to list.
+	 *
+	 * @return the to list
+	 */
+	@Query("select ex.to from exchange_rates ex")
+    Set<Object> getToList();
 	
 	/**
 	 * Find by from and to.

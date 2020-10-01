@@ -17,6 +17,12 @@
  */
 package com.github.abhinavmishra14.currexc.controller;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +40,9 @@ import com.github.abhinavmishra14.rws.exceptions.RWSException;
 @RestController
 public class CurrencyExchangeController {
 	
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CurrencyExchangeController.class);
+	
 	/** The environment. */
 	@Autowired
 	private Environment environment;
@@ -50,14 +59,21 @@ public class CurrencyExchangeController {
 	 * @return the exchange rates model
 	 */
 	@GetMapping("/currency-exchange/from/{from}/to/{to}")
-	public ResponseEntity<ExchangeRatesModel> getExchangeRate(@PathVariable final String from, @PathVariable final String to) {	
-		final ExchangeRatesModel exchangeRates = repository.findByFromAndTo(from, to);
-		if(exchangeRates!=null) {
+	public ResponseEntity<ExchangeRatesModel> getExchangeRate(@PathVariable final String from, @PathVariable final String to) {
+		LOGGER.info("getExchangeRate invoked, 'from' value: {} and 'to' value: {}", from, to);
+		final Set<Object> fromList = repository.getFromList();
+		final Set<Object> toList = repository.getToList();
+		final Set<Object> supportedCurrencies = Stream.concat(fromList.stream(), toList.stream()).collect(Collectors.toSet());
+		LOGGER.info("Supported currencies: {}", supportedCurrencies);
+		if (fromList.contains(from) && toList.contains(to)) {
+			final ExchangeRatesModel exchangeRates = repository.findByFromAndTo(from, to);
 			exchangeRates.setPort(
 					Integer.parseInt(environment.getProperty("local.server.port")));		
 			return ResponseEntity.ok(exchangeRates);
 		} else {
-			throw new RWSException(String.format("from '%s' and/or to %s inputs are invalid!", from, to));
+			throw new RWSException(
+					String.format("from '%s' and/or to %s inputs are invalid, currently supported currencies are: %s",
+							from, to, supportedCurrencies));
 		}
 	}
 }

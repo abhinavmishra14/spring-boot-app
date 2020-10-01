@@ -49,6 +49,27 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
+		
+		<!-- Dependency for swagger open api v3 [Start]-->
+		<!-- The Swagger UI page should then be available at: http://server:port/context-path/swagger-ui.html 
+		     and the OpenAPI description will be available at the following url for json format: 
+		     http://server:port/context-path/v3/api-docs
+		 -->
+		<dependency>
+	      <groupId>org.springdoc</groupId>
+	      <artifactId>springdoc-openapi-ui</artifactId>
+	      <version>${springdoc-openapi-version}</version>
+	    </dependency>
+		<!-- The support for Spring Hateoas is available using the dependency springdoc-openapi-hateoas. 
+			The projects that use Spring Hateoas should combine this dependency with 
+			the springdoc-openapi-ui dependency. This dependency enables the support 
+			of Spring Hateoas format. -->
+	    <dependency>
+	      <groupId>org.springdoc</groupId>
+	      <artifactId>springdoc-openapi-hateoas</artifactId>
+	      <version>${springdoc-openapi-version}</version>
+	    </dependency>
+		<!-- Dependency for swagger open api v3 [End]-->
 	</dependencies>
 
 </project>
