@@ -30,9 +30,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.abhinavmishra14.currexc.exceptions.CurrencyExchangeException;
 import com.github.abhinavmishra14.currexc.model.ExchangeRatesModel;
 import com.github.abhinavmishra14.currexc.repository.ExchangeRatesRepository;
-import com.github.abhinavmishra14.rws.exceptions.RWSException;
 
 /**
  * The Class CurrencyExchangeController.
@@ -71,8 +71,8 @@ public class CurrencyExchangeController {
 					Integer.parseInt(environment.getProperty("local.server.port")));		
 			return ResponseEntity.ok(exchangeRates);
 		} else {
-			throw new RWSException(
-					String.format("from '%s' and/or to %s inputs are invalid, currently supported currencies are: %s",
+			throw new CurrencyExchangeException(
+					String.format("from '%s' and/or to '%s' inputs are invalid, currently supported currencies are: %s",
 							from, to, supportedCurrencies));
 		}
 	}

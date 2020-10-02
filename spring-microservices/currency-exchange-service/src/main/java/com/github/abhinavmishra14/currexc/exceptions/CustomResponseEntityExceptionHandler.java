@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.abhinavmishra14.rws.exceptions;
+package com.github.abhinavmishra14.currexc.exceptions;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -55,12 +55,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	 * @throws Exception the exception
 	 */
 	@ExceptionHandler({ 
-		RWSException.class
+		CurrencyExchangeException.class
 	}) 
 	public final ResponseEntity<Object> handleCustomException(final Exception excp, final WebRequest request) throws Exception {
 		final String errMsg = excp.getMessage();
 		LOGGER.info("handleCustomException invoked, exceptionMessage: {}", errMsg);
-		if (excp instanceof RWSException) {
+		if (excp instanceof CurrencyExchangeException) {
 			final ExceptionInfo excpInfo = new ExceptionInfo(errMsg, request.getDescription(false), new Date(),
 					buildTextMessage(excp, StringUtils.EMPTY));
 			LOGGER.error(errMsg, excp);

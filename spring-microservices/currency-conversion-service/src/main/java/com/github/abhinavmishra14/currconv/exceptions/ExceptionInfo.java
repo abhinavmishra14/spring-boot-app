@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.abhinavmishra14.rws.exceptions;
+package com.github.abhinavmishra14.currconv.exceptions;
 
 import java.util.Date;
 

@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.abhinavmishra14.currconv.exceptions.CurrencyConversionException;
 import com.github.abhinavmishra14.currconv.feignproxy.CurrencyConversionProxy;
 import com.github.abhinavmishra14.currconv.model.CurrencyConversionModel;
-import com.github.abhinavmishra14.rws.exceptions.RWSException;
 
 /**
  * The Class CurrencyConversionController.
@@ -67,7 +67,7 @@ public class CurrencyConversionController {
 			model.setTotalCalculatedAmount(amount.multiply(model.getConversionMultiple()));
 			return ResponseEntity.ok(model);
 		} else {
-			throw new RWSException(String.format("From '%s' and/or to %s inputs are invalid!", from, to));
+			throw new CurrencyConversionException(currConvResp.getStatusCode().getReasonPhrase());
 		}
 	}
 }

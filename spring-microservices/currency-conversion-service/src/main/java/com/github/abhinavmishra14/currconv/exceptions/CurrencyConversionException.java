@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.abhinavmishra14.rws.exceptions;
+package com.github.abhinavmishra14.currconv.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * The Class RWSException.
  */
 @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Error occurred while processing the request!")
-public class RWSException extends RuntimeException {
+public class CurrencyConversionException extends RuntimeException {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 8024769484081511870L;
@@ -41,7 +41,7 @@ public class RWSException extends RuntimeException {
 	 * @param message the message
 	 * @param cause the cause
 	 */
-	public RWSException(final String message, final Throwable cause) {
+	public CurrencyConversionException(final String message, final Throwable cause) {
 		super(message, cause);
 		this.message = message;
 		this.cause = cause;
@@ -52,7 +52,7 @@ public class RWSException extends RuntimeException {
 	 *
 	 * @param message the message
 	 */
-	public RWSException(final String message) {
+	public CurrencyConversionException(final String message) {
 		super(message);
 		this.message = message;
 	}
