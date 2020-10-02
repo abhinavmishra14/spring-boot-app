@@ -17,6 +17,7 @@
  */
 package com.github.abhinavmishra14.currconv.feignproxy;
 
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,10 @@ import com.github.abhinavmishra14.currconv.model.CurrencyConversionModel;
 /**
  * The Interface CurrencyConversionProxy.
  */
-@FeignClient(name="currency-exchange-service", url="localhost:8000")
+//Ribbon will take care of which url to call while balancing the load.
+//@FeignClient(name="currency-exchange-service", url="localhost:8000")
+@FeignClient(name = "currency-exchange-service")
+@RibbonClient(name = "currency-exchange-service")
 public interface CurrencyConversionProxy {
 	
 	/**

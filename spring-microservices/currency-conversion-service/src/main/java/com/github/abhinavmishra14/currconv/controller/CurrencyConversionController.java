@@ -20,7 +20,6 @@ package com.github.abhinavmishra14.currconv.controller;
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,10 +34,6 @@ import com.github.abhinavmishra14.currconv.model.CurrencyConversionModel;
  */
 @RestController
 public class CurrencyConversionController {
-	
-	/** The environment. */
-	@Autowired
-	private Environment environment;
 	
 	/** The curr proxy. */
 	@Autowired
@@ -62,8 +57,6 @@ public class CurrencyConversionController {
 		if (currConvResp.getStatusCodeValue() == 200 && null != currConvResp.getBody()) {			
 			final CurrencyConversionModel model = currConvResp.getBody();
 			model.setQuantity(amount);
-			//Set port where currency conversion service is running.
-			model.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
 			model.setTotalCalculatedAmount(amount.multiply(model.getConversionMultiple()));
 			return ResponseEntity.ok(model);
 		} else {

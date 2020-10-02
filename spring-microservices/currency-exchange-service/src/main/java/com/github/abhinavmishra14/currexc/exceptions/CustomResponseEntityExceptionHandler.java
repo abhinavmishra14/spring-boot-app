@@ -37,7 +37,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 /**
  * The Class CustomResponseEntityExceptionHandler.<br>
- * Example of custom response entity exception handler. We will be using it for RestfulWSException whenever it occurs.
+ * Example of custom response entity exception handler. We will be using it for CurrencyExchangeException whenever it occurs.
  */
 @ControllerAdvice
 @RestController

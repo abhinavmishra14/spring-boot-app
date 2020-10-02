@@ -39,7 +39,7 @@ import feign.FeignException;
 
 /**
  * The Class CustomResponseEntityExceptionHandler.<br>
- * Example of custom response entity exception handler. We will be using it for RestfulWSException whenever it occurs.
+ * Example of custom response entity exception handler. We will be using it for CurrencyConversionException and FeignException whenever it occurs.
  */
 @ControllerAdvice
 @RestController
