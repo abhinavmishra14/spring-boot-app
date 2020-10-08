@@ -15,6 +15,15 @@
 | Zipkin Distributed Tracing Server | 9411 |
 
 
+## Order in which you can start all apps:
+
+1- Start Spring cloud config server
+2- Start Netflix Eureka naming server
+3- Start Limits service
+4- Start Currency exchange service
+5- Start Currency conversion service
+
+
 ## URLs
 
 |     Application       |     URL          |

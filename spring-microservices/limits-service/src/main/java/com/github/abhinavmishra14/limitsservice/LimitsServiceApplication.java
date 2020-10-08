@@ -19,11 +19,13 @@ package com.github.abhinavmishra14.limitsservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * The Class LimitsServiceApplication.
  */
 @SpringBootApplication
+@EnableDiscoveryClient
 public class LimitsServiceApplication {
 
 	/**

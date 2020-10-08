@@ -45,6 +45,20 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<!-- Note: spring-cloud-starter-netflix-eureka-client uses jackson-dataformat-xml.
+                 Hence, you would see XML responses instead of JSON responses in the browser.
+                 To see JSON responses, added exclusion for jackson-dataformat-xml dependency. -->
+			<exclusions>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.dataformat</groupId>
+					<artifactId>jackson-dataformat-xml</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>

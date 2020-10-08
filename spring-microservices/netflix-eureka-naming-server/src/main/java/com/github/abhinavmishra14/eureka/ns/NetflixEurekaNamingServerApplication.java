@@ -15,25 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.abhinavmishra14.currexc;
+package com.github.abhinavmishra14.eureka.ns;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
- * The Class CurrencyExchangeServiceApp.
+ * The Class NetflixEurekaNamingServerApplication.
  */
 @SpringBootApplication
-@EnableDiscoveryClient
-public class CurrencyExchangeServiceApp {
+@EnableEurekaServer
+public class NetflixEurekaNamingServerApplication {
 
 	/**
 	 * The main method.
 	 *
 	 * @param args the arguments
 	 */
-	public static void main(final String[] args) {
-		SpringApplication.run(CurrencyExchangeServiceApp.class, args);
+	public static void main(String[] args) {
+		SpringApplication.run(NetflixEurekaNamingServerApplication.class, args);
 	}
+
 }
