@@ -17,6 +17,8 @@
  */
 package com.github.abhinavmishra14.limitsservice.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +31,9 @@ import com.github.abhinavmishra14.limitsservice.model.LimitsConfiguration;
 @RestController
 public class LimitsConfigController {
 	
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(LimitsConfigController.class);
+	
 	/** The limits configuration. */
 	@Autowired
 	private LimitsConfiguration limitsConfiguration;
@@ -40,6 +45,7 @@ public class LimitsConfigController {
 	 */
 	@GetMapping("/limits")
 	public LimitsConfiguration getLimitsConfigFromConfiguration() {
+		LOGGER.info("getLimitsConfigFromConfiguration invoked..");
 		return limitsConfiguration;
 	}
 }

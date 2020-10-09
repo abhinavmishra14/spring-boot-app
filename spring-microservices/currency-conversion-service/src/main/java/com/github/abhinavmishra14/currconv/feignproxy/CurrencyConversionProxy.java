@@ -30,7 +30,9 @@ import com.github.abhinavmishra14.currconv.model.CurrencyConversionModel;
  */
 //Ribbon will take care of which url to call while balancing the load.
 //@FeignClient(name="currency-exchange-service", url="localhost:8000")
-@FeignClient(name = "currency-exchange-service")
+//@FeignClient(name = "currency-exchange-service") 
+//Instead of directly talking to currency exchange service, connect to api gateway and execute the request
+@FeignClient(name = "netflix-zuul-api-gateway-server")
 @RibbonClient(name = "currency-exchange-service")
 public interface CurrencyConversionProxy {
 	
@@ -42,7 +44,10 @@ public interface CurrencyConversionProxy {
 	 * @param to the to
 	 * @return the exchange rate
 	 */
-	@GetMapping("/currency-exchange/from/{from}/to/{to}")
+	//This getmapping is used when feign client talks directly to currency-exchange-service.
+	//@GetMapping("/currency-exchange/from/{from}/to/{to}")
+	//Set the getmapping like: /{application-name}/{uri}, to talk to currency-exchange-service via zuul api gateway.
+	@GetMapping("/currency-exchange-service/currency-exchange/from/{from}/to/{to}")
 	public ResponseEntity<CurrencyConversionModel> getExchangeRate(@PathVariable("from") final String from,
 			@PathVariable("to") final String to);
 }

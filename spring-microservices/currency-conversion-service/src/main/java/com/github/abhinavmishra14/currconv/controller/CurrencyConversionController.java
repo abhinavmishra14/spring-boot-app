@@ -19,6 +19,8 @@ package com.github.abhinavmishra14.currconv.controller;
 
 import java.math.BigDecimal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -39,12 +41,15 @@ import com.github.abhinavmishra14.currconv.model.CurrencyConversionModel;
 @RestController
 public class CurrencyConversionController {
 	
+	/** The Constant LOGGER. */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CurrencyConversionController.class);
+	
 	/** The curr proxy. */
 	@Autowired
 	private CurrencyConversionProxy currProxy;
 	
 	/**
-	 * Gets the exchange rate.<br>
+	 * Convert.<br>
 	 * To talk to currency exchange service we will use Feign proxy. <br>
 	 * Feign is a declarative HTTP client developed by Netflix.
 	 * Feign aims at simplifying HTTP API clients. Simply put, the developer needs only to declare and annotate an interface while the actual implementation is provisioned at runtime.
@@ -55,8 +60,9 @@ public class CurrencyConversionController {
 	 * @return the exchange rate
 	 */
 	@GetMapping("/currency-converter/from/{from}/to/{to}/amount/{amount}")
-	public ResponseEntity<MappingJacksonValue> getExchangeRate(@PathVariable final String from, @PathVariable final String to,
+	public ResponseEntity<MappingJacksonValue> convert(@PathVariable final String from, @PathVariable final String to,
 			@PathVariable final BigDecimal amount) {
+		LOGGER.info("convert invoked, 'from' value: {} , 'to' value: {} and 'amount' value: {}", from, to, amount);
 		final ResponseEntity<CurrencyConversionModel> currConvResp = currProxy.getExchangeRate(from, to);
 		if (currConvResp.getStatusCodeValue() == 200 && null != currConvResp.getBody()) {	
 			final CurrencyConversionModel model = currConvResp.getBody();

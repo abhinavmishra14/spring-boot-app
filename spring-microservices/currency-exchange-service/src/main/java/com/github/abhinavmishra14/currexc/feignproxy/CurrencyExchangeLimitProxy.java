@@ -28,7 +28,9 @@ import com.github.abhinavmishra14.currexc.model.ExchangeRatesModel;
  */
 //Ribbon will take care of which url to call while balancing the load.
 //@FeignClient(name="limits-service", url="localhost:8080")
-@FeignClient(name = "limits-service")
+//@FeignClient(name = "limits-service")
+//Instead of directly talking to limits-service, connect to api gateway and execute the request
+@FeignClient(name = "netflix-zuul-api-gateway-server")
 @RibbonClient(name = "limits-service")
 public interface CurrencyExchangeLimitProxy {
 	
@@ -37,6 +39,9 @@ public interface CurrencyExchangeLimitProxy {
 	 *
 	 * @return the limits config from configuration
 	 */
-	@GetMapping("/limits")
+	//This getmapping is used when feign client talks directly to limits service.
+	//@GetMapping("/limits")
+	//Set the getmapping like: /{application-name}/{uri}, to talk to limits service via zuul api gateway.
+	@GetMapping("/limits-service/limits")
 	public ExchangeRatesModel getLimitsConfigFromConfiguration();
 }
