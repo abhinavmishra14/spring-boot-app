@@ -9,7 +9,7 @@ CREATE TABLE exchange_rates (
 );
 
 insert into exchange_rates(id,currency_from,currency_to,conversion_multiple,port)
-values(10001,'USD','INR',73.25,0);
+values(10001,'USD','INR',73.28,0);
 insert into exchange_rates(id,currency_from,currency_to,conversion_multiple,port)
 values(10001,'INR','USD',0.014,0);
 insert into exchange_rates(id,currency_from,currency_to,conversion_multiple,port)

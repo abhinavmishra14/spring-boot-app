@@ -19,13 +19,13 @@ package com.github.abhinavmishra14.currconv.model;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+
 /**
  * The Class CurrencyConversionModel.
  */
+@JsonFilter(value="CurrencyConversionFilteredModel")
 public class CurrencyConversionModel {
-
-	/** The id. */
-	private Long id;
 	
 	/** The from. */
 	private String from;
@@ -37,13 +37,19 @@ public class CurrencyConversionModel {
 	private BigDecimal conversionMultiple;
 	
 	/** The quantity. */
-	private BigDecimal quantity;
+	private BigDecimal amount;
 	
 	/** The total calculated amount. */
 	private BigDecimal totalCalculatedAmount;
 	
 	/** The port. */
 	private int port;
+	
+	/** The minimum limit. */
+	private BigDecimal minimumLimit;
+	
+	/** The maximum limit. */
+	private BigDecimal maximumLimit;
 
 	/**
 	 * Instantiates a new currency conversion model.
@@ -55,43 +61,23 @@ public class CurrencyConversionModel {
 	/**
 	 * Instantiates a new currency conversion model.
 	 *
-	 * @param id the id
 	 * @param from the from
 	 * @param to the to
 	 * @param conversionMultiple the conversion multiple
-	 * @param quantity the quantity
+	 * @param amount the amount
 	 * @param totalCalculatedAmount the total calculated amount
 	 * @param port the port
 	 */
-	public CurrencyConversionModel(final Long id, final String from, final String to,
-			final BigDecimal conversionMultiple, final BigDecimal quantity, final BigDecimal totalCalculatedAmount,
+	public CurrencyConversionModel(final String from, final String to,
+			final BigDecimal conversionMultiple, final BigDecimal amount, final BigDecimal totalCalculatedAmount,
 			final int port) {
 		super();
-		this.id = id;
 		this.from = from;
 		this.to = to;
 		this.conversionMultiple = conversionMultiple;
-		this.quantity = quantity;
+		this.amount = amount;
 		this.totalCalculatedAmount = totalCalculatedAmount;
 		this.port = port;
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(final Long id) {
-		this.id = id;
 	}
 
 	/**
@@ -149,21 +135,21 @@ public class CurrencyConversionModel {
 	}
 
 	/**
-	 * Gets the quantity.
+	 * Gets the amount.
 	 *
-	 * @return the quantity
+	 * @return the amount
 	 */
-	public BigDecimal getQuantity() {
-		return quantity;
+	public BigDecimal getAmount() {
+		return amount;
 	}
 
 	/**
-	 * Sets the quantity.
+	 * Sets the amount.
 	 *
-	 * @param quantity the new quantity
+	 * @param amount the new amount
 	 */
-	public void setQuantity(final BigDecimal quantity) {
-		this.quantity = quantity;
+	public void setAmount(final BigDecimal amount) {
+		this.amount = amount;
 	}
 
 	/**
@@ -200,5 +186,41 @@ public class CurrencyConversionModel {
 	 */
 	public void setPort(final int port) {
 		this.port = port;
+	}
+	
+	/**
+	 * Gets the minimum limit.
+	 *
+	 * @return the minimum limit
+	 */
+	public BigDecimal getMinimumLimit() {
+		return minimumLimit;
+	}
+
+	/**
+	 * Sets the minimum limit.
+	 *
+	 * @param minimumLimit the new minimum limit
+	 */
+	public void setMinimumLimit(final BigDecimal minimumLimit) {
+		this.minimumLimit = minimumLimit;
+	}
+
+	/**
+	 * Gets the maximum limit.
+	 *
+	 * @return the maximum limit
+	 */
+	public BigDecimal getMaximumLimit() {
+		return maximumLimit;
+	}
+
+	/**
+	 * Sets the maximum limit.
+	 *
+	 * @param maximumLimit the new maximum limit
+	 */
+	public void setMaximumLimit(final BigDecimal maximumLimit) {
+		this.maximumLimit = maximumLimit;
 	}
 }

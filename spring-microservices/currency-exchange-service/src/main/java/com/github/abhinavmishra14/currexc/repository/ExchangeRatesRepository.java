@@ -22,12 +22,12 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.github.abhinavmishra14.currexc.model.ExchangeRatesModel;
+import com.github.abhinavmishra14.currexc.repository.entity.ExchangeRatesEntity;
 
 /**
  * The Interface ExchangeValueRepository.
  */
-public interface ExchangeRatesRepository extends JpaRepository<ExchangeRatesModel, Long> {
+public interface ExchangeRatesRepository extends JpaRepository<ExchangeRatesEntity, Long> {
 	
 	/**
 	 * Gets the from list.
@@ -52,5 +52,5 @@ public interface ExchangeRatesRepository extends JpaRepository<ExchangeRatesMode
 	 * @param to the to
 	 * @return the exchange rates model
 	 */
-	ExchangeRatesModel findByFromAndTo(final String from, final String to);
+	ExchangeRatesEntity findByFromAndTo(final String from, final String to);
 }

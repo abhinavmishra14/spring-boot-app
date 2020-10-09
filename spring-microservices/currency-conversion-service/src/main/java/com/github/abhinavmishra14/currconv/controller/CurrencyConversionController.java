@@ -21,10 +21,14 @@ import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.github.abhinavmishra14.currconv.exceptions.CurrencyConversionException;
 import com.github.abhinavmishra14.currconv.feignproxy.CurrencyConversionProxy;
 import com.github.abhinavmishra14.currconv.model.CurrencyConversionModel;
@@ -51,16 +55,41 @@ public class CurrencyConversionController {
 	 * @return the exchange rate
 	 */
 	@GetMapping("/currency-converter/from/{from}/to/{to}/amount/{amount}")
-	public ResponseEntity<CurrencyConversionModel> getExchangeRate(@PathVariable final String from, @PathVariable final String to,
+	public ResponseEntity<MappingJacksonValue> getExchangeRate(@PathVariable final String from, @PathVariable final String to,
 			@PathVariable final BigDecimal amount) {
 		final ResponseEntity<CurrencyConversionModel> currConvResp = currProxy.getExchangeRate(from, to);
-		if (currConvResp.getStatusCodeValue() == 200 && null != currConvResp.getBody()) {			
+		if (currConvResp.getStatusCodeValue() == 200 && null != currConvResp.getBody()) {	
 			final CurrencyConversionModel model = currConvResp.getBody();
-			model.setQuantity(amount);
-			model.setTotalCalculatedAmount(amount.multiply(model.getConversionMultiple()));
-			return ResponseEntity.ok(model);
+			if ((amount.compareTo(model.getMinimumLimit()) == 0 || amount.compareTo(model.getMinimumLimit()) == 1)
+					&& (amount.compareTo(model.getMaximumLimit()) == 0 || amount.compareTo(model.getMaximumLimit()) <= -1)) {
+				model.setAmount(amount);
+				model.setTotalCalculatedAmount(amount.multiply(model.getConversionMultiple()));
+				//Filter limits and return response
+				return ResponseEntity.ok(serializeAllExcept(model, "CurrencyConversionFilteredModel",
+						"minimumLimit", "maximumLimit"));
+			} else {
+				throw new CurrencyConversionException("Invalid amount, value must be within limits min: "
+						+ model.getMinimumLimit() + " | max: " + model.getMaximumLimit());				
+			}
 		} else {
 			throw new CurrencyConversionException(currConvResp.getStatusCode().getReasonPhrase());
 		}
+	}
+	
+	/**
+	 * Serialize all except.
+	 *
+	 * @param dynamicModel the dynamic model
+	 * @param filteringModelName the filtering model name
+	 * @param propertyArray the property array
+	 * @return the mapping jackson value
+	 */
+	private MappingJacksonValue serializeAllExcept(final Object dynamicModel,
+			final String filteringModelName, final String... propertyArray) {
+		final SimpleBeanPropertyFilter propFilter = SimpleBeanPropertyFilter.serializeAllExcept(propertyArray);
+		final FilterProvider filterProvider = new SimpleFilterProvider().addFilter(filteringModelName, propFilter);
+		final MappingJacksonValue mappedVal = new MappingJacksonValue(dynamicModel);
+		mappedVal.setFilters(filterProvider);
+		return mappedVal;
 	}
 }

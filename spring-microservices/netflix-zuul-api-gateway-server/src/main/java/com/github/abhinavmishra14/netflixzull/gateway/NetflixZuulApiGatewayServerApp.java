@@ -15,27 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.abhinavmishra14.currexc;
+package com.github.abhinavmishra14.netflixzull.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
 /**
- * The Class CurrencyExchangeServiceApp.
+ * The Class NetflixZuulApiGatewayServerApp.
  */
-@EnableFeignClients(basePackages = "com.github.abhinavmishra14.currexc.feignproxy")
 @SpringBootApplication
+@EnableZuulProxy
 @EnableDiscoveryClient
-public class CurrencyExchangeServiceApp {
+public class NetflixZuulApiGatewayServerApp {
 
 	/**
 	 * The main method.
 	 *
 	 * @param args the arguments
 	 */
-	public static void main(final String[] args) {
-		SpringApplication.run(CurrencyExchangeServiceApp.class, args);
+	public static void main(String[] args) {
+		SpringApplication.run(NetflixZuulApiGatewayServerApp.class, args);
 	}
+
 }

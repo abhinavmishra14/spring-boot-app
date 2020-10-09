@@ -19,67 +19,34 @@ package com.github.abhinavmishra14.currexc.model;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 /**
  * The Class ExchangeRatesModel.
  */
-@Entity(name = "exchange_rates")
 public class ExchangeRatesModel {
 
-	/** The id. */
-	@Id
-	@Column(name = "id")
-	private Long id;
-	
 	/** The from. */
-	@Column(name="currency_from")
 	private String from;
 	
 	/** The to. */
-	@Column(name="currency_to")
 	private String to;
-	
+
 	/** The conversion multiple. */
-	@Column(name = "conversion_multiple")
 	private BigDecimal conversionMultiple;
-	
+
 	/** The port. */
-	@Column(name = "port")
 	private int port;
+	
+	/** The minimum limit. */
+	private BigDecimal minimumLimit;
+	
+	/** The maximum limit. */
+	private BigDecimal maximumLimit;
 	
 	/**
 	 * Instantiates a new exchange rates model.
 	 */
 	public ExchangeRatesModel() {
 		super();
-	}
-	
-	/**
-	 * Instantiates a new exchange rates model.
-	 *
-	 * @param id the id
-	 * @param from the from
-	 * @param to the to
-	 * @param conversionMultiple the conversion multiple
-	 */
-	public ExchangeRatesModel(final Long id, final String from, final String to, final BigDecimal conversionMultiple) {
-		super();
-		this.id = id;
-		this.from = from;
-		this.to = to;
-		this.conversionMultiple = conversionMultiple;
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
 	}
 
 	/**
@@ -92,12 +59,30 @@ public class ExchangeRatesModel {
 	}
 
 	/**
+	 * Sets the from.
+	 *
+	 * @param from the new from
+	 */
+	public void setFrom(final String from) {
+		this.from = from;
+	}
+
+	/**
 	 * Gets the to.
 	 *
 	 * @return the to
 	 */
 	public String getTo() {
 		return to;
+	}
+
+	/**
+	 * Sets the to.
+	 *
+	 * @param to the new to
+	 */
+	public void setTo(final String to) {
+		this.to = to;
 	}
 
 	/**
@@ -108,7 +93,16 @@ public class ExchangeRatesModel {
 	public BigDecimal getConversionMultiple() {
 		return conversionMultiple;
 	}
-	
+
+	/**
+	 * Sets the conversion multiple.
+	 *
+	 * @param conversionMultiple the new conversion multiple
+	 */
+	public void setConversionMultiple(final BigDecimal conversionMultiple) {
+		this.conversionMultiple = conversionMultiple;
+	}
+
 	/**
 	 * Gets the port.
 	 *
@@ -125,5 +119,52 @@ public class ExchangeRatesModel {
 	 */
 	public void setPort(final int port) {
 		this.port = port;
+	}
+
+	/**
+	 * Gets the minimum limit.
+	 *
+	 * @return the minimum limit
+	 */
+	public BigDecimal getMinimumLimit() {
+		return minimumLimit;
+	}
+
+	/**
+	 * Sets the minimum limit.
+	 *
+	 * @param minimumLimit the new minimum limit
+	 */
+	public void setMinimumLimit(final BigDecimal minimumLimit) {
+		this.minimumLimit = minimumLimit;
+	}
+
+	/**
+	 * Gets the maximum limit.
+	 *
+	 * @return the maximum limit
+	 */
+	public BigDecimal getMaximumLimit() {
+		return maximumLimit;
+	}
+
+	/**
+	 * Sets the maximum limit.
+	 *
+	 * @param maximumLimit the new maximum limit
+	 */
+	public void setMaximumLimit(final BigDecimal maximumLimit) {
+		this.maximumLimit = maximumLimit;
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	@Override
+	public String toString() {
+		return "ExchangeRatesModel [from=" + from + ", to=" + to + ", conversionMultiple=" + conversionMultiple
+				+ ", port=" + port + ", minimumLimit=" + minimumLimit + ", maximumLimit=" + maximumLimit + "]";
 	}
 }

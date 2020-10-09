@@ -17,6 +17,8 @@
  */
 package com.github.abhinavmishra14.limitsservice.model;
 
+import java.math.BigDecimal;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -27,12 +29,11 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "limits-service")
 public class LimitsConfiguration {
 
-	/** The minimum. */
-	private int minimum;
+	/** The minimum limit. */
+	private BigDecimal minimumLimit;
 	
-	/** The maximum. */
-	private int maximum;
-	
+	/** The maximum limit. */
+	private BigDecimal maximumLimit;
 	
 	/**
 	 * Instantiates a new limits configuration.
@@ -44,48 +45,48 @@ public class LimitsConfiguration {
 	/**
 	 * Instantiates a new limits configuration.
 	 *
-	 * @param minimum the minimum
-	 * @param maximum the maximum
+	 * @param minimumLimit the minimum limit
+	 * @param maximumLimit the maximum limit
 	 */
-	public LimitsConfiguration(final int minimum, final int maximum) {
+	public LimitsConfiguration(final BigDecimal minimumLimit, final BigDecimal maximumLimit) {
 		super();
-		this.minimum = minimum;
-		this.maximum = maximum;
+		this.minimumLimit = minimumLimit;
+		this.maximumLimit = maximumLimit;
 	}
-	
+
 	/**
-	 * Gets the minimum.
+	 * Gets the minimum limit.
 	 *
-	 * @return the minimum
+	 * @return the minimum limit
 	 */
-	public int getMinimum() {
-		return minimum;
+	public BigDecimal getMinimumLimit() {
+		return minimumLimit;
 	}
-	
+
 	/**
-	 * Sets the minimum.
+	 * Sets the minimum limit.
 	 *
-	 * @param minimum the new minimum
+	 * @param minimumLimit the new minimum limit
 	 */
-	public void setMinimum(final int minimum) {
-		this.minimum = minimum;
+	public void setMinimumLimit(final BigDecimal minimumLimit) {
+		this.minimumLimit = minimumLimit;
 	}
-	
+
 	/**
-	 * Gets the maximum.
+	 * Gets the maximum limit.
 	 *
-	 * @return the maximum
+	 * @return the maximum limit
 	 */
-	public int getMaximum() {
-		return maximum;
+	public BigDecimal getMaximumLimit() {
+		return maximumLimit;
 	}
-	
+
 	/**
-	 * Sets the maximum.
+	 * Sets the maximum limit.
 	 *
-	 * @param maximum the new maximum
+	 * @param maximumLimit the new maximum limit
 	 */
-	public void setMaximum(final int maximum) {
-		this.maximum = maximum;
+	public void setMaximumLimit(final BigDecimal maximumLimit) {
+		this.maximumLimit = maximumLimit;
 	}
 }

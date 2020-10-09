@@ -31,8 +31,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.abhinavmishra14.currexc.exceptions.CurrencyExchangeException;
+import com.github.abhinavmishra14.currexc.feignproxy.CurrencyExchangeLimitProxy;
 import com.github.abhinavmishra14.currexc.model.ExchangeRatesModel;
 import com.github.abhinavmishra14.currexc.repository.ExchangeRatesRepository;
+import com.github.abhinavmishra14.currexc.repository.entity.ExchangeRatesEntity;
 
 /**
  * The Class CurrencyExchangeController.
@@ -51,6 +53,10 @@ public class CurrencyExchangeController {
 	@Autowired
 	private ExchangeRatesRepository repository;
 	
+	/** The proxy. */
+	@Autowired
+	private CurrencyExchangeLimitProxy proxy;
+	
 	/**
 	 * Get the exchange rate.
 	 *
@@ -66,10 +72,14 @@ public class CurrencyExchangeController {
 		final Set<Object> supportedCurrencies = Stream.concat(fromList.stream(), toList.stream()).collect(Collectors.toSet());
 		LOGGER.info("Supported currencies: {}", supportedCurrencies);
 		if (fromList.contains(from) && toList.contains(to)) {
-			final ExchangeRatesModel exchangeRates = repository.findByFromAndTo(from, to);
-			exchangeRates.setPort(
-					Integer.parseInt(environment.getProperty("local.server.port")));		
-			return ResponseEntity.ok(exchangeRates);
+			final ExchangeRatesModel exchangeRatesWithLimits = proxy.getLimitsConfigFromConfiguration();
+			final ExchangeRatesEntity exchangeRates = repository.findByFromAndTo(from, to);
+			exchangeRatesWithLimits.setFrom(exchangeRates.getFrom());
+			exchangeRatesWithLimits.setTo(exchangeRates.getTo());
+			exchangeRatesWithLimits.setConversionMultiple(exchangeRates.getConversionMultiple());
+			exchangeRatesWithLimits.setPort(
+					Integer.parseInt(environment.getProperty("local.server.port")));					
+			return ResponseEntity.ok(exchangeRatesWithLimits);
 		} else {
 			throw new CurrencyExchangeException(
 					String.format("from '%s' and/or to '%s' inputs are invalid, currently supported currencies are: %s",
