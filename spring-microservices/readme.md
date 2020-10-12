@@ -19,9 +19,10 @@
 
 1- Start Spring cloud config server
 2- Start Netflix Eureka naming server
-3- Start Limits service
-4- Start Currency exchange service
-5- Start Currency conversion service
+3- Start Netflix zuul api gateway server
+4- Start Limits service
+5- Start Currency exchange service
+6- Start Currency conversion service
 
 
 ## URLs
@@ -57,7 +58,8 @@ Downloading Zipkin Jar
 
 Command to run
 ```
-RABBIT_URI=amqp://localhost java -jar zipkin-server-2.12.9-exec.jar 
+set RABBIT_URI=amqp://localhost
+java -jar zipkin-server-2.12.9-exec.jar 
 ```
 
 ## VM Argument

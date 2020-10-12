@@ -5,14 +5,14 @@ Configuration:
     Console:
       name: LogToConsole
       PatternLayout:
-        Pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+        Pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t %X{X-B3-TraceId},%X{X-B3-SpanId}] %c{1} - %msg%n"
 
     RollingFile:
       - name: LogToRollingFile
         fileName: logs/netflix-zull-apigateway-server.log
         filePattern: "logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
         PatternLayout:
-          pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c:%L] - %m%n"
+          pattern: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c:%L %X{X-B3-TraceId},%X{X-B3-SpanId}] - %m%n"
         Policies:
           SizeBasedTriggeringPolicy:
             size: 10MB

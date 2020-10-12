@@ -21,6 +21,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
+
+import brave.sampler.Sampler;
 
 /**
  * The Class CurrencyExchangeServiceApp.
@@ -38,4 +41,18 @@ public class CurrencyExchangeServiceApp {
 	public static void main(final String[] args) {
 		SpringApplication.run(CurrencyExchangeServiceApp.class, args);
 	}
+	
+	/**
+	 * Default sampler.<br>
+	 * We want to to trace all logs. sleuth assigns id to each request and same id
+	 * will be used in all inter microservices communication requests, which makes
+	 * it easy to trace logs mapped to an id
+	 *
+	 * @return the sampler
+	 */
+	@Bean
+	public Sampler defaultSampler() {
+		return Sampler.ALWAYS_SAMPLE;
+	}
+
 }
