@@ -68,6 +68,19 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-sleuth</artifactId>
 		</dependency>
+			
+		<!-- To generate messages in the format expected by zipkin -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
+		</dependency>
+		
+		<!-- To send traces to with zipkin via rabbit mq -->
+		<dependency>
+			<groupId>org.springframework.amqp</groupId>
+			<artifactId>spring-rabbit</artifactId>
+		</dependency>
+		<!-- Distributed tracing [End] -->
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
