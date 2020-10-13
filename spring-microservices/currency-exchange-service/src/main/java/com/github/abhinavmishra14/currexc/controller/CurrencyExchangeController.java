@@ -17,6 +17,8 @@
  */
 package com.github.abhinavmishra14.currexc.controller;
 
+
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -116,7 +118,10 @@ public class CurrencyExchangeController {
 		final JsonNode conMultiple = rates.get(to);
 		exchangeRatesWithLimits.setConversionMultiple(conMultiple.decimalValue());
 		exchangeRatesWithLimits.setPort(
-				Integer.parseInt(environment.getProperty("local.server.port")));					
+				Integer.parseInt(environment.getProperty("local.server.port")));
+		//Set default limits
+		exchangeRatesWithLimits.setMinimumLimit(BigDecimal.ONE);
+		exchangeRatesWithLimits.setMaximumLimit(new BigDecimal("1000"));
 		return ResponseEntity.ok(exchangeRatesWithLimits);
 	}
 }
