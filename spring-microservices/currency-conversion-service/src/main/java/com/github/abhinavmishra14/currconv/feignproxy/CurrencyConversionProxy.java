@@ -48,6 +48,6 @@ public interface CurrencyConversionProxy {
 	//@GetMapping("/currency-exchange/from/{from}/to/{to}")
 	//Set the getmapping like: /{application-name}/{uri}, to talk to currency-exchange-service via zuul api gateway.
 	@GetMapping("/currency-exchange-service/currency-exchange/from/{from}/to/{to}")
-	public ResponseEntity<CurrencyConversionModel> getExchangeRate(@PathVariable("from") final String from,
+	ResponseEntity<CurrencyConversionModel> getExchangeRate(@PathVariable("from") final String from,
 			@PathVariable("to") final String to);
 }

@@ -43,5 +43,5 @@ public interface CurrencyExchangeLimitProxy {
 	//@GetMapping("/limits")
 	//Set the getmapping like: /{application-name}/{uri}, to talk to limits service via zuul api gateway.
 	@GetMapping("/limits-service/limits")
-	public ExchangeRatesModel getLimitsConfigFromConfiguration();
+	ExchangeRatesModel getLimitsConfigFromConfiguration();
 }

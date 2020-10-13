@@ -17,6 +17,7 @@
  */
 package com.github.abhinavmishra14.currexc.controller;
 
+import java.text.MessageFormat;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,12 +30,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.abhinavmishra14.currexc.exceptions.CurrencyExchangeException;
 import com.github.abhinavmishra14.currexc.feignproxy.CurrencyExchangeLimitProxy;
 import com.github.abhinavmishra14.currexc.model.ExchangeRatesModel;
 import com.github.abhinavmishra14.currexc.repository.ExchangeRatesRepository;
 import com.github.abhinavmishra14.currexc.repository.entity.ExchangeRatesEntity;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
  * The Class CurrencyExchangeController.
@@ -65,6 +70,7 @@ public class CurrencyExchangeController {
 	 * @return the exchange rates model
 	 */
 	@GetMapping("/currency-exchange/from/{from}/to/{to}")
+	@HystrixCommand(fallbackMethod = "getExchangeRateFallBack")
 	public ResponseEntity<ExchangeRatesModel> getExchangeRate(@PathVariable final String from, @PathVariable final String to) {
 		LOGGER.info("getExchangeRate invoked, 'from' value: {} and 'to' value: {}", from, to);
 		final Set<Object> fromList = repository.getFromList();
@@ -85,5 +91,32 @@ public class CurrencyExchangeController {
 					String.format("from '%s' and/or to '%s' inputs are invalid, currently supported currencies are: %s",
 							from, to, supportedCurrencies));
 		}
+	}
+	
+	/**
+	 * Gets the exchange rate fall back.<br>
+	 * Calls external api, example: https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,INR
+	 *
+	 * @param from the from
+	 * @param to the to
+	 * @return the exchange rate fall back
+	 */
+	@GetMapping("/currency-exchange-fallback/from/{from}/to/{to}")
+	public ResponseEntity<ExchangeRatesModel> getExchangeRateFallBack(@PathVariable final String from, @PathVariable final String to) {
+		LOGGER.info("getExchangeRateFallBack invoked, 'from' value: {} and 'to' value: {}", from, to);
+		final String fallbackEchangeRatesUri = MessageFormat.format(environment.getProperty("exchange.rate.fallback.uri"), from, from+","+to);
+		LOGGER.info("invoking {} ...", fallbackEchangeRatesUri);
+		final ResponseEntity<ObjectNode> response = new RestTemplate().getForEntity(fallbackEchangeRatesUri, ObjectNode.class);
+		final ObjectNode exchangeRateObj = response.getBody();
+		LOGGER.info("Third party exchange rate response: {}", exchangeRateObj);
+		final ExchangeRatesModel exchangeRatesWithLimits = new ExchangeRatesModel();
+		final JsonNode rates = exchangeRateObj.get("rates");
+		exchangeRatesWithLimits.setFrom(from);
+		exchangeRatesWithLimits.setTo(to);
+		final JsonNode conMultiple = rates.get(to);
+		exchangeRatesWithLimits.setConversionMultiple(conMultiple.decimalValue());
+		exchangeRatesWithLimits.setPort(
+				Integer.parseInt(environment.getProperty("local.server.port")));					
+		return ResponseEntity.ok(exchangeRatesWithLimits);
 	}
 }

@@ -24,6 +24,7 @@
 		<spring-cloud.version>Hoxton.SR8</spring-cloud.version>
 		<baseDirectory>${project.basedir}</baseDirectory>
 		<springdoc-openapi-version>1.4.8</springdoc-openapi-version>
+		<skipTests>true</skipTests>
 	</properties>
 	
 	<dependencies>
@@ -318,11 +319,11 @@
 	</pluginRepositories>
 	
 	<modules>
+		<module>spring-cloud-config-server</module>
+		<module>netflix-eureka-naming-server</module>
+		<module>netflix-zuul-api-gateway-server</module>
 		<module>limits-service</module>
 		<module>currency-exchange-service</module>
 		<module>currency-conversion-service</module>
-		<module>netflix-eureka-naming-server</module>
-		<module>netflix-zuul-api-gateway-server</module>
-		<module>spring-cloud-config-server</module>
 	</modules>
 </project>

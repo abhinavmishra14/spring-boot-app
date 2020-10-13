@@ -17,6 +17,8 @@
  */
 package com.github.abhinavmishra14.limitsservice.controller;
 
+import java.math.BigDecimal;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.abhinavmishra14.limitsservice.model.LimitsConfiguration;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
  * The Class LimitsConfigController.
@@ -44,8 +47,18 @@ public class LimitsConfigController {
 	 * @return the limits configuration
 	 */
 	@GetMapping("/limits")
+	@HystrixCommand(fallbackMethod = "getLimitsConfigFromConfigurationFallback")
 	public LimitsConfiguration getLimitsConfigFromConfiguration() {
 		LOGGER.info("getLimitsConfigFromConfiguration invoked..");
 		return limitsConfiguration;
+	}
+	
+	/**
+	 * Fallback get limits config from configuration.
+	 *
+	 * @return the limits configuration
+	 */
+	public LimitsConfiguration getLimitsConfigFromConfigurationFallback() {
+		return new LimitsConfiguration(BigDecimal.ONE, new BigDecimal("1000"));
 	}
 }

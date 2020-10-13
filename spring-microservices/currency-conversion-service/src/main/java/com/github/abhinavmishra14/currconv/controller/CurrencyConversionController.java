@@ -18,22 +18,27 @@
 package com.github.abhinavmishra14.currconv.controller;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.github.abhinavmishra14.currconv.exceptions.CurrencyConversionException;
 import com.github.abhinavmishra14.currconv.feignproxy.CurrencyConversionProxy;
 import com.github.abhinavmishra14.currconv.model.CurrencyConversionModel;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 /**
  * The Class CurrencyConversionController.
@@ -48,6 +53,10 @@ public class CurrencyConversionController {
 	@Autowired
 	private CurrencyConversionProxy currProxy;
 	
+	/** The environment. */
+	@Autowired
+	private Environment environment;
+	
 	/**
 	 * Convert.<br>
 	 * To talk to currency exchange service we will use Feign proxy. <br>
@@ -56,10 +65,11 @@ public class CurrencyConversionController {
 	 * 
 	 * @param from the from
 	 * @param to the to
-	 * @param quantity the quantity
+	 * @param amount the amount
 	 * @return the exchange rate
 	 */
 	@GetMapping("/currency-converter/from/{from}/to/{to}/amount/{amount}")
+	@HystrixCommand(fallbackMethod = "convertFallback")
 	public ResponseEntity<MappingJacksonValue> convert(@PathVariable final String from, @PathVariable final String to,
 			@PathVariable final BigDecimal amount) {
 		LOGGER.info("convert invoked, 'from' value: {} , 'to' value: {} and 'amount' value: {}", from, to, amount);
@@ -80,6 +90,37 @@ public class CurrencyConversionController {
 		} else {
 			throw new CurrencyConversionException(currConvResp.getStatusCode().getReasonPhrase());
 		}
+	}
+	
+	/**
+	 * Convert fallback.<br>
+	 * Calls external api, example: https://api.exchangeratesapi.io/latest?base=USD&symbols=USD,INR
+	 *
+	 * @param from the from
+	 * @param to the to
+	 * @param amount the amount
+	 * @return the response entity
+	 */
+	@GetMapping("/currency-converter-fallback/from/{from}/to/{to}/amount/{amount}")
+	public ResponseEntity<MappingJacksonValue> convertFallback(@PathVariable final String from, @PathVariable final String to,
+			@PathVariable final BigDecimal amount) {
+		LOGGER.info("convertFallback invoked, 'from' value: {} , 'to' value: {} and 'amount' value: {}", from, to, amount);
+		final String fallbackEchangeRatesUri = MessageFormat.format(environment.getProperty("exchange.rate.fallback.uri"), from, from+","+to);
+		LOGGER.info("invoking {} ...", fallbackEchangeRatesUri);
+		final ResponseEntity<ObjectNode> response = new RestTemplate().getForEntity(fallbackEchangeRatesUri, ObjectNode.class);
+		final ObjectNode exchangeRateObj = response.getBody();
+		LOGGER.info("Third party exchange rate response: {}", exchangeRateObj);
+		final CurrencyConversionModel model = new CurrencyConversionModel();
+		model.setFrom(from);
+		model.setTo(to);
+		model.setAmount(amount);
+		final BigDecimal conversionMultiple = exchangeRateObj.get("rates").get(to).decimalValue();
+		model.setConversionMultiple(conversionMultiple);
+		model.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
+		model.setTotalCalculatedAmount(amount.multiply(conversionMultiple));
+		//Filter limits and return response
+		return ResponseEntity.ok(serializeAllExcept(model, "CurrencyConversionFilteredModel",
+				"minimumLimit", "maximumLimit"));
 	}
 	
 	/**

@@ -82,6 +82,12 @@
 		</dependency>
 		<!-- Distributed tracing [End] -->
 		
+		<!-- For fault tolerance, we can configure fallback methods for controller methods -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>

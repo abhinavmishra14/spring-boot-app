@@ -1,10 +1,10 @@
-package com.github.abhinavmishra14.eureka.ns;
+package com.github.abhinavmishra14.netflixzull.gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class NetflixEurekaNamingServerApplicationTests {
+class NetflixZuulApiGatewayServerAppTests {
 
 	@Test
 	void contextLoads() {
