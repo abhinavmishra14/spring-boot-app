@@ -51,9 +51,28 @@
 ## Install RabbitMQ
 
 ```
-brew install rabbitmq
-/usr/local/sbin/rabbitmq-server
+https://www.rabbitmq.com/install-windows.html
+```
+
+#### Download and install Erland & RabbitMQ for windows:
+```
+Download and install after Erlang is installed:
+http://erlang.org/download/otp_win64_23.1.exe
+
+Download and install Erlang (RabbitMQ dependency, it needs to be installed before RabbitMQ installation):
+https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.8.9/rabbitmq-server-3.8.9.exe
+
+```
+
+## Refresh the configs using actuator
+
+```
+For one instance running on port 8080 refresh the config:
+
 curl -X POST localhost:8080/actuator/refresh
+
+For all instances running on any ports, refresh the config:
+
 curl -X POST localhost:8080/actuator/bus-refresh
 ```
 
