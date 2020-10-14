@@ -54,7 +54,7 @@
 https://www.rabbitmq.com/install-windows.html
 ```
 
-#### Download and install Erland & RabbitMQ for windows:
+#### Download and install Erlang & RabbitMQ for windows:
 ```
 Download and install after Erlang is installed:
 http://erlang.org/download/otp_win64_23.1.exe
@@ -84,25 +84,15 @@ Quick Start Page
 Downloading Zipkin Jar
 - https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec
 
-Command to run
+Command to run (also see startZipkin.bat/startZipkin.sh)
 ```
 set RABBIT_URI=amqp://localhost
-java -jar zipkin-server-2.12.9-exec.jar 
+java -jar zipkin-server-2.21.7-exec.jar 
 ```
 
-## VM Argument
+## How to set VM Argument?
 
 -Dserver.port=8001
-
-## Commands
-
-```
-mkdir git-configuration-repo
-cd git-configuration-repo/
-git init
-git add -A
-git commit -m "Initial commit"
-```
 
 ## Spring Cloud Configuration
 
