@@ -56,10 +56,12 @@ https://www.rabbitmq.com/install-windows.html
 
 #### Download and install Erlang & RabbitMQ for windows:
 ```
-Download and install after Erlang is installed:
-http://erlang.org/download/otp_win64_23.1.exe
 
 Download and install Erlang (RabbitMQ dependency, it needs to be installed before RabbitMQ installation):
+http://erlang.org/download/otp_win64_23.1.exe
+
+
+Download and install after Erlang is installed:
 https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.8.9/rabbitmq-server-3.8.9.exe
 
 ```
