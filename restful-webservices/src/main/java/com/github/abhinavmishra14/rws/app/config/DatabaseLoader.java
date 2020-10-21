@@ -24,50 +24,37 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.github.abhinavmishra14.rws.repository.PostRepository;
 import com.github.abhinavmishra14.rws.repository.UserRepository;
-import com.github.abhinavmishra14.rws.repository.entity.PostEntity;
 import com.github.abhinavmishra14.rws.repository.entity.UserEntity;
 
 /**
  * The Class DatabaseLoader.
  */
 @Component
+@Order //Default order is lowest, hence this application runner may run at the last of initial startup
 public class DatabaseLoader implements ApplicationRunner {
 
 	/** The user repository. */
 	@Autowired
 	private UserRepository userRepository;
 	
-	/** The post repository. */
-	@Autowired
-	private PostRepository postRepository;
-	
 	/* (non-Javadoc)
 	 * @see org.springframework.boot.ApplicationRunner#run(org.springframework.boot.ApplicationArguments)
 	 */
 	@Override
 	public void run(final ApplicationArguments args) throws Exception {
-		final List<UserEntity> users = new ArrayList<UserEntity>();
-		final UserEntity userOne = new UserEntity("Administrator", new Date(), "admin", "admin",
-				new String[] { "ROLE_ADMIN", "ROLE_USER" });		
-		final UserEntity userTwo = new UserEntity("Test User", new Date(), "testUser", "welcome",
-				new String[] { "ROLE_USER" });		
-		users.add(userOne); users.add(userTwo);
-		userRepository.saveAll(users);
-
-		final List<PostEntity> posts = new ArrayList<PostEntity>();
-		final PostEntity postOne = new PostEntity("Hello", new Date());
-		final PostEntity postOne1 = new PostEntity("Hello there", new Date());
-		final PostEntity postOne2 = new PostEntity("Hi how are you", new Date());
-		postOne.setUser(userOne); postOne1.setUser(userOne); postOne2.setUser(userOne);
-		posts.add(postOne); posts.add(postOne1); posts.add(postOne2); 
-		
-		final PostEntity postTwo = new PostEntity("Hi There", new Date());
-		postTwo.setUser(userTwo);
-		posts.add(postTwo);
-		postRepository.saveAll(posts);
+		//Setup initial user for login. Remember to change the password at later time.
+		//This code logic will run only for initial startup or when admin user is missing
+		final UserEntity user = userRepository.findByUsername("admin");
+		if (user == null) {
+			final List<UserEntity> users = new ArrayList<UserEntity>();
+			final UserEntity userOne = new UserEntity("Administrator", new Date(), "admin", "admin",
+					new String[] { "ROLE_ADMIN", "ROLE_USER" });
+			users.add(userOne);
+			userRepository.saveAll(users);
+		}
 	}
 }

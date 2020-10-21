@@ -614,3 +614,24 @@ JpaRepository provides JPA related methods such as flushing the persistence cont
 Due to their inheritance nature, JpaRepository will have all the behaviors of CrudRepository and PagingAndSortingRepository. 
 So if you don't need the repository to have the functions provided by JpaRepository and PagingAndSortingRepository , use CrudRepository.
 ```
+
+#### This project is enabled to build and push docker image for the project
+
+- To compile and build the Docker image in local docker image repository:
+
+```
+mvn clean install 
+```
+
+- To compile, build the Docker image and push it to docker hub image repository:
+
+```
+mvn clean install -Ddocker.user=<userName> -Ddocker.password=<password> 
+-Dddocker.registry=<docker-registry-url> 
+
+mvn clean deploy -Ddocker.user=<userName> -Ddocker.password=<password> 
+-Ddocker.registry=<docker-registry-url> 
+
+```
+
+Note: Make sure docker engine service is running on your machine before doing build and deployment
