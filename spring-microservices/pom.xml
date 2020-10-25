@@ -25,6 +25,8 @@
 		<baseDirectory>${project.basedir}</baseDirectory>
 		<springdoc-openapi-version>1.4.8</springdoc-openapi-version>
 		<skipTests>true</skipTests>
+		<docker.repo>abhinavkmishra14</docker.repo>
+    	<docker.registry>docker.io</docker.registry>
 	</properties>
 	
 	<dependencies>

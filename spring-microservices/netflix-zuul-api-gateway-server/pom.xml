@@ -23,10 +23,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
 		
 		<!-- Naming server discovery client -->
 		<dependency>
@@ -80,4 +76,145 @@
 		</plugins>
 	</build>
 
+    <profiles>
+		<profile>
+			<id>build-deploy-docker-image</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<!-- Using latest version to avoid any bugs in the plug-in -->
+						<version>3.0.0</version><!--$NO-MVN-MAN-VER$-->
+						<executions>
+							<!-- Clean/remove any existing image from local docker image repository -->
+							<execution>
+								<id>docker-image-clean</id>
+								<phase>install</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>docker</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>rmi</argument>
+										<argument>${docker.repo}/${project.artifactId}:${project.version}</argument>
+										<argument>${docker.repo}/${project.artifactId}:latest</argument>
+									</arguments>
+									<!-- Do not fail when no image exists in the repository locally. When you 
+										are building for the first time and no such image exists the command will 
+										fail with exit code 1, hence to go to next step, we have added successCodes. 
+										0 is default exit after successful deletion of image from local image repo -->
+									<successCodes>
+										<successCode>0</successCode>
+										<successCode>1</successCode>
+									</successCodes>
+								</configuration>
+							</execution>
+							
+							<!-- 
+					         Create new docker image via DockerFile. DockerFile must be available in current working directory.
+							-->
+							<execution>
+								<id>docker-image-build</id>
+								<phase>install</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>docker</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<!-- Tag the docker image using maven project version information -->
+									<arguments>
+										<argument>build</argument>
+										<argument>--no-cache</argument>
+										<argument>-t</argument>
+										<argument>${docker.repo}/${project.artifactId}:${project.version}</argument>
+										<argument>.</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>docker-image-build-latest</id>
+								<phase>install</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>docker</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<!-- Tag the docker image as latest version -->
+									<arguments>
+										<argument>build</argument>
+										<argument>--no-cache</argument>
+										<argument>-t</argument>
+										<argument>${docker.repo}/${project.artifactId}:latest</argument>
+										<argument>.</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							
+							<!-- Login and Push the image to your docker hub repository during install phase. -->
+							<execution>
+								<id>install-docker-hub-login</id>
+								<phase>install</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>docker</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>login</argument>
+										<argument>-u</argument>
+										<argument>${docker.user}</argument>
+										<argument>-p</argument>
+										<argument>${docker.password}</argument>
+										<argument>${docker.registry}</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							
+							<execution>
+								<id>install-docker-image-push</id>
+								<!-- Change to deploy phase when you push artifacts to nexus repo/artifactory -->
+								<phase>install</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>docker</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>push</argument>
+										<argument>${docker.repo}/${project.artifactId}:${project.version}</argument>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-docker-image-push-latest</id>
+								<!-- Change to deploy phase when you push artifacts to nexus repo/artifactory -->
+								<phase>install</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>docker</executable>
+									<workingDirectory>${project.basedir}</workingDirectory>
+									<arguments>
+										<argument>push</argument>
+									    <argument>${docker.repo}/${project.artifactId}:latest</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

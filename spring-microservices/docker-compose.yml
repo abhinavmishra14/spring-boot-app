@@ -1,0 +1,24 @@
+version: '3.8'
+services:      
+  spring-cloud-config-server:
+    image: abhinavkmishra14/spring-cloud-config-server:1.0-SNAPSHOT
+    network_mode: bridge
+    container_name: spring-cloud-config-server
+    command: "ls -l"
+    environment:
+      JAVA_OPTS: "
+                -Dserver.port=8888
+                -Dlogging.level.web=debug
+                -Dspring.cloud.config.server.git.uri=git@github.com:abhinavmishra14/spring-microservices-config-repo.git
+                -Dspring.cloud.config.server.git.clone-on-start=true
+                -Dspring.cloud.config.server.git.search-paths=limits-service
+                -Dspring.cloud.config.server.git.force-pull=true
+                -Dspring.cloud.config.server.git.basedir=/config-repoo
+                -Dspring.cloud.config.server.git.ignore-local-ssh-settings=false
+                -Dspring.cloud.config.server.git.strict-host-key-checking=false
+                -Dspring.cloud.config.server.git.skip-ssl-validation=true
+                "
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./config-repo:/config-repo
