@@ -1,27 +1,20 @@
 FROM openjdk:8-jdk-alpine
 
-#Create logs directory
-RUN mkdir logs
-RUN mkdir config-repo
-
 #Install git
 RUN apk add --no-cache git
 
-#import cert into java
-COPY src/main/resources/certs/server.crt /opt/workdir/
-RUN cd /opt/workdir && ls -l
- 
-RUN keytool -import -alias springconfig -keystore $JAVA_HOME/jre/lib/security/cacerts -trustcacerts -file /opt/workdir/server.crt -storepass changeit -noprompt
 
-#RUN addgroup -S spring && adduser -S spring -G spring
-#RUN chown -R spring config-repo
-#RUN chmod -R 777 logs
-#RUN chmod -R 777 config-repo
-#RUN chown -R spring logs
-#RUN chown -R spring config-repo
-#USER spring:spring
+#Setup config repo here as cloning on startup causing multiple issues
+RUN git clone https://github.com/abhinavmishra14/spring-microservices-config-repo.git
+#Check if repo is cloned successfully and has all the required files
+RUN cd spring-microservices-config-repo && ls -l && cd ..
 
+#Create spring user and group and provide permission to 'spring-microservices-config-repo' directory and all sub-folder/files
+RUN addgroup -S spring && adduser -S spring -G spring
+RUN chown -R spring spring-microservices-config-repo
+RUN chmod -R 777 spring-microservices-config-repo
 
+USER spring:spring
 
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} spring-cloud-config-server.jar
