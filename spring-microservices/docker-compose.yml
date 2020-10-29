@@ -1,24 +1,56 @@
 version: '3.8'
-services:      
+services: 
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:1567
+      
+  zipkin:
+    image: openzipkin/zipkin:2.22
+    container_name: zipkin
+    depends_on:
+      - rabbitmqs
+    restart: on-failure #Restart the zipkin container again if it failed to connect to rabbitmq and exited, repeat until rabbitmq is up and running
+    ports:
+      - "9410:9410"
+      - "9411:9411"
+    environment:
+      - "RABBIT_URI=amqp://rabbitmq"
+      
   spring-cloud-config-server:
     image: abhinavkmishra14/spring-cloud-config-server:1.0-SNAPSHOT
-    network_mode: bridge
     container_name: spring-cloud-config-server
-    command: "ls -l"
     environment:
       JAVA_OPTS: "
                 -Dserver.port=8888
                 -Dlogging.level.web=debug
-                -Dspring.cloud.config.server.git.uri=git@github.com:abhinavmishra14/spring-microservices-config-repo.git
-                -Dspring.cloud.config.server.git.clone-on-start=true
+                -Dspring.cloud.config.server.git.uri=https://github.com/abhinavmishra14/spring-microservices-config-repo.git
+                -Dspring.cloud.config.server.git.clone-on-start=false
                 -Dspring.cloud.config.server.git.search-paths=limits-service
                 -Dspring.cloud.config.server.git.force-pull=true
-                -Dspring.cloud.config.server.git.basedir=/config-repoo
-                -Dspring.cloud.config.server.git.ignore-local-ssh-settings=false
-                -Dspring.cloud.config.server.git.strict-host-key-checking=false
-                -Dspring.cloud.config.server.git.skip-ssl-validation=true
+                -Dspring.rabbitmq.host=rabbitmq
+                -Dspring.rabbitmq.port=5672
                 "
     ports:
       - "8888:8888"
+    depends_on:
+      - rabbitmq
+      - zipkin
+   
+  postgres:
+    image: postgres:12.3
+    container_name: postgres
+    hostname: postgres
+    environment:
+      - POSTGRES_USER=sa
+      - POSTGRES_PASSWORD=sa
+      - POSTGRES_DB=currexec
+    command: postgres -c max_connections=300 -c log_min_messages=LOG
+    ports:
+      - "5432:5432"
     volumes:
-      - ./config-repo:/config-repo
+      - ./pg-data:/var/lib/postgresql/data
+      
