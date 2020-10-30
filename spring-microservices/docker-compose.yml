@@ -10,11 +10,18 @@ services:
       
   zipkin:
     image: openzipkin/zipkin:2.22
+    #For swarm mode, use deploy and its subkeys to control the restart behavior:
+    #deploy:
+    #  restart_policy:
+    #    condition: on-failure 
+    #    delay: 5s
+    #    max_attempts: 5
+    #    window: 120s
     container_name: zipkin
     hostname: zipkin
     depends_on:
       - rabbitmq
-    restart: on-failure #Restart the zipkin container again if it failed to connect to rabbitmq and exited, repeat until rabbitmq is up and running
+    restart: on-failure:5 #Restart the zipkin container again if it failed to connect to rabbitmq and exited, repeat until rabbitmq is up and running, max attempt is 5
     ports:
       - "9410:9410"
       - "9411:9411"
@@ -42,6 +49,8 @@ services:
     depends_on:
       - rabbitmq
       - zipkin
+    volumes:
+      - ./logs:/logs
       
   netflix-eureka-naming-server:
     image: abhinavkmishra14/netflix-eureka-naming-server:1.0-SNAPSHOT
