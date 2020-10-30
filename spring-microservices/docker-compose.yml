@@ -11,8 +11,9 @@ services:
   zipkin:
     image: openzipkin/zipkin:2.22
     container_name: zipkin
+    hostname: zipkin
     depends_on:
-      - rabbitmqs
+      - rabbitmq
     restart: on-failure #Restart the zipkin container again if it failed to connect to rabbitmq and exited, repeat until rabbitmq is up and running
     ports:
       - "9410:9410"
@@ -23,9 +24,11 @@ services:
   spring-cloud-config-server:
     image: abhinavkmishra14/spring-cloud-config-server:1.0-SNAPSHOT
     container_name: spring-cloud-config-server
+    hostname: spring-cloud-config-server
     environment:
       JAVA_OPTS: "
                 -Dserver.port=8888
+                -Dspring.application.name=spring-cloud-config-server
                 -Dlogging.level.web=debug
                 -Dspring.cloud.config.server.git.uri=https://github.com/abhinavmishra14/spring-microservices-config-repo.git
                 -Dspring.cloud.config.server.git.clone-on-start=false
@@ -39,18 +42,20 @@ services:
     depends_on:
       - rabbitmq
       - zipkin
-   
-  postgres:
-    image: postgres:12.3
-    container_name: postgres
-    hostname: postgres
-    environment:
-      - POSTGRES_USER=sa
-      - POSTGRES_PASSWORD=sa
-      - POSTGRES_DB=currexec
-    command: postgres -c max_connections=300 -c log_min_messages=LOG
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./pg-data:/var/lib/postgresql/data
       
+  netflix-eureka-naming-server:
+    image: abhinavkmishra14/netflix-eureka-naming-server:1.0-SNAPSHOT
+    container_name: netflix-eureka-naming-server
+    hostname: netflix-eureka-naming-server
+    environment:
+      JAVA_OPTS: "
+                -Dlogging.level.web=debug
+                -Dspring.application.name=netflix-eureka-naming-server
+                -Dserver.port=8761
+                -Deureka.client.register-with-eureka=false
+                -Deureka.client.fetch-registry=false
+                "
+    ports:
+      - "8761:8761"
+    volumes:
+      - ./logs:/logs

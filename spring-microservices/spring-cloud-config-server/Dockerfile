@@ -1,5 +1,7 @@
 FROM openjdk:8-jdk-alpine
 
+RUN mkdir logs
+
 #Install git
 RUN apk add --no-cache git
 
@@ -13,6 +15,8 @@ RUN cd spring-microservices-config-repo && ls -l && cd ..
 RUN addgroup -S spring && adduser -S spring -G spring
 RUN chown -R spring spring-microservices-config-repo
 RUN chmod -R 777 spring-microservices-config-repo
+RUN chown -R spring logs
+RUN chmod -R 755 logs
 
 USER spring:spring
 

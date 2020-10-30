@@ -4,11 +4,11 @@ FROM openjdk:8-jdk-alpine
 RUN mkdir logs
 
 RUN addgroup -S spring && adduser -S spring -G spring
-
-RUN chmod -R 755 logs
 RUN chown -R spring logs
+RUN chmod -R 755 logs
 
 USER spring:spring
+
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} netflix-zuul-api-gateway-server.jar
 
