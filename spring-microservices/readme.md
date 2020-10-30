@@ -17,13 +17,13 @@
 
 ## Order in which you can start all apps:
 
-1- Start Spring cloud config server
+1- Start zipkin server (Use '.\startZipkin.bat' or './startZipkin.sh' to start zipkin server. Once it is started, check the zipkin dashboard here: http://localhost:9411/zipkin)
 
-2- Start Netflix Eureka naming server
+2- Make RabbitMQ is running as well and zipkin is connected to the rabbit mq. See '.\startZipkin.bat' or './startZipkin.sh' for details on commands.
 
-3- Start zipkin server (Use '.\startZipkin.bat' or './startZipkin.sh' to start zipkin server. Once it is started, check the zipkin dashboard here: http://localhost:9411/zipkin)
+3- Start Spring cloud config server
 
-4- Make RabbitMQ is running as well and zipkin is connected to the rabbit mq. See '.\startZipkin.bat' or './startZipkin.sh' for details on commands.
+4- Start Netflix Eureka naming server
  
 5- Start Netflix zuul api gateway server
 
