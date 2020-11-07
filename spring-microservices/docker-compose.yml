@@ -1,7 +1,26 @@
 version: '3.8'
 services: 
+  netflix-eureka-naming-server:
+    image: abhinavkmishra14/netflix-eureka-naming-server:1.0-SNAPSHOT
+    #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
+    #For now we need default network i.e. 'bridge', so no need of specifying the network.
+    container_name: netflix-eureka-naming-server #If no name is specified Docker will automatically generate a name
+    hostname: netflix-eureka-naming-server #container id will be used hostname if host name is not specified
+    environment:
+      JAVA_OPTS: "
+                -Dlogging.level.web=debug
+                -Dspring.application.name=netflix-eureka-naming-server
+                -Dserver.port=8761
+                -Deureka.client.register-with-eureka=false
+                -Deureka.client.fetch-registry=false
+                "
+    ports:
+      - "8761:8761"
+    volumes:
+      - ./logs:/logs
+      
   rabbitmq:
-    image: rabbitmq:management
+    image: rabbitmq:3.8-management-alpine
     #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
     #For now we need default network i.e. 'bridge', so no need of specifying the network.
     container_name: rabbitmq #If no name is specified Docker will automatically generate a name
@@ -24,6 +43,8 @@ services:
     container_name: zipkin #If no name is specified Docker will automatically generate a name
     hostname: zipkin #container id will be used hostname if host name is not specified
     depends_on:
+      - rabbitmq
+    links:
       - rabbitmq
     restart: on-failure:5 #Restart the zipkin container again if it failed to connect to rabbitmq and exited, repeat until rabbitmq is up and running, max attempt is 5
     ports:
@@ -51,32 +72,17 @@ services:
                 -Dspring.rabbitmq.host=rabbitmq
                 -Dspring.rabbitmq.port=5672
                 -Dzipkin.web.query.dest=zipkin:9411
-                -Dspring.zipking.base-url=http://zipkin:9411
+                -Dspring.zipkin.base-url=http://zipkin:9411
+                -Dzipkin.ui.archive-post-url=https://zipkin:9411/api/v2/spans
                 "
     ports:
       - "8888:8888"
     depends_on:
       - rabbitmq
       - zipkin
-    volumes:
-      - ./logs:/logs
-      
-  netflix-eureka-naming-server:
-    image: abhinavkmishra14/netflix-eureka-naming-server:1.0-SNAPSHOT
-    #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
-    #For now we need default network i.e. 'bridge', so no need of specifying the network.
-    container_name: netflix-eureka-naming-server #If no name is specified Docker will automatically generate a name
-    hostname: netflix-eureka-naming-server #container id will be used hostname if host name is not specified
-    environment:
-      JAVA_OPTS: "
-                -Dlogging.level.web=debug
-                -Dspring.application.name=netflix-eureka-naming-server
-                -Dserver.port=8761
-                -Deureka.client.register-with-eureka=false
-                -Deureka.client.fetch-registry=false
-                "
-    ports:
-      - "8761:8761"
+    links:
+      - rabbitmq
+      - zipkin
     volumes:
       - ./logs:/logs
    
@@ -94,7 +100,8 @@ services:
                 -Dspring.rabbitmq.host=rabbitmq
                 -Dspring.rabbitmq.port=5672
                 -Dzipkin.web.query.dest=zipkin:9411
-                -Dspring.zipking.base-url=http://zipkin:9411
+                -Dspring.zipkin.base-url=http://zipkin:9411
+                -Dzipkin.ui.archive-post-url=https://zipkin:9411/api/v2/spans
                 -Deureka.client.serviceUrl.defaultZone=http://netflix-eureka-naming-server:8761/eureka
                 "
     ports:
@@ -102,6 +109,9 @@ services:
     volumes:
       - ./logs:/logs
     depends_on:
+      - netflix-eureka-naming-server
+      - zipkin
+    links:
       - netflix-eureka-naming-server
       - zipkin
 
@@ -122,7 +132,8 @@ services:
                 -Dspring.rabbitmq.host=rabbitmq
                 -Dspring.rabbitmq.port=5672
                 -Dzipkin.web.query.dest=zipkin:9411
-                -Dspring.zipking.base-url=http://zipkin:9411
+                -Dspring.zipkin.base-url=http://zipkin:9411
+                -Dzipkin.ui.archive-post-url=https://zipkin:9411/api/v2/spans
                 -Deureka.client.serviceUrl.defaultZone=http://netflix-eureka-naming-server:8761/eureka
                 "
     ports:
@@ -133,7 +144,11 @@ services:
       - netflix-eureka-naming-server
       - zipkin
       - spring-cloud-config-server
-
+    links:
+      - netflix-eureka-naming-server
+      - zipkin
+      - spring-cloud-config-server
+      
   postgres:
     image: postgres:12.3
     #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
@@ -172,7 +187,8 @@ services:
                 -Dspring.rabbitmq.host=rabbitmq
                 -Dspring.rabbitmq.port=5672
                 -Dzipkin.web.query.dest=zipkin:9411
-                -Dspring.zipking.base-url=http://zipkin:9411
+                -Dspring.zipkin.base-url=http://zipkin:9411
+                -Dzipkin.ui.archive-post-url=https://zipkin:9411/api/v2/spans
                 -Deureka.client.serviceUrl.defaultZone=http://netflix-eureka-naming-server:8761/eureka
                 "
     ports:
@@ -180,6 +196,10 @@ services:
     volumes:
       - ./logs:/logs
     depends_on:
+      - postgres
+      - netflix-eureka-naming-server
+      - zipkin
+    links:
       - postgres
       - netflix-eureka-naming-server
       - zipkin
@@ -199,7 +219,8 @@ services:
                 -Dspring.rabbitmq.host=rabbitmq
                 -Dspring.rabbitmq.port=5672
                 -Dzipkin.web.query.dest=zipkin:9411
-                -Dspring.zipking.base-url=http://zipkin:9411
+                -Dspring.zipkin.base-url=http://zipkin:9411
+                -Dzipkin.ui.archive-post-url=https://zipkin:9411/api/v2/spans
                 -Deureka.client.serviceUrl.defaultZone=http://netflix-eureka-naming-server:8761/eureka
                 "
     ports:
@@ -209,4 +230,6 @@ services:
     depends_on:
       - netflix-eureka-naming-server
       - zipkin
-  
+    links:
+      - netflix-eureka-naming-server
+      - zipkin
