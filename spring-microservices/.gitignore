@@ -28,3 +28,4 @@ hs_err_pid*
 /data/
 /config-repo/
 /spring-microservices-config-repo/
+/pg-data/

@@ -2,8 +2,10 @@ version: '3.8'
 services: 
   rabbitmq:
     image: rabbitmq:management
-    container_name: rabbitmq
-    hostname: rabbitmq
+    #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
+    #For now we need default network i.e. 'bridge', so no need of specifying the network.
+    container_name: rabbitmq #If no name is specified Docker will automatically generate a name
+    hostname: rabbitmq #container id will be used hostname if host name is not specified
     ports:
       - 5672:5672
       - 15672:1567
@@ -17,8 +19,10 @@ services:
     #    delay: 5s
     #    max_attempts: 5
     #    window: 120s
-    container_name: zipkin
-    hostname: zipkin
+    #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
+    #For now we need default network i.e. 'bridge', so no need of specifying the network.
+    container_name: zipkin #If no name is specified Docker will automatically generate a name
+    hostname: zipkin #container id will be used hostname if host name is not specified
     depends_on:
       - rabbitmq
     restart: on-failure:5 #Restart the zipkin container again if it failed to connect to rabbitmq and exited, repeat until rabbitmq is up and running, max attempt is 5
@@ -27,11 +31,14 @@ services:
       - "9411:9411"
     environment:
       - "RABBIT_URI=amqp://rabbitmq"
+      - "JAVA_OPTS= -Dspring.rabbitmq.host=rabbitmq -Dspring.rabbitmq.port=5672"
       
   spring-cloud-config-server:
     image: abhinavkmishra14/spring-cloud-config-server:1.0-SNAPSHOT
-    container_name: spring-cloud-config-server
-    hostname: spring-cloud-config-server
+    #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
+    #For now we need default network i.e. 'bridge', so no need of specifying the network.
+    container_name: spring-cloud-config-server #If no name is specified Docker will automatically generate a name
+    hostname: spring-cloud-config-server #container id will be used hostname if host name is not specified
     environment:
       JAVA_OPTS: "
                 -Dserver.port=8888
@@ -43,6 +50,8 @@ services:
                 -Dspring.cloud.config.server.git.force-pull=true
                 -Dspring.rabbitmq.host=rabbitmq
                 -Dspring.rabbitmq.port=5672
+                -Dzipkin.web.query.dest=zipkin:9411
+                -Dspring.zipking.base-url=http://zipkin:9411
                 "
     ports:
       - "8888:8888"
@@ -54,8 +63,10 @@ services:
       
   netflix-eureka-naming-server:
     image: abhinavkmishra14/netflix-eureka-naming-server:1.0-SNAPSHOT
-    container_name: netflix-eureka-naming-server
-    hostname: netflix-eureka-naming-server
+    #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
+    #For now we need default network i.e. 'bridge', so no need of specifying the network.
+    container_name: netflix-eureka-naming-server #If no name is specified Docker will automatically generate a name
+    hostname: netflix-eureka-naming-server #container id will be used hostname if host name is not specified
     environment:
       JAVA_OPTS: "
                 -Dlogging.level.web=debug
@@ -68,3 +79,134 @@ services:
       - "8761:8761"
     volumes:
       - ./logs:/logs
+   
+  netflix-zuul-api-gateway-server:
+    image: abhinavkmishra14/netflix-zuul-api-gateway-server:1.0-SNAPSHOT
+    #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
+    #For now we need default network i.e. 'bridge', so no need of specifying the network.
+    container_name: netflix-zuul-api-gateway-server #If no name is specified Docker will automatically generate a name
+    hostname: netflix-zuul-api-gateway-server #container id will be used hostname if host name is not specified
+    environment:
+      JAVA_OPTS: "
+                -Dlogging.level.web=debug
+                -Dspring.application.name=netflix-zuul-api-gateway-server
+                -Dserver.port=8765
+                -Dspring.rabbitmq.host=rabbitmq
+                -Dspring.rabbitmq.port=5672
+                -Dzipkin.web.query.dest=zipkin:9411
+                -Dspring.zipking.base-url=http://zipkin:9411
+                -Deureka.client.serviceUrl.defaultZone=http://netflix-eureka-naming-server:8761/eureka
+                "
+    ports:
+      - "8765:8765"
+    volumes:
+      - ./logs:/logs
+    depends_on:
+      - netflix-eureka-naming-server
+      - zipkin
+
+  limits-service:
+    image: abhinavkmishra14/limits-service:1.0-SNAPSHOT
+    #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
+    #For now we need default network i.e. 'bridge', so no need of specifying the network.
+    container_name: limits-service #If no name is specified Docker will automatically generate a name
+    hostname: limits-service #container id will be used hostname if host name is not specified
+    environment:
+      JAVA_OPTS: "
+                -Dlogging.level.web=debug
+                -Dspring.application.name=limits-service
+                -Dserver.port=8080
+                -Dspring.cloud.config.uri=http://spring-cloud-config-server:8888
+                -Dspring.profiles.active=qa
+                -Dmanagement.endpoints.web.exposure.include=*
+                -Dspring.rabbitmq.host=rabbitmq
+                -Dspring.rabbitmq.port=5672
+                -Dzipkin.web.query.dest=zipkin:9411
+                -Dspring.zipking.base-url=http://zipkin:9411
+                -Deureka.client.serviceUrl.defaultZone=http://netflix-eureka-naming-server:8761/eureka
+                "
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./logs:/logs
+    depends_on:
+      - netflix-eureka-naming-server
+      - zipkin
+      - spring-cloud-config-server
+
+  postgres:
+    image: postgres:12.3
+    #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
+    #For now we need default network i.e. 'bridge', so no need of specifying the network.
+    container_name: postgres #If no name is specified Docker will automatically generate a name
+    hostname: postgres #container id will be used hostname if host name is not specified
+    environment:
+      - POSTGRES_USER=sa
+      - POSTGRES_PASSWORD=sa
+      - POSTGRES_DB=currexec
+    command: postgres -c max_connections=300 -c log_min_messages=LOG
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
+      
+  currency-exchange-service:
+    image: abhinavkmishra14/currency-exchange-service:1.0-SNAPSHOT
+    #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
+    #For now we need default network i.e. 'bridge', so no need of specifying the network.
+    container_name: currency-exchange-service #If no name is specified Docker will automatically generate a name
+    hostname: currency-exchange-service #container id will be used hostname if host name is not specified
+    environment:
+      JAVA_OPTS: "
+                -Dlogging.level.web=debug
+                -Dserver.port=8000
+                -Dspring.application.name=currency-exchange-service
+                -Dspring.h2.console.enabled=false
+                -Dspring.datasource.url=jdbc:postgresql://postgres:5432/currexec
+                -Dspring.datasource.driver-class-name=org.postgresql.Driver
+                -Dspring.datasource.username=sa
+                -Dspring.datasource.password=sa
+                -Dspring.jpa.hibernate.ddl-auto=update
+                -Dspring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+                -Dexchange.rate.fallback.uri=https://api.exchangeratesapi.io/latest?base={0}&symbols={1}
+                -Dspring.rabbitmq.host=rabbitmq
+                -Dspring.rabbitmq.port=5672
+                -Dzipkin.web.query.dest=zipkin:9411
+                -Dspring.zipking.base-url=http://zipkin:9411
+                -Deureka.client.serviceUrl.defaultZone=http://netflix-eureka-naming-server:8761/eureka
+                "
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logs:/logs
+    depends_on:
+      - postgres
+      - netflix-eureka-naming-server
+      - zipkin
+   
+  currency-conversion-service:
+    image: abhinavkmishra14/currency-conversion-service:1.0-SNAPSHOT
+    #network_mode: bridge #There are 3 types of network. 'bridge', 'host' and 'none'. 'bridge' is default network for docker containers. 
+    #For now we need default network i.e. 'bridge', so no need of specifying the network.
+    container_name: currency-conversion-service #If no name is specified Docker will automatically generate a name
+    hostname: currency-conversion-service #container id will be used hostname if host name is not specified
+    environment:
+      JAVA_OPTS: "
+                -Dlogging.level.web=debug
+                -Dserver.port=8100
+                -Dspring.application.name=currency-conversion-service
+                -Dexchange.rate.fallback.uri=https://api.exchangeratesapi.io/latest?base={0}&symbols={1}
+                -Dspring.rabbitmq.host=rabbitmq
+                -Dspring.rabbitmq.port=5672
+                -Dzipkin.web.query.dest=zipkin:9411
+                -Dspring.zipking.base-url=http://zipkin:9411
+                -Deureka.client.serviceUrl.defaultZone=http://netflix-eureka-naming-server:8761/eureka
+                "
+    ports:
+      - "8100:8100"
+    volumes:
+      - ./logs:/logs
+    depends_on:
+      - netflix-eureka-naming-server
+      - zipkin
+  
