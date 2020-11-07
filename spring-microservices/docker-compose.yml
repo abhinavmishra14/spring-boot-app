@@ -45,7 +45,7 @@ services:
     depends_on:
       - rabbitmq
     links:
-      - rabbitmq
+      - rabbitmq #links format is <serviceName>:<containerName> (SERVICE:ALIAS). If both service and container names are same then just specify container name (alias) 
     restart: on-failure:5 #Restart the zipkin container again if it failed to connect to rabbitmq and exited, repeat until rabbitmq is up and running, max attempt is 5
     ports:
       - "9410:9410"
@@ -80,7 +80,7 @@ services:
     depends_on:
       - rabbitmq
       - zipkin
-    links:
+    links: #links format is <serviceName>:<containerName> (SERVICE:ALIAS). If both service and container names are same then just specify container name (alias)
       - rabbitmq
       - zipkin
     volumes:
@@ -111,7 +111,7 @@ services:
     depends_on:
       - netflix-eureka-naming-server
       - zipkin
-    links:
+    links: #links format is <serviceName>:<containerName> (SERVICE:ALIAS). If both service and container names are same then just specify container name (alias)
       - netflix-eureka-naming-server
       - zipkin
 
@@ -144,7 +144,7 @@ services:
       - netflix-eureka-naming-server
       - zipkin
       - spring-cloud-config-server
-    links:
+    links: #links format is <serviceName>:<containerName> (SERVICE:ALIAS). If both service and container names are same then just specify container name (alias)tainer name (alias)
       - netflix-eureka-naming-server
       - zipkin
       - spring-cloud-config-server
@@ -199,7 +199,7 @@ services:
       - postgres
       - netflix-eureka-naming-server
       - zipkin
-    links:
+    links: #links format is <serviceName>:<containerName> (SERVICE:ALIAS). If both service and container names are same then just specify container name (alias)
       - postgres
       - netflix-eureka-naming-server
       - zipkin
@@ -230,6 +230,6 @@ services:
     depends_on:
       - netflix-eureka-naming-server
       - zipkin
-    links:
+    links: #links format is <serviceName>:<containerName> (SERVICE:ALIAS). If both service and container names are same then just specify container name (alias)
       - netflix-eureka-naming-server
       - zipkin
